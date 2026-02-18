@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+        body {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px #0001;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .desc {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .file-list {
+            margin-top: 20px;
+        }
+        .file-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .file-item a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+        .title {
+            font-size: 18px;
+            margin: 20px 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>我的个人主页</h1>
+    <p class="desc">通过 DDNS 访问的私人主页 & 文件列表</p>
+
+    <div class="title">📁 文件列表（网盘效果）</div>
+    <div class="file-list">
+        <div class="file-item">
+            <span>📄 说明文档.txt</span>
+            <a href="说明文档.txt" download>下载</a>
+        </div>
+        <div class="file-item">
+            <span>🎞 视频文件.mp4</span>
+            <a href="视频文件.mp4" download>下载</a>
+        </div>
+        <div class="file-item">
+            <span>📦 工具包.zip</span>
+            <a href="工具包.zip" download>下载</a>
+        </div>
+    </div>
+
+    <div class="title">🔗 常用链接</div>
+    <div class="file-list">
+        <div class="file-item">
+            <span>我的网盘</span>
+            <a href="/list">打开</a>
+        </div>
+        <div class="file-item">
+            <span>主页</span>
+            <a href="/">返回</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
