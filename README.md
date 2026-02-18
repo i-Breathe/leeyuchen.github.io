@@ -12,8 +12,8 @@
 
 ## 📖 关于本站
 **www.leeyuchen.top**  
-是一个集 **个人主页、加密访问、在线工具** 于一体的现代化网站  
-基于 GitHub Pages 构建，全站 HTTPS，安全、简洁、极速访问。
+是一个集 **私人主页、加密访问、在线工具等...** 于一体的个人网站仓库
+基于 GitHub Pages 构建
 
 ---
 
@@ -22,7 +22,6 @@
 - ✅ **内置翻译工具**（类 Bing 翻译，代码块风格）
 - ✅ **工具集合页面**（加密、Base64、JSON、时间戳…）
 - ✅ **渐变毛玻璃 UI**，暗黑/浅色自动适配
-- ✅ **www + 根域名自动跳转**，全站 HTTPS 强制
 - ✅ **响应式布局**，手机/电脑完美显示
 
 ---
@@ -58,23 +57,30 @@
 ## 🌐 访问地址
 - 主站：**https://www.leeyuchen.top**
 - 加密工具：**https://www.leeyuchen.top/加密工具.html**
-- GitHub：https://github.com/i-Breathe
+- GitHub：https://github.com/leeyuchen4073
 
 ---
 
 ## 📧 联系我
-- 📩 邮箱：**254036252@qq.com**
-- 👤 GitHub：**@i-Breathe**
+- 👤 GitHub：**@leeyuchen4073**
 - 🌍 个人主页：**www.leeyuchen.top**
+- - 📩 邮箱：**254036252@qq.com**
 
 ---
 
-## 📦 域名最佳配置（你现在这套就是最稳）
+## 📦 域名配置
+| 记录类型 | 主机记录 | 记录值                | TTL     |
+|----------|----------|-----------------------|---------|
+| A        | @        | 185.199.108.153       | 10 分钟 |
+| A        | @        | 185.199.109.153       | 10 分钟 |
+| A        | @        | 185.199.110.153       | 10 分钟 |
+| A        | @        | 185.199.111.153       | 10 分钟 |
+| CNAME    | www      | 你的用户名.github.io  | 10 分钟 |
 
 ---
 
 ## 📄 License
-MIT License — 自由使用，欢迎 Star & Fork
+MIT License — 个人自用专属,有事邮箱请联系
 
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=4158D0&height=80&section=footer&fontSize=0">
