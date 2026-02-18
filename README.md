@@ -28,25 +28,13 @@
 
 ## 🛠️ 内置工具列表
 
-<div align="center">
-
 | 工具 | 功能 | 状态 |
 | :--- | :--- | :--- |
-| <a href="https://www.leeyuchen.top/加密工具.html"><img src="https://cdn-fusion.imgcdn.store/i/2024/9344b2add5e290b6.png" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">AES 加密工具</a> | 文本/HTML 加密、哈希生成、一键复制 | ✅ 已上线 |
-| <a href="https://www.leeyuchen.top"><img src="https://cdn-fusion.imgcdn.store/i/2024/21e58daf3b0a1bd6.png" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">快速翻译</a> | 中英日韩互译、代码块展示 | ✅ 已上线 |
-| <img src="https://cdn-fusion.imgcdn.store/i/你的Base64图标地址.png" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">Base64 编解码 | 字符串编码/解码 | 🔄 即将上线 |
-| <img src="https://cdn-fusion.imgcdn.store/i/你的JSON图标地址.png" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">JSON 格式化 | 高亮、格式化、压缩 | 🔄 即将上线 |
-| <img src="https://cdn-fusion.imgcdn.store/i/你的时间戳图标地址.png" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">时间戳转换 | 时间 ↔ 时间戳 | 🔄 即将上线 |
-
-</div>
-
-| 工具 | 功能 | 状态 |
-|------|------|------|
-| 🔐 AES 加密工具 | 文本/HTML 加密、哈希生成、一键复制 | ✅ 已上线 |
-| 🌍 快速翻译 | 中英日韩互译、代码块展示 | ✅ 已上线 |
-| 🧬 Base64 编解码 | 字符串编码/解码 | 🕒 即将上线 |
-| 📄 JSON 格式化 | 高亮、格式化、压缩 | 🕒 即将上线 |
-| ⏰ 时间戳转换 | 时间 ↔ 时间戳 | 🕒 即将上线 |
+| 🔒 <a href="https://www.leeyuchen.top/加密工具.html">AES 加密工具</a> | 文本/HTML 加密、哈希生成、一键复制 | ✅ 已上线 |
+| 🌐 <a href="https://www.leeyuchen.top/快速翻译.html">快速翻译</a> | 中英日韩互译、代码块展示 | ✅ 已上线 |
+| 🧬 <a href="https://www.leeyuchen.top/base64.html">Base64 编解码</a> | 字符串编码/解码 | 🔄 即将上线 |
+| 📝 <a href="https://www.leeyuchen.top/json.html">JSON 格式化</a> | 高亮、格式化、压缩 | 🔄 即将上线 |
+| ⏱️ <a href="https://www.leeyuchen.top/timestamp.html">时间戳转换</a> | 时间 ↔ 时间戳 | 🔄 即将上线 |
 
 ---
 
