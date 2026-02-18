@@ -11,8 +11,8 @@
 ---
 
 ## 📖 关于本站
-**www.leeyuchen.top**  
-是一个集 **私人主页、加密访问、在线工具等** 于一体的个人网站仓库
+- 🌍 主站：**https://www.leeyuchen.top**
+是一个集 **个人主页、加密访问、在线工具等** 于一体的私人网站仓库
 基于 GitHub Pages 构建
 
 ---
@@ -35,12 +35,6 @@
 | 🧬 <a href="https://www.leeyuchen.top/base64.html">Base64 编解码</a> | 字符串编码/解码 | 🔄 即将上线 |
 | 📝 <a href="https://www.leeyuchen.top/json.html">JSON 格式化</a> | 高亮、格式化、压缩 | 🔄 即将上线 |
 | ⏱️ <a href="https://www.leeyuchen.top/timestamp.html">时间戳转换</a> | 时间 ↔ 时间戳 | 🔄 即将上线 |
-
----
-
-## 🌐 访问地址
-- 🌍 主站：**https://www.leeyuchen.top**
-- 🔐 加密工具：**https://www.leeyuchen.top/加密工具.html**
 
 ---
 
