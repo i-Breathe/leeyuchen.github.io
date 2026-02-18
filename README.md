@@ -60,8 +60,8 @@
 MIT License — 个人自用专属,有事邮箱请↓↓↓
 
 ## 📧 联系我
-- 👤 GitHub：**@leeyuchen4073**
-- 📩 邮箱：**254036252@qq.com**
+- 🧑‍💻 GitHub：**[@leeyuchen4073](https://github.com/leeyuchen4073)**
+- 📧 邮箱：**254036252@qq.com**
 
 ---
 <p align="center">
