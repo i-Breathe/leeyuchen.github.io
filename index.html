@@ -44,6 +44,7 @@
     font-weight:600;
     cursor:pointer;
   }
+  #login{display:block}
   #content{display:none}
   .avatar{
     width:90px;
@@ -82,22 +83,32 @@
 
   <div id="content">
     <div class="avatar">LYC</div>
-    <h1 class="name">Leeyuchen</h1>
+    <h1 class="name">李宇辰</h1>
     <p class="bio">leeyuchen.top | 个人主页</p>
     <a class="link" href="https://leeyuchen.top">我的网站</a>
-    <a class="link" href="https://github.com/i-Breathe">GitHub</a>
-    <a class="link" href="#">文件列表</a>
-    <a class="link" href="#">联系我</a>
+    <a class="link" href="https://github.com/i-Breathe" target="_blank">GitHub</a>
+    <a class="link" href="#" onclick="alert('文件列表功能开发中...')">文件列表</a>
+    <a class="link" href="mailto:your@email.com">联系我</a>
   </div>
 </div>
 
 <script>
-function openMe(){
-  let pwd = document.getElementById('pwd').value
-  // 在这里改你的密码 ↓↓↓
-  if(pwd === 'root'){
-    document.getElementById('login').style.display='none'
-    document.getElementById('content').style.display='block'
+// 页面加载时先检查是否已经验证过
+window.onload = function() {
+  if (localStorage.getItem('authenticated') === 'true') {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  }
+};
+
+function openMe() {
+  let pwd = document.getElementById('pwd').value;
+  // 在这里修改你的密码 ↓↓↓
+  if (pwd === '123456') {
+    // 验证成功，记住状态
+    localStorage.setItem('authenticated', 'true');
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
   }
 }
 </script>
