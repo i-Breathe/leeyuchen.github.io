@@ -55,9 +55,8 @@
 ---
 
 ## 🌐 访问地址
-- 主站：**https://www.leeyuchen.top**
-- 加密工具：**https://www.leeyuchen.top/加密工具.html**
-- GitHub：https://github.com/leeyuchen4073
+- 🌍 主站：**https://www.leeyuchen.top**
+- 🔐 加密工具：**https://www.leeyuchen.top/加密工具.html**
 
 ---
 
@@ -78,8 +77,7 @@ MIT License — 个人自用专属,有事邮箱请↓↓↓
 
 ## 📧 联系我
 - 👤 GitHub：**@leeyuchen4073**
-- 🌍 个人主页：**www.leeyuchen.top**
-- - 📩 邮箱：**254036252@qq.com**
+- 📩 邮箱：**254036252@qq.com**
 
 ---
 <p align="center">
