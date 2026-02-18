@@ -12,7 +12,7 @@
 
 ## 📖 关于本站
 **www.leeyuchen.top**  
-是一个集 **私人主页、加密访问、在线工具等...** 于一体的个人网站仓库
+是一个集 **私人主页、加密访问、在线工具等** 于一体的个人网站仓库
 基于 GitHub Pages 构建
 
 ---
@@ -32,12 +32,12 @@
     <tr>
       <td>
         <a href="https://www.leeyuchen.top/加密工具.html">
-          <img src="https://github-readme-stats.vercel.app/api/pin/?username=i-Breathe&repo=i-Breathe.github.io&title_color=4158D0&icon_color=4158D0&bg_color=0d1117&hide_border=true" width="380">
+          <img src="https://cdn-fusion.imgcdn.store/i/2024/9344b2add5e290b6.png&repo=i-Breathe.github.io&title_color=4158D0&icon_color=4158D0&bg_color=0d1117&hide_border=true" width="380">
         </a>
       </td>
       <td>
         <a href="https://www.leeyuchen.top">
-          <img src="https://github-readme-stats.vercel.app/api/pin/?username=i-Breathe&repo=i-Breathe.github.io&title_color=6A67CE&icon_color=6A67CE&bg_color=0d1117&hide_border=true" width="380">
+          <img src="https://cdn-fusion.imgcdn.store/i/2024/21e58daf3b0a1bd6.png&repo=i-Breathe.github.io&title_color=6A67CE&icon_color=6A67CE&bg_color=0d1117&hide_border=true" width="380">
         </a>
       </td>
     </tr>
