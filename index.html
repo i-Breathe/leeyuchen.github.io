@@ -17,6 +17,40 @@
                   background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
                   box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
+    
+    /* 缓存清除提示样式 */
+    .cache-clear-notice {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(108, 92, 231, 0.9);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      z-index: 9999;
+      animation: fadeInOut 3s ease-in-out;
+    }
+    
+    /* 夜间模式下的缓存清除提示样式 */
+    .dark-mode .cache-clear-notice {
+      background: rgba(240, 243, 255, 0.9);
+      color: #2d3748;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    }
 
     /* 白天/黑夜模式变量（保留原样式） */
     :root {
@@ -165,7 +199,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-fill-color: transparent;
       font-weight: 700;
       cursor: pointer;
       text-shadow: none;
@@ -178,7 +211,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-fill-color: transparent;
     }
     .input-item {
       margin-bottom: 20px;
@@ -302,13 +334,15 @@
       box-shadow: none !important;
     }
     #error {
-      color: #ff4444;
+      background: linear-gradient(135deg, #ff4444, #ff6666);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-size: 13px;
       text-align: center;
       margin: 8px 0;
       height: 18px;
       font-weight: 700;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     /* 设置弹窗样式（保留原样式） */
     .setting-modal {
@@ -522,8 +556,10 @@
 
   <script>
     // 核心配置
-    const SECRET_KEY = "123456"; // 密码验证
+    const SECRET_KEY_HASH = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2"; // PWD_HASH
     const MAX_HISTORY = 10;
+    const ENCRYPTION_KEY = "leeyuchen_cache_key_2026";
+    const CACHE_KEY = "data.db-chache";
     // DOM 元素
     const pwdInput = document.getElementById('pwd');
     const rememberPwd = document.getElementById('rememberPwd');
@@ -536,49 +572,198 @@
     const headerTitle = document.getElementById('headerTitle');
     const lightHistoryList = document.getElementById('lightHistoryList');
     const darkHistoryList = document.getElementById('darkHistoryList');
+    
+    // 加密相关函数
+    async function getKey() {
+      const encoder = new TextEncoder();
+      const keyMaterial = await window.crypto.subtle.importKey(
+        'raw',
+        encoder.encode(ENCRYPTION_KEY),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveKey']
+      );
+      return window.crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: encoder.encode('leeyuchen_salt'),
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        keyMaterial,
+        {
+          name: 'AES-GCM',
+          length: 256
+        },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+    
+    async function encrypt(data) {
+      const key = await getKey();
+      const iv = window.crypto.getRandomValues(new Uint8Array(12));
+      const encoder = new TextEncoder();
+      const encrypted = await window.crypto.subtle.encrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv
+        },
+        key,
+        encoder.encode(JSON.stringify(data))
+      );
+      return {
+        iv: Array.from(iv),
+        data: Array.from(new Uint8Array(encrypted))
+      };
+    }
+    
+    async function decrypt(encryptedData) {
+      const key = await getKey();
+      const decrypted = await window.crypto.subtle.decrypt(
+        {
+          name: 'AES-GCM',
+          iv: new Uint8Array(encryptedData.iv)
+        },
+        key,
+        new Uint8Array(encryptedData.data)
+      );
+      const decoder = new TextDecoder();
+      return JSON.parse(decoder.decode(decrypted));
+    }
+    
+    // 缓存操作函数
+    async function saveCache(data) {
+      try {
+        const encrypted = await encrypt(data);
+        localStorage.setItem(CACHE_KEY, JSON.stringify(encrypted));
+      } catch (error) {
+        console.error('保存缓存失败:', error);
+      }
+    }
+    
+    async function loadCache() {
+      try {
+        const encrypted = localStorage.getItem(CACHE_KEY);
+        if (encrypted) {
+          return await decrypt(JSON.parse(encrypted));
+        }
+        return null;
+      } catch (error) {
+        console.error('加载缓存失败:', error);
+        return null;
+      }
+    }
+    
+    async function clearCacheData() {
+      localStorage.removeItem(CACHE_KEY);
+    }
+    
+    // 计算密码哈希值
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hash = await window.crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
 
+    // 存储真实密码的变量
+    let realSavedPwd = null;
+    
     // 初始化：读取记住的密码/自动登录
-    window.onload = function() {
-      // 读取记住的密码
-      const savedPwd = localStorage.getItem('savedPwd');
-      if (savedPwd) {
-        pwdInput.value = savedPwd;
-        rememberPwd.checked = true;
+    window.onload = async function() {
+      try {
+        // 读取加密缓存
+        const cache = await loadCache();
+        let savedPwd = null;
+        let isAutoLogin = false;
+        let isDark = false;
+        let lightBgHistory = [];
+        let darkBgHistory = [];
+        
+        if (cache) {
+          savedPwd = cache.savedPwd;
+          isAutoLogin = cache.autoLogin || false;
+          isDark = cache.darkMode || false;
+          lightBgHistory = cache.lightBgHistory || [];
+          darkBgHistory = cache.darkBgHistory || [];
+        }
+        
+        // 读取记住的密码
+        if (savedPwd) {
+          realSavedPwd = savedPwd; // 保存真实密码
+          pwdInput.value = '********'; // 显示固定8个点
+          rememberPwd.checked = true;
+        }
+        // 自动登录验证
+        if (isAutoLogin && savedPwd === '123456') {
+          login(); // 自动登录
+        }
+        // 读取背景图历史记录
+        loadHistory();
+        // 读取昼夜模式
+        if (isDark) {
+          bodyEl.classList.remove('hope-ui-light');
+          bodyEl.classList.add('hope-ui-dark');
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch (error) {
+        console.error('初始化缓存读取失败:', error);
       }
-      // 自动登录验证
-      const isAutoLogin = localStorage.getItem('autoLogin') === 'true';
-      if (isAutoLogin && savedPwd === SECRET_KEY) {
-        login(); // 自动登录
-      }
-      // 读取背景图历史记录
-      loadHistory();
-      // 读取昼夜模式
-      const isDark = localStorage.getItem('darkMode') === 'true';
-      if (isDark) {
-        bodyEl.classList.remove('hope-ui-light');
-        bodyEl.classList.add('hope-ui-dark');
-        document.documentElement.classList.add('dark-mode');
-      }
+      
+      // 光标自动定位到密码输入框
+      pwdInput.focus();
+      
+      // 添加回车键支持登录
+      document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          login();
+        }
+      });
     };
 
     // 登录核心逻辑（验证后跳转）
-    function login() {
-      const inputPwd = pwdInput.value.trim();
-      if (inputPwd !== SECRET_KEY) {
+    async function login() {
+      // 确定要使用的密码
+      let inputPwd;
+      if (pwdInput.value === '********' && realSavedPwd) {
+        // 如果显示的是8个点且有真实保存的密码，使用真实密码
+        inputPwd = realSavedPwd;
+      } else {
+        // 否则使用用户输入的密码
+        inputPwd = pwdInput.value.trim();
+      }
+      
+      // 计算输入密码的哈希值
+      const inputHash = await hashPassword(inputPwd);
+      
+      if (inputHash !== SECRET_KEY_HASH) {
         errorEl.textContent = '密码错误，请重试！';
         pwdInput.style.animation = 'shake 0.5s ease';
         setTimeout(() => pwdInput.style.animation = '', 500);
         return;
       }
 
-      // 验证通过：存储登录状态
-      localStorage.setItem('isLogin', 'true'); // 登录状态标记
-      if (rememberPwd.checked) {
-        localStorage.setItem('savedPwd', inputPwd); // 记住密码
-      } else {
-        localStorage.removeItem('savedPwd');
+      try {
+        // 读取现有缓存
+        const existingCache = await loadCache() || {};
+        
+        // 更新缓存数据
+        const cacheData = {
+          ...existingCache,
+          isLogin: true,
+          savedPwd: rememberPwd.checked ? inputPwd : null,
+          autoLogin: autoLogin.checked,
+          darkMode: document.documentElement.classList.contains('dark-mode')
+        };
+        
+        // 存储加密缓存
+        await saveCache(cacheData);
+      } catch (error) {
+        console.error('保存缓存失败:', error);
       }
-      localStorage.setItem('autoLogin', autoLogin.checked); // 自动登录标记
 
       // 跳转到个人主页
       window.location.href = 'profile.html';
@@ -588,21 +773,41 @@
     function clearInput() {
       pwdInput.value = '';
       errorEl.textContent = '';
+      realSavedPwd = null; // 重置真实密码变量
     }
 
     // 清除缓存
-    function clearCache() {
-      localStorage.removeItem('savedPwd');
-      localStorage.removeItem('autoLogin');
-      localStorage.removeItem('lightBgHistory');
-      localStorage.removeItem('darkBgHistory');
-      localStorage.removeItem('darkMode');
-      clearInput();
-      alert('缓存已清空！');
+    async function clearCache() {
+      try {
+        // 清除加密缓存
+        await clearCacheData();
+        clearInput();
+        
+        // 显示缓存已清除提示
+        showCacheClearNotice();
+      } catch (error) {
+        console.error('清除缓存失败:', error);
+      }
+    }
+    
+    // 显示缓存清除提示
+    function showCacheClearNotice() {
+      // 创建提示元素
+      const notice = document.createElement('div');
+      notice.className = 'cache-clear-notice';
+      notice.textContent = '缓存已清除';
+      
+      // 添加到页面
+      document.body.appendChild(notice);
+      
+      // 3秒后移除元素
+      setTimeout(() => {
+        notice.remove();
+      }, 3000);
     }
 
     // 昼夜模式切换
-    function toggleMode() {
+    async function toggleMode() {
       const isDark = document.documentElement.classList.toggle('dark-mode');
       if (isDark) {
         bodyEl.classList.remove('hope-ui-light');
@@ -611,7 +816,22 @@
         bodyEl.classList.remove('hope-ui-dark');
         bodyEl.classList.add('hope-ui-light');
       }
-      localStorage.setItem('darkMode', isDark);
+      
+      try {
+        // 读取现有缓存
+        const existingCache = await loadCache() || {};
+        
+        // 更新缓存数据
+        const cacheData = {
+          ...existingCache,
+          darkMode: isDark
+        };
+        
+        // 存储加密缓存
+        await saveCache(cacheData);
+      } catch (error) {
+        console.error('保存缓存失败:', error);
+      }
     }
 
     // 设置弹窗相关（简化保留核心）
