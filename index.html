@@ -527,7 +527,6 @@
       color: var(--modal-text);
     }
     @media (max-width: 400px) {
-      /* 移动端适配 */
       .login-box {
         border-radius: 16px;
         padding: 12px 20px 28px;
@@ -551,6 +550,39 @@
         max-width: 320px;
         padding: 16px;
       }
+    }
+    
+    /* 站点信息样式 */
+    .content-section {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 600px;
+      padding: 15px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      z-index: 999;
+    }
+    
+    .dark-mode .content-section {
+      background: rgba(0, 0, 0, 0.5);
+      color: #ddd;
+    }
+    
+    .stats-info {
+      text-align: center;
+      margin: 8px 0;
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .dark-mode .stats-info {
+      color: #aaa;
     }
   </style>
 </head>
@@ -621,6 +653,21 @@
         <button class="modal-btn btn-save" onclick="saveBgSettings()">保存设置</button>
         <button class="modal-btn btn-close" onclick="closeSettingModal()">关闭</button>
       </div>
+    </div>
+  </div>
+  
+  <!-- 站点信息 -->
+  <div class="content-section">
+    <!-- 访客信息 -->
+    <div class="stats-info" id="welcome">正在获取您的访问信息...</div>
+    <!-- 站点统计 -->
+    <div class="stats-info">本站已稳定运行<span id="runtime"></span></div>
+    <!-- 一言 -->
+    <div class="stats-info" style="margin-top: 10px;">
+      "
+      <span id="hitokoto">
+        <a href="#" id="hitokoto_text">人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.</a>
+      </span> "
     </div>
   </div>
 
@@ -728,6 +775,14 @@
           login();
         }
       });
+      
+      // 加载访客信息
+      loadVisitorInfo();
+      // 加载运行时间
+      updateRuntime();
+      setInterval(updateRuntime, 1000);
+      // 加载一言
+      loadHitokoto();
     };
 
     async function login() {
@@ -809,6 +864,99 @@
       closeSettingModal();
     }
     function loadHistory() {}
+    
+    // 加载访客信息
+    function loadVisitorInfo() {
+      // 主API：使用返回中国地址的API
+      fetch('https://v2.xxapi.cn/api/ip')
+        .then(response => response.json())
+        .then(data => {
+          if (data.code === 200 && data.data) {
+            const ip = data.data.ip;
+            const address = data.data.address || '';
+            const isp = data.data.isp || '';
+            const welcomeMessage = `欢迎 ${address}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+            
+            const welcomeEl = document.getElementById('welcome');
+            if (welcomeEl) {
+              welcomeEl.textContent = welcomeMessage;
+            }
+          }
+        })
+        .catch(error => {
+          console.error("主API获取IP信息失败：", error);
+          // 失败时使用备用API (ip-api.com)
+          fetch('http://demo.ip-api.com/json/?lang=zh-CN')
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                const ip = data.query;
+                const city = data.city || '';
+                const region = data.regionName || '';
+                const country = data.country || '';
+                const isp = data.isp || '';
+                let welcomeMessage;
+                
+                if (country === '中国') {
+                  welcomeMessage = `欢迎 ${region}${city}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                } else {
+                  welcomeMessage = `欢迎 ${country}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                }
+                
+                const welcomeEl = document.getElementById('welcome');
+                if (welcomeEl) {
+                  welcomeEl.textContent = welcomeMessage;
+                }
+              }
+            })
+            .catch(backupError => {
+              console.error("备用API获取失败：", backupError);
+              // 再次失败时使用ipify API获取仅IP信息
+              fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                  const ip = data.ip;
+                  const welcomeMessage = `欢迎 (IP: ${ip}) 的小伙伴访问本站`;
+                  const welcomeEl = document.getElementById('welcome');
+                  if (welcomeEl) {
+                    welcomeEl.textContent = welcomeMessage;
+                  }
+                })
+                .catch(finalError => {
+                  console.error("所有API获取失败：", finalError);
+                  const welcomeEl = document.getElementById('welcome');
+                  if (welcomeEl) {
+                    welcomeEl.textContent = "欢迎访问本站";
+                  }
+                });
+            });
+        });
+    }
+    
+    // 更新运行时间
+    function updateRuntime() {
+      const startDate = new Date('2026-02-20T00:00:00');
+      const now = new Date();
+      const elapsed = now - startDate;
+
+      const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+      const runtimeEl = document.getElementById('runtime');
+      if (runtimeEl) {
+        runtimeEl.innerHTML = `${days}天 ${hours}小时 ${minutes}分 ${seconds}秒`;
+      }
+    }
+    
+    // 加载一言
+    function loadHitokoto() {
+      const script = document.createElement('script');
+      script.src = 'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto';
+      script.defer = true;
+      document.head.appendChild(script);
+    }
   </script>
 </body>
 </html>
