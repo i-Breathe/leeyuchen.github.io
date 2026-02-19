@@ -7,25 +7,20 @@
   <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
   <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
   <style>
-    /* 仅保留登录页相关样式（复制原文件中登录框、昼夜模式、设置弹窗等样式） */
-    /* 全局重置 */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-                  background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-                  box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     
-    /* 缓存清除提示样式 */
     .cache-clear-notice {
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(108, 92, 231, 0.9);
-      color: white;
+      background: rgba(240, 243, 255, 0.9);
+      color: #2d3748;
       padding: 10px 20px;
       border-radius: 20px;
       font-size: 14px;
@@ -38,10 +33,9 @@
       animation: fadeInOut 3s ease-in-out;
     }
     
-    /* 夜间模式下的缓存清除提示样式 */
     .dark-mode .cache-clear-notice {
-      background: rgba(240, 243, 255, 0.9);
-      color: #2d3748;
+      background: rgba(108, 92, 231, 0.9);
+      color: white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     
@@ -52,14 +46,13 @@
       100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
     }
 
-    /* 白天/黑夜模式变量（保留原样式） */
     :root {
       --bg: #e0e7ff;
-      --box-bg: rgba(80, 94, 189, 0.8);
-      --text: #ffffff;
-      --input-bg: rgba(106, 127, 224, 0.8);
-      --input-border: #7a8fe8;
-      --checkbox-bg: rgba(106, 127, 224, 0.8);
+      --box-bg: rgba(240, 243, 255, 0.8);
+      --text: #2d3748;
+      --input-bg: rgba(255, 255, 255, 0.8);
+      --input-border: #d0d8f0;
+      --checkbox-bg: rgba(255, 255, 255, 0.8);
       --checkbox-checked: #6c5ce7;
       --btn-clear: rgba(180, 188, 208, 0.8);
       --btn-login: #6c5ce7;
@@ -71,11 +64,11 @@
     }
     .dark-mode {
       --bg: #4a5fc0;
-      --box-bg: rgba(240, 243, 255, 0.8);
-      --text: #2d3748;
-      --input-bg: rgba(255, 255, 255, 0.8);
-      --input-border: #d0d8f0;
-      --checkbox-bg: rgba(255, 255, 255, 0.8);
+      --box-bg: rgba(80, 94, 189, 0.8);
+      --text: #ffffff;
+      --input-bg: rgba(106, 127, 224, 0.8);
+      --input-border: #7a8fe8;
+      --checkbox-bg: rgba(106, 127, 224, 0.8);
       --checkbox-checked: #6c5ce7;
       --btn-clear: rgba(122, 143, 232, 0.8);
       --btn-login: #6c5ce7;
@@ -85,7 +78,6 @@
       --modal-text: #2d3748;
     }
 
-    /* 背景图样式（保留原样式） */
     .hope-ui-light {
       background-image: url("https://wp.upx8.com/api.php") !important;
       background-repeat: no-repeat;
@@ -103,7 +95,6 @@
       background-color: #4a5fc0;
     }
 
-    /* 全局/登录框/按钮/设置弹窗等样式（复制原文件中对应部分） */
     body {
       font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       background: var(--bg);
@@ -127,10 +118,10 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    .setting-switch {
+    .setting-switch,
+    .mode-switch {
       position: absolute;
       top: 20px;
-      left: 20px;
       width: 35px;
       height: 35px;
       border-radius: 50%;
@@ -142,32 +133,20 @@
       z-index: 10;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+    }
+    .setting-switch {
+      left: 20px;
+    }
+    .mode-switch {
+      right: 20px;
     }
     .setting-switch::after {
       content: var(--setting-icon);
     }
-    .setting-switch:hover {
-      transform: scale(1.1);
-    }
-    .mode-switch {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      background: var(--input-bg);
-      display: grid;
-      place-items: center;
-      font-size: 18px;
-      cursor: pointer;
-      z-index: 10;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
     .mode-switch::after {
       content: var(--mode-icon);
     }
+    .setting-switch:hover,
     .mode-switch:hover {
       transform: scale(1.1);
     }
@@ -344,7 +323,6 @@
       height: 18px;
       font-weight: 700;
     }
-    /* 设置弹窗样式（保留原样式） */
     .setting-modal {
       display: none;
       position: fixed;
@@ -459,7 +437,6 @@
       background: var(--btn-clear);
       color: var(--modal-text);
     }
-    /* 移动端适配（保留原样式） */
     @media (max-width: 400px) {
       .login-box {
         border-radius: 16px;
@@ -473,7 +450,8 @@
         width: 36px;
         height: 36px;
       }
-      .setting-switch, .mode-switch {
+      .setting-switch,
+      .mode-switch {
         width: 30px;
         height: 30px;
         font-size: 16px;
@@ -555,46 +533,26 @@
   </div>
 
   <script>
-    // 核心配置
-    const SECRET_KEY_HASH = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2"; // PWD_HASH
-    const MAX_HISTORY = 10;
+    const SECRET_KEY_HASH = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
     const ENCRYPTION_KEY = "leeyuchen_cache_key_2026";
     const CACHE_KEY = "data.db-chache";
-    // DOM 元素
+    
     const pwdInput = document.getElementById('pwd');
     const rememberPwd = document.getElementById('rememberPwd');
     const autoLogin = document.getElementById('autoLogin');
     const errorEl = document.getElementById('error');
     const settingModal = document.getElementById('settingModal');
-    const lightBgUrlInput = document.getElementById('lightBgUrl');
-    const darkBgUrlInput = document.getElementById('darkBgUrl');
     const bodyEl = document.body;
-    const headerTitle = document.getElementById('headerTitle');
-    const lightHistoryList = document.getElementById('lightHistoryList');
-    const darkHistoryList = document.getElementById('darkHistoryList');
     
-    // 加密相关函数
+    let realSavedPwd = null;
+    
     async function getKey() {
       const encoder = new TextEncoder();
-      const keyMaterial = await window.crypto.subtle.importKey(
-        'raw',
-        encoder.encode(ENCRYPTION_KEY),
-        { name: 'PBKDF2' },
-        false,
-        ['deriveKey']
-      );
+      const keyMaterial = await window.crypto.subtle.importKey('raw', encoder.encode(ENCRYPTION_KEY), { name: 'PBKDF2' }, false, ['deriveKey']);
       return window.crypto.subtle.deriveKey(
-        {
-          name: 'PBKDF2',
-          salt: encoder.encode('leeyuchen_salt'),
-          iterations: 100000,
-          hash: 'SHA-256'
-        },
+        { name: 'PBKDF2', salt: encoder.encode('leeyuchen_salt'), iterations: 100000, hash: 'SHA-256' },
         keyMaterial,
-        {
-          name: 'AES-GCM',
-          length: 256
-        },
+        { name: 'AES-GCM', length: 256 },
         false,
         ['encrypt', 'decrypt']
       );
@@ -604,14 +562,7 @@
       const key = await getKey();
       const iv = window.crypto.getRandomValues(new Uint8Array(12));
       const encoder = new TextEncoder();
-      const encrypted = await window.crypto.subtle.encrypt(
-        {
-          name: 'AES-GCM',
-          iv: iv
-        },
-        key,
-        encoder.encode(JSON.stringify(data))
-      );
+      const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, encoder.encode(JSON.stringify(data)));
       return {
         iv: Array.from(iv),
         data: Array.from(new Uint8Array(encrypted))
@@ -620,19 +571,11 @@
     
     async function decrypt(encryptedData) {
       const key = await getKey();
-      const decrypted = await window.crypto.subtle.decrypt(
-        {
-          name: 'AES-GCM',
-          iv: new Uint8Array(encryptedData.iv)
-        },
-        key,
-        new Uint8Array(encryptedData.data)
-      );
+      const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) }, key, new Uint8Array(encryptedData.data));
       const decoder = new TextDecoder();
       return JSON.parse(decoder.decode(decrypted));
     }
     
-    // 缓存操作函数
     async function saveCache(data) {
       try {
         const encrypted = await encrypt(data);
@@ -645,10 +588,7 @@
     async function loadCache() {
       try {
         const encrypted = localStorage.getItem(CACHE_KEY);
-        if (encrypted) {
-          return await decrypt(JSON.parse(encrypted));
-        }
-        return null;
+        return encrypted ? await decrypt(JSON.parse(encrypted)) : null;
       } catch (error) {
         console.error('加载缓存失败:', error);
         return null;
@@ -659,51 +599,30 @@
       localStorage.removeItem(CACHE_KEY);
     }
     
-    // 计算密码哈希值
     async function hashPassword(password) {
       const encoder = new TextEncoder();
       const data = encoder.encode(password);
       const hash = await window.crypto.subtle.digest('SHA-256', data);
-      return Array.from(new Uint8Array(hash))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-
-    // 存储真实密码的变量
-    let realSavedPwd = null;
     
-    // 初始化：读取记住的密码/自动登录
     window.onload = async function() {
       try {
-        // 读取加密缓存
         const cache = await loadCache();
-        let savedPwd = null;
-        let isAutoLogin = false;
-        let isDark = false;
-        let lightBgHistory = [];
-        let darkBgHistory = [];
+        const savedPwd = cache?.savedPwd;
+        const isAutoLogin = cache?.autoLogin || false;
+        const isDark = cache?.darkMode || false;
         
-        if (cache) {
-          savedPwd = cache.savedPwd;
-          isAutoLogin = cache.autoLogin || false;
-          isDark = cache.darkMode || false;
-          lightBgHistory = cache.lightBgHistory || [];
-          darkBgHistory = cache.darkBgHistory || [];
-        }
-        
-        // 读取记住的密码
         if (savedPwd) {
-          realSavedPwd = savedPwd; // 保存真实密码
-          pwdInput.value = '********'; // 显示固定8个点
+          realSavedPwd = savedPwd;
+          pwdInput.value = '********';
           rememberPwd.checked = true;
         }
-        // 自动登录验证
+        
         if (isAutoLogin && savedPwd === '123456') {
-          login(); // 自动登录
+          login();
         }
-        // 读取背景图历史记录
-        loadHistory();
-        // 读取昼夜模式
+        
         if (isDark) {
           bodyEl.classList.remove('hope-ui-light');
           bodyEl.classList.add('hope-ui-dark');
@@ -713,10 +632,8 @@
         console.error('初始化缓存读取失败:', error);
       }
       
-      // 光标自动定位到密码输入框
       pwdInput.focus();
       
-      // 添加回车键支持登录
       document.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           login();
@@ -724,19 +641,9 @@
       });
     };
 
-    // 登录核心逻辑（验证后跳转）
     async function login() {
-      // 确定要使用的密码
-      let inputPwd;
-      if (pwdInput.value === '********' && realSavedPwd) {
-        // 如果显示的是8个点且有真实保存的密码，使用真实密码
-        inputPwd = realSavedPwd;
-      } else {
-        // 否则使用用户输入的密码
-        inputPwd = pwdInput.value.trim();
-      }
+      let inputPwd = pwdInput.value === '********' && realSavedPwd ? realSavedPwd : pwdInput.value.trim();
       
-      // 计算输入密码的哈希值
       const inputHash = await hashPassword(inputPwd);
       
       if (inputHash !== SECRET_KEY_HASH) {
@@ -747,10 +654,7 @@
       }
 
       try {
-        // 读取现有缓存
         const existingCache = await loadCache() || {};
-        
-        // 更新缓存数据
         const cacheData = {
           ...existingCache,
           isLogin: true,
@@ -758,83 +662,48 @@
           autoLogin: autoLogin.checked,
           darkMode: document.documentElement.classList.contains('dark-mode')
         };
-        
-        // 存储加密缓存
         await saveCache(cacheData);
       } catch (error) {
         console.error('保存缓存失败:', error);
       }
 
-      // 跳转到个人主页
       window.location.href = 'profile.html';
     }
 
-    // 清除输入
     function clearInput() {
       pwdInput.value = '';
       errorEl.textContent = '';
-      realSavedPwd = null; // 重置真实密码变量
+      realSavedPwd = null;
     }
 
-    // 清除缓存
     async function clearCache() {
       try {
-        // 清除加密缓存
         await clearCacheData();
         clearInput();
         
-        // 显示缓存已清除提示
-        showCacheClearNotice();
+        const notice = document.createElement('div');
+        notice.className = 'cache-clear-notice';
+        notice.textContent = '缓存已清除';
+        document.body.appendChild(notice);
+        setTimeout(() => notice.remove(), 3000);
       } catch (error) {
         console.error('清除缓存失败:', error);
       }
     }
-    
-    // 显示缓存清除提示
-    function showCacheClearNotice() {
-      // 创建提示元素
-      const notice = document.createElement('div');
-      notice.className = 'cache-clear-notice';
-      notice.textContent = '缓存已清除';
-      
-      // 添加到页面
-      document.body.appendChild(notice);
-      
-      // 3秒后移除元素
-      setTimeout(() => {
-        notice.remove();
-      }, 3000);
-    }
 
-    // 昼夜模式切换
     async function toggleMode() {
       const isDark = document.documentElement.classList.toggle('dark-mode');
-      if (isDark) {
-        bodyEl.classList.remove('hope-ui-light');
-        bodyEl.classList.add('hope-ui-dark');
-      } else {
-        bodyEl.classList.remove('hope-ui-dark');
-        bodyEl.classList.add('hope-ui-light');
-      }
+      bodyEl.classList.toggle('hope-ui-light', !isDark);
+      bodyEl.classList.toggle('hope-ui-dark', isDark);
       
       try {
-        // 读取现有缓存
         const existingCache = await loadCache() || {};
-        
-        // 更新缓存数据
-        const cacheData = {
-          ...existingCache,
-          darkMode: isDark
-        };
-        
-        // 存储加密缓存
-        await saveCache(cacheData);
+        await saveCache({ ...existingCache, darkMode: isDark });
       } catch (error) {
         console.error('保存缓存失败:', error);
       }
     }
 
-    // 设置弹窗相关（简化保留核心）
     function openSettingModal() {
       settingModal.style.display = 'grid';
     }
@@ -842,13 +711,10 @@
       settingModal.style.display = 'none';
     }
     function saveBgSettings() {
-      // 保存背景图逻辑（简化，如需保留可复制原代码）
       alert('背景设置已保存！');
       closeSettingModal();
     }
-    function loadHistory() {
-      // 加载历史记录（简化，如需保留可复制原代码）
-    }
+    function loadHistory() {}
   </script>
 </body>
 </html>
