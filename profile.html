@@ -1175,84 +1175,27 @@
     <!-- ====================== 头部交互脚本区 ====================== -->
     <!-- 模式切换优先加载 -->
     <script>
-        // 存储管理工具（简化版，用于头部脚本）
-        const SimpleStorageManager = {
-            getItem: function(key, defaultValue = '') {
-                try {
-                    const value = localStorage.getItem(key);
-                    return value !== null ? value : defaultValue;
-                } catch (error) {
-                    console.error('获取数据失败:', error);
-                    return defaultValue;
-                }
-            }
-        };
-        
-        /**
-         * 应用背景图片
-         * @description 根据当前模式应用对应的背景图片
-         */
-        function applyBackgroundImages() {
-            const lightBgUrl = SimpleStorageManager.getItem('lightBgUrl', 'https://wp.upx8.com/api.php');
-            const darkBgUrl = SimpleStorageManager.getItem('darkBgUrl', 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg');
-            
-            // 更新CSS变量或直接设置背景
+        (function() {
+          try {
             const isDark = localStorage.getItem('darkMode') === 'true';
-            const bodyEl = document.body;
             
             if (isDark) {
-                bodyEl.style.backgroundImage = `url('${darkBgUrl}')`;
-            } else {
-                bodyEl.style.backgroundImage = `url('${lightBgUrl}')`;
+              document.documentElement.classList.add('dark-mode');
+              
+              if (document.body) {
+                document.body.classList.add('hope-ui-dark');
+                document.body.classList.remove('hope-ui-light');
+              } else {
+                document.addEventListener('DOMContentLoaded', function() {
+                  document.body.classList.add('hope-ui-dark');
+                  document.body.classList.remove('hope-ui-light');
+                });
+              }
             }
-        }
-        
-        // 全局模式管理对象
-        const ModeManager = {
-            // 初始化昼夜模式
-            initDarkMode: function() {
-                const isDark = localStorage.getItem('darkMode') === 'true';
-                this.updateMode(isDark);
-            },
-
-            // 更新模式
-            updateMode: function(isDark) {
-                const bodyEl = document.body;
-                if (isDark) {
-                    bodyEl.classList.remove('hope-ui-light');
-                    bodyEl.classList.add('hope-ui-dark');
-                    document.documentElement.classList.add('dark-mode');
-                    // 设置夜间模式图标
-                    const modeIcon = document.getElementById('modeIcon');
-                    if (modeIcon) {
-                        modeIcon.className = 'fas fa-moon';
-                    }
-                } else {
-                    bodyEl.classList.remove('hope-ui-dark');
-                    bodyEl.classList.add('hope-ui-light');
-                    document.documentElement.classList.remove('dark-mode');
-                    // 设置白天模式图标
-                    const modeIcon = document.getElementById('modeIcon');
-                    if (modeIcon) {
-                        modeIcon.className = 'fas fa-sun';
-                    }
-                }
-                // 保存模式状态
-                localStorage.setItem('darkMode', isDark);
-                // 应用背景图片
-                applyBackgroundImages();
-            },
-
-            // 切换模式
-            toggleMode: function() {
-                const currentMode = localStorage.getItem('darkMode') === 'true';
-                const newMode = !currentMode;
-                this.updateMode(newMode);
-            }
-        };
-        
-        // 立即执行模式初始化
-        ModeManager.initDarkMode();
+          } catch (error) {
+            console.log('模式设置读取失败，使用默认白天模式');
+          }
+        })();
     </script>
     
     <!-- 鼠标点击爱心文字特效 -->
@@ -2069,8 +2012,18 @@
          * 昼夜模式切换
          * @description 切换网站的昼夜模式
          */
-        function toggleMode() {
-            ModeManager.toggleMode();
+        async function toggleMode() {
+            const isDark = document.documentElement.classList.toggle('dark-mode');
+            bodyEl.classList.toggle('hope-ui-light', !isDark);
+            bodyEl.classList.toggle('hope-ui-dark', isDark);
+            
+            try {
+                localStorage.setItem('darkMode', isDark);
+                const existingCache = await loadCache() || {};
+                await saveCache({ ...existingCache, darkMode: isDark });
+            } catch (error) {
+                console.error('保存缓存失败:', error);
+            }
         }
 
         /**
@@ -2078,114 +2031,17 @@
          * @description 处理背景设置弹窗的显示和关闭
          */
         function openSettingModal() {
-            // 加载当前背景图片设置
-            const lightBgUrl = StorageManager.getItem('lightBgUrl', 'https://wp.upx8.com/api.php');
-            const darkBgUrl = StorageManager.getItem('darkBgUrl', 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg');
-            
-            if (lightBgUrlInput) lightBgUrlInput.value = lightBgUrl;
-            if (darkBgUrlInput) darkBgUrlInput.value = darkBgUrl;
-            
-            // 加载背景图片历史记录
-            loadBgHistory();
-            
             openModal('settingModal');
         }
         function closeSettingModal() {
             closeModal('settingModal');
         }
         function saveBgSettings() {
-            const lightBgUrl = lightBgUrlInput.value.trim();
-            const darkBgUrl = darkBgUrlInput.value.trim();
-            
-            // 保存背景图片设置
-            StorageManager.setItem('lightBgUrl', lightBgUrl);
-            StorageManager.setItem('darkBgUrl', darkBgUrl);
-            
-            // 保存到历史记录
-            saveToHistory('lightBgHistory', lightBgUrl);
-            saveToHistory('darkBgHistory', darkBgUrl);
-            
-            // 应用背景图片
-            applyBackgroundImages();
-            
             closeModal('settingModal');
             alert('背景设置已保存！');
         }
         
-        /**
-         * 应用背景图片
-         * @description 根据当前模式应用对应的背景图片
-         */
-        function applyBackgroundImages() {
-            const lightBgUrl = StorageManager.getItem('lightBgUrl', 'https://wp.upx8.com/api.php');
-            const darkBgUrl = StorageManager.getItem('darkBgUrl', 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg');
-            
-            // 更新CSS变量或直接设置背景
-            const isDark = localStorage.getItem('darkMode') === 'true';
-            const bodyEl = document.body;
-            
-            if (isDark) {
-                bodyEl.style.backgroundImage = `url('${darkBgUrl}')`;
-            } else {
-                bodyEl.style.backgroundImage = `url('${lightBgUrl}')`;
-            }
-        }
-        
-        /**
-         * 保存到历史记录
-         * @description 将背景图片URL保存到历史记录
-         * @param {string} key - 历史记录键名
-         * @param {string} url - 背景图片URL
-         */
-        function saveToHistory(key, url) {
-            if (!url) return;
-            
-            const history = StorageManager.getObject(key, []);
-            // 移除重复项
-            const filteredHistory = history.filter(item => item !== url);
-            // 添加到开头
-            filteredHistory.unshift(url);
-            // 限制历史记录数量
-            const limitedHistory = filteredHistory.slice(0, MAX_HISTORY);
-            // 保存历史记录
-            StorageManager.setObject(key, limitedHistory);
-        }
-        
-        /**
-         * 加载背景图片历史记录
-         * @description 加载并显示背景图片历史记录
-         */
-        function loadBgHistory() {
-            if (!lightHistoryList || !darkHistoryList) return;
-            
-            // 加载白天模式历史记录
-            const lightHistory = StorageManager.getObject('lightBgHistory', []);
-            lightHistoryList.innerHTML = '';
-            lightHistory.forEach(url => {
-                const item = document.createElement('div');
-                item.className = 'history-item';
-                item.textContent = url;
-                item.style.cursor = 'pointer';
-                item.onclick = () => {
-                    lightBgUrlInput.value = url;
-                };
-                lightHistoryList.appendChild(item);
-            });
-            
-            // 加载夜间模式历史记录
-            const darkHistory = StorageManager.getObject('darkBgHistory', []);
-            darkHistoryList.innerHTML = '';
-            darkHistory.forEach(url => {
-                const item = document.createElement('div');
-                item.className = 'history-item';
-                item.textContent = url;
-                item.style.cursor = 'pointer';
-                item.onclick = () => {
-                    darkBgUrlInput.value = url;
-                };
-                darkHistoryList.appendChild(item);
-            });
-        }
+
         
         /**
          * 退出登录逻辑
