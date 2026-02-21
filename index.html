@@ -1,962 +1,1829 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>登录 - leeyuchen</title>
-  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
-  <link rel="icon" type="image/png" sizes="96x96" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png">
-  <script>
-    (function() {
-      try {
-        const isDark = localStorage.getItem('darkMode') === 'true';
-        
-        if (isDark) {
-          document.documentElement.classList.add('dark-mode');
-          
-          if (document.body) {
-            document.body.classList.add('hope-ui-dark');
-            document.body.classList.remove('hope-ui-light');
-          } else {
-            document.addEventListener('DOMContentLoaded', function() {
-              document.body.classList.add('hope-ui-dark');
-              document.body.classList.remove('hope-ui-light');
-            });
-          }
-        }
-      } catch (error) {
-        console.log('模式设置读取失败，使用默认白天模式');
-      }
-    })();
-  </script>
-  <style>
-    /* 通用样式属性说明：
-       top: 距顶部距离（像素点）
-       left: 距左侧距离（像素点）
-       right: 距右侧距离（像素点）
-       bottom: 距底部距离（像素点）
-       width: 宽度（像素点或百分比）
-       height: 高度（像素点或百分比）
-       padding: 内边距（像素点）
-       margin: 外边距（像素点）
-       border-radius: 边框圆角（像素点）
-       font-size: 字体大小（像素点）
-       background: 背景颜色/图片
-       color: 文字颜色
-       z-index: 层级顺序（数值越大越靠前）
-    */
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    /* 缓存清除/背景设置保存提示样式 */
-    .cache-clear-notice {
-      position: fixed; /* 固定定位 */
-      top: 20px; /* 距顶部20像素 */
-      left: 50%; /* 水平居中 */
-      transform: translateX(-50%); /* 水平居中调整 */
-      background: rgba(240, 243, 255, 0.9); /* 背景颜色（白天模式） */
-      color: #2d3748; /* 文字颜色（白天模式） */
-      padding: 10px 20px; /* 内边距：上下10像素，左右20像素 */
-      border-radius: 20px; /* 边框圆角20像素 */
-      font-size: 14px; /* 字体大小14像素 */
-      font-weight: 500; /* 字体粗细 */
-      backdrop-filter: blur(10px); /* 毛玻璃效果 */
-      -webkit-backdrop-filter: blur(10px); /* 毛玻璃效果（兼容） */
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* 阴影效果 */
-      opacity: 0; /* 初始透明度0 */
-      z-index: 9999; /* 层级顺序（最高） */
-      animation: fadeInOut 3s ease-in-out; /* 淡入淡出动画 */
-    }
-    
-    .dark-mode .cache-clear-notice {
-      background: rgba(108, 92, 231, 0.9);
-      color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-      20% { opacity: 1; transform: translateX(-50%) translateY(0); }
-      80% { opacity: 1; transform: translateX(-50%) translateY(0); }
-      100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - leeyuchen</title>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.svg">
+    <link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/site.webmanifest">
 
-    :root {
-      /* 白天模式颜色变量 */
-      --bg: #e0e7ff;
-      --box-bg: rgba(240, 243, 255, 0.8);
-      --text: #2d3748;
-      --input-bg: rgba(255, 255, 255, 0.8);
-      --input-border: #d0d8f0;
-      --checkbox-bg: rgba(255, 255, 255, 0.8);
-      --checkbox-checked: #6c5ce7;
-      --btn-clear: rgba(180, 188, 208, 0.8);
-      --btn-login: #6c5ce7;
-      --mode-icon: "☀️";
-      --setting-icon: "⚙️";
-      --text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-      --modal-bg: rgba(240, 243, 255, 0.95);
-      --modal-text: #2d3748;
-    }
-    .dark-mode {
-      /* 夜间模式颜色变量 */
-      --bg: #4a5fc0;
-      --box-bg: rgba(80, 94, 189, 0.8);
-      --text: #ffffff;
-      --input-bg: rgba(106, 127, 224, 0.8);
-      --input-border: #7a8fe8;
-      --checkbox-bg: rgba(106, 127, 224, 0.8);
-      --checkbox-checked: #6c5ce7;
-      --btn-clear: rgba(122, 143, 232, 0.8);
-      --btn-login: #6c5ce7;
-      --mode-icon: "🌙";
-      --text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      --modal-bg: rgba(240, 243, 255, 0.9);
-      --modal-text: #2d3748;
-    }
+    <!-- 引入字体，全局字体使用 -->
+    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" />
 
-    .hope-ui-light {
-      /* 白天模式背景 */
-      background-image: url("https://wp.upx8.com/api.php") !important;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-attachment: fixed;
-      background-position-x: 100%;
-      background-color: #e0e7ff;
-    }
-    .hope-ui-dark {
-      /* 夜间模式背景 */
-      background-image: url("http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg") !important;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-attachment: fixed;
-      background-position-x: center;
-      background-color: #4a5fc0;
-    }
+    <!-- Font6，自定义底部使用和看板娘使用的图标和字体文件-->    
+    <link type='text/css' rel="stylesheet" href="https://npm.elemecdn.com/font6pro@6.0.1/css/fontawesome.min.css" media='all'>
+    <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
 
-    body {
-      font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      padding: 20px;
-      font-size: 16px;
-      font-weight: 400;
-      overflow: hidden;
-    }
-    .login-container {
-      /* 登录容器 */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      pointer-events: none;
-    }
-    .login-container > * {
-      pointer-events: auto;
-    }
-    .login-box {
-      /* 登录框 */
-      width: 100%;
-      max-width: 400px;
-      background: var(--box-bg);
-      border-radius: 20px;
-      padding: 16px 28px 32px;
-      color: var(--text);
-      position: relative;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-      border: 1px solid var(--input-border);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 1000;
-    }
-    .setting-switch,
-    .mode-switch {
-      /* 设置和模式切换按钮 */
-      position: absolute;
-      top: 20px;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      background: var(--input-bg);
-      display: grid;
-      place-items: center;
-      font-size: 18px;
-      cursor: pointer;
-      z-index: 10;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .setting-switch {
-      left: 20px;
-    }
-    .mode-switch {
-      right: 20px;
-    }
-    .setting-switch::after {
-      content: var(--setting-icon);
-    }
-    .mode-switch::after {
-      content: var(--mode-icon);
-    }
-    .setting-switch:hover,
-    .mode-switch:hover {
-      transform: scale(1.1);
-    }
-    .login-header {
-      /* 登录头部 */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin: 16px 0 28px 0;
-      font-size: 24px;
-      font-weight: 700;
-    }
-    .header-icon {
-      /* 头部图标 */
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      border: 2px solid var(--input-border);
-      cursor: pointer;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-    }
-    .header-icon:hover {
-      transform: scale(1.1);
-    }
-    .header-text {
-      /* 头部文字 */
-      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 700;
-      cursor: pointer;
-      text-shadow: none;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-    }
-    .header-text:hover {
-      transform: scale(1.05);
-      background: linear-gradient(135deg, #8070f0, #b8b0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .input-item {
-      /* 输入项容器 */
-      margin-bottom: 20px;
-    }
-    .input-item input {
-      /* 密码输入框 */
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid var(--input-border);
-      outline: none;
-      font-size: 15px;
-      background: var(--input-bg);
-      color: var(--text);
-      font-weight: 400;
-      backface-visibility: hidden;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .input-item input::placeholder {
-      color: var(--text);
-      opacity: 0.8;
-      font-weight: 400;
-    }
-    .input-item input:focus {
-      border-color: var(--checkbox-checked);
-      box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
-    .checkbox-wrapper {
-      /* 复选框容器 */
-      display: flex;
-      justify-content: space-between;
-      margin: 12px 0 20px;
-      font-size: 14px;
-    }
-    .checkbox-item {
-      /* 单个复选框 */
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      user-select: none;
-      font-weight: 400;
-    }
-    .checkbox-item span {
-      text-shadow: var(--text-shadow);
-    }
-    .checkbox-item input {
-      /* 复选框样式 */
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      background: var(--checkbox-bg);
-      border: 1px solid var(--input-border);
-      position: relative;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .checkbox-item input:checked {
-      background: var(--checkbox-checked);
-      border-color: var(--checkbox-checked);
-      transform: scale(1.05);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-    }
-    .checkbox-item input:checked::after {
-      content: "✓";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #fff;
-      font-size: 12px;
-      font-weight: bold;
-      text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    }
-    .btn-group {
-      /* 按钮组 */
-      display: flex;
-      gap: 10px;
-    }
-    .btn {
-      /* 通用按钮样式 */
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 400;
-      color: #fff;
-      cursor: pointer;
-      text-shadow: var(--text-shadow);
-      backface-visibility: hidden;
-      transform: translateZ(0);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .btn-clear {
-      /* 清除按钮 */
-      background: var(--btn-clear);
-      color: var(--text);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-    .btn-clear:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
-      background: rgba(138, 160, 249, 0.9);
-    }
-    .btn-login {
-      /* 登录按钮 */
-      background: var(--btn-login);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-    .btn-login:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-    .btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none !important;
-      box-shadow: none !important;
-    }
-    #error {
-      /* 错误提示 */
-      background: linear-gradient(135deg, #ff4444, #ff6666);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 13px;
-      text-align: center;
-      margin: 8px 0;
-      height: 18px;
-      font-weight: 700;
-    }
-    .setting-modal {
-      /* 设置弹窗 */
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.3);
-      z-index: 2000;
-      place-items: center;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-    }
-    .modal-content {
-      /* 弹窗内容 */
-      width: 90%;
-      max-width: 360px;
-      max-height: 90vh;
-      background: var(--modal-bg);
-      padding: 20px;
-      border-radius: 16px;
-      color: var(--modal-text);
-      border: 1px solid var(--input-border);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-      overflow-y: auto;
-    }
-    .modal-title {
-      /* 弹窗标题 */
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      text-align: center;
-      text-shadow: var(--text-shadow);
-    }
-    .modal-input {
-      /* 弹窗输入项 */
-      margin-bottom: 12px;
-    }
-    .modal-input label {
-      /* 弹窗标签 */
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 700;
-      text-shadow: var(--text-shadow);
-      font-size: 13px;
-    }
-    .modal-input input {
-      /* 弹窗输入框 */
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--input-border);
-      background: rgba(255, 255, 255, 0.8);
-      color: var(--modal-text);
-      font-size: 13px;
-      font-weight: 500;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .history-section {
-      /* 历史记录区域 */
-      margin: 16px 0 10px;
-    }
-    .history-title {
-      /* 历史记录标题 */
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      text-shadow: var(--text-shadow);
-    }
-    .history-list {
-      /* 历史记录列表 */
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      max-height: 120px;
-      overflow-y: auto;
-      width: 100%;
-    }
-    .history-item {
-      /* 历史记录项 */
-      padding: 8px 10px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.6);
-      font-size: 12px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      width: 100%;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      line-height: 1.4;
-    }
-    .history-item:hover {
-      background: rgba(255, 255, 255, 0.8);
-      border-color: var(--input-border);
-    }
-    .modal-btns {
-      /* 弹窗按钮组 */
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    .modal-btn {
-      /* 弹窗按钮 */
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      text-shadow: var(--text-shadow);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .btn-save {
-      /* 保存按钮 */
-      background: var(--btn-login);
-      color: #fff;
-    }
-    .btn-close {
-      /* 关闭按钮 */
-      background: var(--btn-clear);
-      color: var(--modal-text);
-    }
-    @media (max-width: 400px) {
-      .login-box {
-        border-radius: 16px;
-        padding: 12px 20px 28px;
-      }
-      .login-header {
-        font-size: 22px;
-        margin: 12px 0 24px 0;
-      }
-      .header-icon {
-        width: 36px;
-        height: 36px;
-      }
-      .setting-switch,
-      .mode-switch {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-        top: 12px;
-      }
-      .modal-content {
-        max-width: 320px;
-        padding: 16px;
-      }
-    }
-    
-    /* 站点信息样式 */
-    .content-section {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 600px;
-      padding: 15px;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-      z-index: 999;
-    }
-    
-    .dark-mode .content-section {
-      background: rgba(0, 0, 0, 0.5);
-      color: #ddd;
-    }
-    
-    .stats-info {
-      text-align: center;
-      margin: 8px 0;
-      font-size: 13px;
-      color: #666;
-    }
-    
-    .dark-mode .stats-info {
-      color: #aaa;
-    }
-  </style>
-</head>
-<body class="hope-ui-light">
-  <div class="login-container">
-    <div class="login-box">
-      <div class="setting-switch" onclick="openSettingModal()"></div>
-      <div class="mode-switch" onclick="toggleMode()"></div>
+    <!--音乐播放器所用的文件-->    
+    <!-- require APlayer -->
+    <link rel="stylesheet" href="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.css">
+    <script src="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <!-- require MetingJS -->
+    <script src="https://npm.elemecdn.com/meting2@0.0.1/js/Meting.min.js"></script>
 
-      <!-- 仅保留登录区 -->
-      <div id="login">
-        <div class="login-header">
-          <img 
-            src="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png" 
-            alt="图标" 
-            class="header-icon"
-            onclick="window.open('https://github.com/leeyuchen4073', '_blank')"
-          >
-          <span class="header-text" id="headerTitle" onclick="location.reload()">leeyuchen</span>
-        </div>
+    <!-- 网页鼠标点击特效 -->
+    <script id="click-effect">
+        (function () {
+            var a_idx = 0;
+            window.onclick = function (event) {
+                var a = new Array("❤富强❤", "❤民主❤", "❤文明❤", "❤和谐❤", "❤自由❤", "❤平等❤", "❤公正❤", "❤法治❤", "❤爱国❤", "❤敬业❤", "❤诚信❤", "❤友善❤");
 
-        <div class="input-item">
-          <input type="password" id="pwd" placeholder="输入您的密码">
-        </div>
+                var heart = document.createElement("b"); //创建b元素
+                heart.onselectstart = new Function('event.returnValue=false'); //防止拖动
 
-        <div class="checkbox-wrapper">
-          <label class="checkbox-item">
-            <input type="checkbox" id="rememberPwd">
-            <span>记住密码</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" id="autoLogin">
-            <span>自动登录</span>
-          </label>
-        </div>
+                document.body.appendChild(heart).innerHTML = a[a_idx]; //将b元素添加到页面上
+                a_idx = (a_idx + 1) % a.length;
+                heart.style.cssText = "position: fixed;left:-100%;"; //给p元素设置样式
 
-        <div id="error"></div>
+                var f = 13, // 字体大小
+                    x = event.clientX - f / 2 - 30, // 横坐标
+                    y = event.clientY - f, // 纵坐标
+                    c = randomColor(), // 随机颜色
+                    a = 1, // 透明度
+                    s = 0.8; // 放大缩小
 
-        <div class="btn-group">
-          <button class="btn btn-clear" onclick="clearInput()" ondblclick="clearCache()">清除</button>
-          <button class="btn btn-login" onclick="login()">进入主页</button>
-        </div>
-      </div>
-    </div>
-  </div>
+                var timer = setInterval(function () { //添加定时器
+                    if (a <= 0) {
+                        document.body.removeChild(heart);
+                        clearInterval(timer);
+                    } else {
+                        heart.style.cssText = "font-size:16px;cursor: default;position: fixed;color:" +
+                            c + ";left:" + x + "px;top:" + y + "px;opacity:" + a + ";transform:scale(" +
+                            s + ");";
 
-  <!-- 设置弹窗（保留） -->
-  <div class="setting-modal" id="settingModal">
-    <div class="modal-content">
-      <div class="modal-title">背景图片设置</div>
-      <div class="modal-input">
-        <label>白天模式背景图链接</label>
-        <input type="text" id="lightBgUrl" placeholder="输入图片URL" value="https://wp.upx8.com/api.php">
-      </div>
-      <div class="history-section">
-        <div class="history-title">白天模式历史记录</div>
-        <div class="history-list" id="lightHistoryList"></div>
-      </div>
-      <div class="modal-input">
-        <label>夜间模式背景图链接</label>
-        <input type="text" id="darkBgUrl" placeholder="输入图片URL" value="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">
-      </div>
-      <div class="history-section">
-        <div class="history-title">夜间模式历史记录</div>
-        <div class="history-list" id="darkHistoryList"></div>
-      </div>
-      <div class="modal-btns">
-        <button class="modal-btn btn-save" onclick="saveBgSettings()">保存设置</button>
-        <button class="modal-btn btn-close" onclick="closeSettingModal()">关闭</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- 站点信息 -->
-  <div class="content-section">
-    <!-- 访客信息 -->
-    <div class="stats-info" id="welcome">正在获取您的访问信息...</div>
-    <!-- 站点统计 -->
-    <div class="stats-info">本站已稳定运行<span id="runtime"></span></div>
-    <!-- 一言 -->
-    <div class="stats-info" style="margin-top: 10px;">
-      "
-      <span id="hitokoto">
-        <a href="#" id="hitokoto_text">人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.</a>
-      </span> "
-    </div>
-  </div>
-
-  <script>
-    const SECRET_KEY_HASH = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
-    const ENCRYPTION_KEY = "leeyuchen_cache_key_2026";
-    const CACHE_KEY = "data.db-chache";
-    
-    const pwdInput = document.getElementById('pwd');
-    const rememberPwd = document.getElementById('rememberPwd');
-    const autoLogin = document.getElementById('autoLogin');
-    const errorEl = document.getElementById('error');
-    const settingModal = document.getElementById('settingModal');
-    const bodyEl = document.body;
-    
-    let realSavedPwd = null;
-    
-    async function getKey() {
-      const encoder = new TextEncoder();
-      const keyMaterial = await window.crypto.subtle.importKey('raw', encoder.encode(ENCRYPTION_KEY), { name: 'PBKDF2' }, false, ['deriveKey']);
-      return window.crypto.subtle.deriveKey(
-        { name: 'PBKDF2', salt: encoder.encode('leeyuchen_salt'), iterations: 100000, hash: 'SHA-256' },
-        keyMaterial,
-        { name: 'AES-GCM', length: 256 },
-        false,
-        ['encrypt', 'decrypt']
-      );
-    }
-    
-    async function encrypt(data) {
-      const key = await getKey();
-      const iv = window.crypto.getRandomValues(new Uint8Array(12));
-      const encoder = new TextEncoder();
-      const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, encoder.encode(JSON.stringify(data)));
-      return {
-        iv: Array.from(iv),
-        data: Array.from(new Uint8Array(encrypted))
-      };
-    }
-    
-    async function decrypt(encryptedData) {
-      const key = await getKey();
-      const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) }, key, new Uint8Array(encryptedData.data));
-      const decoder = new TextDecoder();
-      return JSON.parse(decoder.decode(decrypted));
-    }
-    
-    async function saveCache(data) {
-      try {
-        const encrypted = await encrypt(data);
-        localStorage.setItem(CACHE_KEY, JSON.stringify(encrypted));
-      } catch (error) {
-        console.error('保存缓存失败:', error);
-      }
-    }
-    
-    async function loadCache() {
-      try {
-        const encrypted = localStorage.getItem(CACHE_KEY);
-        return encrypted ? await decrypt(JSON.parse(encrypted)) : null;
-      } catch (error) {
-        console.error('加载缓存失败:', error);
-        return null;
-      }
-    }
-    
-    async function clearCacheData() {
-      localStorage.removeItem(CACHE_KEY);
-    }
-    
-    async function hashPassword(password) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(password);
-      const hash = await window.crypto.subtle.digest('SHA-256', data);
-      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    
-    window.onload = async function() {
-      try {
-        const cache = await loadCache();
-        const savedPwd = cache?.savedPwd;
-        const isAutoLogin = cache?.autoLogin || false;
-        
-        if (savedPwd) {
-          realSavedPwd = savedPwd;
-          pwdInput.value = '********';
-          rememberPwd.checked = true;
-        }
-        
-        // 设置自动登录复选框状态
-        autoLogin.checked = isAutoLogin;
-        
-        // 自动登录逻辑
-        if (isAutoLogin && savedPwd) {
-          login();
-        }
-      } catch (error) {
-        console.error('初始化缓存读取失败:', error);
-      }
-      
-      pwdInput.focus();
-      
-      document.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          login();
-        }
-      });
-      
-      // 加载访客信息
-      loadVisitorInfo();
-      // 加载运行时间
-      updateRuntime();
-      setInterval(updateRuntime, 1000);
-      // 加载一言
-      loadHitokoto();
-    };
-
-    async function login() {
-      let inputPwd = pwdInput.value === '********' && realSavedPwd ? realSavedPwd : pwdInput.value.trim();
-      
-      const inputHash = await hashPassword(inputPwd);
-      
-      if (inputHash !== SECRET_KEY_HASH) {
-        errorEl.textContent = '密码错误，请重试！';
-        pwdInput.style.animation = 'shake 0.5s ease';
-        setTimeout(() => pwdInput.style.animation = '', 500);
-        return;
-      }
-
-      try {
-        const existingCache = await loadCache() || {};
-        const cacheData = {
-          ...existingCache,
-          isLogin: true,
-          savedPwd: rememberPwd.checked ? inputPwd : null,
-          autoLogin: autoLogin.checked,
-          darkMode: document.documentElement.classList.contains('dark-mode')
-        };
-        await saveCache(cacheData);
-      } catch (error) {
-        console.error('保存缓存失败:', error);
-      }
-
-      window.location.href = 'profile.html';
-    }
-
-    function clearInput() {
-      pwdInput.value = '';
-      errorEl.textContent = '';
-      realSavedPwd = null;
-    }
-
-    function showTopNotice(message) {
-      const notice = document.createElement('div');
-      notice.className = 'cache-clear-notice';
-      notice.textContent = message;
-      document.body.appendChild(notice);
-      setTimeout(() => notice.remove(), 3000);
-    }
-
-    async function clearCache() {
-      try {
-        await clearCacheData();
-        localStorage.removeItem('darkMode');
-        clearInput();
-        showTopNotice('缓存已清除');
-      } catch (error) {
-        console.error('清除缓存失败:', error);
-      }
-    }
-
-    async function toggleMode() {
-      const isDark = document.documentElement.classList.toggle('dark-mode');
-      bodyEl.classList.toggle('hope-ui-light', !isDark);
-      bodyEl.classList.toggle('hope-ui-dark', isDark);
-      
-      try {
-        localStorage.setItem('darkMode', isDark);
-        const existingCache = await loadCache() || {};
-        await saveCache({ ...existingCache, darkMode: isDark });
-      } catch (error) {
-        console.error('保存缓存失败:', error);
-      }
-    }
-
-    function openSettingModal() {
-      settingModal.style.display = 'grid';
-    }
-    function closeSettingModal() {
-      settingModal.style.display = 'none';
-    }
-    function saveBgSettings() {
-      showTopNotice('背景设置已保存');
-      closeSettingModal();
-    }
-    function loadHistory() {}
-    
-    // 加载访客信息
-    function loadVisitorInfo() {
-      // 主API：使用返回中国地址的API
-      fetch('https://v2.xxapi.cn/api/ip')
-        .then(response => response.json())
-        .then(data => {
-          if (data.code === 200 && data.data) {
-            const ip = data.data.ip;
-            const address = data.data.address || '';
-            const isp = data.data.isp || '';
-            const welcomeMessage = `欢迎 ${address}${isp} (IP: ${ip}) 的小伙伴访问本站`;
-            
-            const welcomeEl = document.getElementById('welcome');
-            if (welcomeEl) {
-              welcomeEl.textContent = welcomeMessage;
+                        y--;
+                        a -= 0.016;
+                        s += 0.002;
+                    }
+                }, 15)
             }
-          }
-        })
-        .catch(error => {
-          console.error("主API获取IP信息失败：", error);
-          // 失败时使用备用API (ip-api.com)
-          fetch('http://demo.ip-api.com/json/?lang=zh-CN')
-            .then(response => response.json())
-            .then(data => {
-              if (data.status === 'success') {
-                const ip = data.query;
-                const city = data.city || '';
-                const region = data.regionName || '';
-                const country = data.country || '';
-                const isp = data.isp || '';
-                let welcomeMessage;
+            // 随机颜色
+            function randomColor() {
+                return "rgb(" + (Math.random() * 255) + "," + (Math.random() * 255) + "," + (Math.random() * 255) + ")";
+            }
+        }());
+    </script>
+
+    <script id="mode-init">
+        (function() {
+            try {
+                const isDark = localStorage.getItem('darkMode') === 'true';
                 
-                if (country === '中国') {
-                  welcomeMessage = `欢迎 ${region}${city}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                if (isDark) {
+                    if (document.body) {
+                        document.body.classList.add('dark-mode');
+                        document.body.classList.add('hope-ui-dark');
+                        document.body.classList.remove('hope-ui-light');
+                    } else {
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.body.classList.add('dark-mode');
+                            document.body.classList.add('hope-ui-dark');
+                            document.body.classList.remove('hope-ui-light');
+                            // 设置模式图标
+                            const modeIcon = document.getElementById('modeIcon');
+                            if (modeIcon) {
+                                modeIcon.textContent = '🌙';
+                            }
+                        });
+                    }
+                    // 尝试立即设置模式图标
+                    const modeIcon = document.getElementById('modeIcon');
+                    if (modeIcon) {
+                        modeIcon.textContent = '🌙';
+                    }
                 } else {
-                  welcomeMessage = `欢迎 ${country}${isp} (IP: ${ip}) 的小伙伴访问本站`;
+                    if (document.body) {
+                        document.body.classList.remove('dark-mode');
+                        document.body.classList.add('hope-ui-light');
+                        document.body.classList.remove('hope-ui-dark');
+                    } else {
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.body.classList.remove('dark-mode');
+                            document.body.classList.add('hope-ui-light');
+                            document.body.classList.remove('hope-ui-dark');
+                            // 设置模式图标
+                            const modeIcon = document.getElementById('modeIcon');
+                            if (modeIcon) {
+                                modeIcon.textContent = '☀️';
+                            }
+                        });
+                    }
+                    // 尝试立即设置模式图标
+                    const modeIcon = document.getElementById('modeIcon');
+                    if (modeIcon) {
+                        modeIcon.textContent = '☀️';
+                    }
                 }
                 
-                const welcomeEl = document.getElementById('welcome');
+                // 提前加载背景图设置，避免默认背景图闪烁
+                try {
+                    const lightBgImage = localStorage.getItem('lightBgImage');
+                    const darkBgImage = localStorage.getItem('darkBgImage');
+                    
+                    // 无论是否有保存的设置，都创建style标签更新CSS变量
+                    // 这样可以确保即使只修改了一个背景图，也能正确加载
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        :root {
+                            --light-bg-image: url("${lightBgImage || 'https://wp.upx8.com/api.php'}");
+                            --dark-bg-image: url("${darkBgImage || 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg'}");
+                        }
+                    `;
+                    document.head.appendChild(style);
+                } catch (e) {
+                    console.log('背景图设置读取失败，使用默认背景图');
+                }
+            } catch (error) {
+                console.log('模式设置读取失败，使用默认白天模式');
+            }
+        })();
+    </script>
+
+    <style>
+        /* 通用样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+
+        /* 白天模式背景 */
+        .hope-ui-light {
+            background-image: var(--light-bg-image) !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* 夜间模式背景 */
+        .hope-ui-dark {
+            background-image: var(--dark-bg-image) !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* 基础body样式 */
+        body {
+            min-height: 100vh;
+            font-family: LXGW WenKai;
+            font-weight: bold;
+            overflow-x: hidden;
+        }
+        
+        /* 全局字体 */
+        * {
+            font-family: LXGW WenKai;
+        }
+        * {
+            font-weight: bold;
+        }
+
+        /* 登录容器 */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 登录框 */
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 90px 30px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 夜间模式登录框 */
+        body.dark-mode .login-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* 登录标题 */
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 输入框容器 */
+        .input-container {
+            margin-bottom: 15px;
+        }
+
+        /* 输入框 */
+        .input-container input {
+            width: 100%;
+            padding: 10px 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-container input::placeholder {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        body.dark-mode .input-container input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .input-container input:focus {
+            transform: translateY(-2px);
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+        }
+
+        body.dark-mode .input-container input:focus {
+            border-color: #a29bfe;
+            box-shadow: 0 0 0 2px rgba(162, 155, 254, 0.2);
+        }
+
+        /* 按钮 */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3);
+        }
+
+        /* 复选框容器 */
+        .checkbox-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0px;
+            font-size: 13px;
+            padding: 0 5px;
+        }
+
+        /* 单个复选框 */
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 400;
+        }
+
+        /* 复选框样式 */
+        .checkbox-item input {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .checkbox-item input:checked {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border-color: #6c5ce7;
+            transform: scale(1.05);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .checkbox-item input:checked::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .checkbox-item input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+
+
+        /* 按钮组 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 400;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-clear {
+            background: rgba(180, 188, 208, 0.9);
+            color: #2d3748;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(138, 160, 249, 0.9);
+        }
+
+        body.dark-mode .btn-clear {
+            background: rgba(180, 188, 208, 0.9);
+            color: #2d3748;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        body.dark-mode .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(138, 160, 249, 0.9);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+            margin-bottom: 0;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 设置按钮 */
+        .setting-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .setting-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        .setting-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* 模式切换按钮 */
+        .mode-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .mode-switch {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        .mode-switch:hover {
+            transform: scale(1.1);
+        }
+
+        /* 禁用登录框内所有元素的文本选择功能 */
+        .login-box {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* 确保输入框可以正常选中和输入 */
+        .login-box input {
+            user-select: auto;
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+        }
+
+
+
+        /* 通用提示效果 */
+        .toast-notice {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #2d3748;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            z-index: 9999;
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        body.dark-mode .toast-notice {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* 错误提示样式 */
+        .toast-notice.toast-error {
+            background: linear-gradient(135deg, #ff4444, #ff6666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.dark-mode .toast-notice.toast-error {
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 设置弹窗 */
+        .setting-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        body.dark-mode .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            color: #2d3748;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 弹窗标题 */
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            color: #a29bfe;
+        }
+
+        body.dark-mode .modal-title {
+            color: #6c5ce7;
+        }
+
+        /* 弹窗输入项 */
+        .modal-input {
+            margin-bottom: 12px;
+        }
+
+        /* 弹窗标签 */
+        .modal-input label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* 输入框容器 */
+        .input-with-history {
+            position: relative;
+            width: 100%;
+        }
+
+        /* 历史记录列表 */
+        .history-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 120px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1001;
+            margin-top: 2px;
+            color: rgba(0, 0, 0, 0.9);
+        }
+
+        body.dark-mode .history-list {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 历史记录项 */
+        .history-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(108, 92, 231, 0.2);
+        }
+
+        body.dark-mode .history-item:hover {
+            background: rgba(162, 155, 254, 0.2);
+        }
+
+        /* 弹窗输入框 */
+        .modal-content .modal-input input {
+            width: 100%;
+            padding: 4px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        body.dark-mode .modal-content .modal-input input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #2d3748;
+        }
+
+        /* 弹窗按钮组 */
+        .modal-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        /* 弹窗按钮 */
+        .modal-btn {
+            flex: 1;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9));
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-close {
+            background: rgba(180, 188, 208, 0.9);
+            color: #2d3748;
+        }
+
+        .btn-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(138, 160, 249, 0.9);
+        }
+
+        body.dark-mode .btn-close {
+            background: rgba(255, 255, 255, 0.9);
+            color: #2d3748;
+        }
+
+        /* 登录头部 */
+        .login-header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        body.dark-mode .header-icon {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .header-text {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            cursor: pointer;
+            text-shadow: none;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        .header-text:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #8070f0, #b8b0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+
+
+        /* 底部信息区域样式 */
+        .footer-info {
+            position: fixed;
+            bottom: 48px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+            z-index: 999;
+            color: rgba(0, 0, 0, 0.9);
+        }
+
+        body.dark-mode .footer-info {
+            color: white;
+        }
+
+        .footer-info #welcome {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-info #hitokoto {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-info .runtime {
+            font-size: 12px;
+            opacity: 0.8;
+            /* color: rgba(255, 255, 255, 0.9);*/
+        }
+
+        .footer-info .ip-address {
+            font-weight: bold;
+            color: #a29bfe;
+        }
+
+        body.dark-mode .footer-info .ip-address {
+            color: rgba(25, 215, 135, 0.9);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 90px 20px 20px;
+                margin: 20px;
+            }
+
+            .login-header {
+                font-size: 20px;
+                gap: 10px;
+            }
+
+            .header-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .setting-btn,
+            .mode-switch {
+                width: 35px;
+                height: 35px;
+            }
+
+            .footer-info {
+                position: fixed;
+                bottom: 48px;
+                left: 10px;
+                right: 10px;
+                padding: 0px 0px;
+            }
+
+            .footer-info #hitokoto,
+            .footer-info #welcome {
+                font-size: 12px;
+            }
+
+            .footer-info .runtime {
+                font-size: 11px;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+<body class="hope-ui-light">
+    <!--音乐播放器-->
+    <meting-js fixed="true" autoplay="true" order="random" theme="#409EFF" list-folded="false" server="netease" type="playlist" id="825858380"></meting-js>
+    
+    <div class="login-container">
+        <div class="login-box">
+            <div class="setting-btn" onclick="openBgModal()">⚙️</div>
+            <div class="mode-switch" onclick="toggleMode()">
+                <span id="modeIcon">☀️</span>
+            </div>
+
+            <div class="login-header">
+                <img 
+                    src="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon-96x96.png" 
+                    alt="图标" 
+                    class="header-icon"
+                    onclick="window.open('https://github.com/leeyuchen4073', '_blank')"
+                >
+                <span class="header-text" onclick="location.reload()">leeyuchen</span>
+            </div>
+
+            <div class="input-container">
+                <input type="password" placeholder="输入您的密码" id="password" oncopy="return false;" oncut="return false;" onkeypress="if(event.keyCode==13) login();">
+            </div>
+
+            <div class="checkbox-wrapper">
+                <label class="checkbox-item">
+                    <input type="checkbox" id="rememberPwd">
+                    <span>记住密码</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" id="autoLogin">
+                    <span>自动登录</span>
+                </label>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-clear" id="clearBtn">🧹 清除</button>
+                <button class="btn btn-login" onclick="login()">🏠 进入主页</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部信息区域 style="position: fixed; bottom: 48px;" -->
+    <div class="footer-info">
+        <div id="hitokoto">正在加载...</div>
+        <div id="welcome">正在获取您的访问信息...</div>
+        <div class="runtime">
+            站点运行时间：<span id="runtime">计算中...</span>
+        </div>
+    </div>
+
+    <!-- 背景图设置弹窗 -->
+    <div class="setting-modal" id="bgModal">
+        <div class="modal-content">
+            <div class="modal-title">背景图片设置</div>
+            <div class="modal-input">
+                <label>白天模式背景图</label>
+                <div class="input-with-history">
+                    <input type="text" id="lightBgUrl" placeholder="输入图片URL" autocomplete="off">
+                    <div class="history-list" id="lightHistoryList">
+                        <div class="history-item" data-url="https://wp.upx8.com/api.php">白天默认</div>
+                        <div class="history-item" data-url="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">夜间默认</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-input">
+                <label>夜间模式背景图</label>
+                <div class="input-with-history">
+                    <input type="text" id="darkBgUrl" placeholder="输入图片URL" autocomplete="off">
+                    <div class="history-list" id="darkHistoryList">
+                        <div class="history-item" data-url="https://wp.upx8.com/api.php">白天默认</div>
+                        <div class="history-item" data-url="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">夜间默认</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-btns">
+                <button class="modal-btn btn-save" onclick="saveBgSetting()">保存设置</button>
+                <button class="modal-btn btn-close" onclick="closeBgModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局变量 -->
+    <script id="global-variables">
+        // 缓存DOM元素
+        const elements = {
+            passwordInput: document.getElementById('password'),
+            rememberPwd: document.getElementById('rememberPwd'),
+            autoLogin: document.getElementById('autoLogin'),
+            modeIcon: document.getElementById('modeIcon'),
+            lightBgUrl: document.getElementById('lightBgUrl'),
+            darkBgUrl: document.getElementById('darkBgUrl'),
+            lightHistoryList: document.getElementById('lightHistoryList'),
+            darkHistoryList: document.getElementById('darkHistoryList'),
+            bgModal: document.getElementById('bgModal'),
+            clearBtn: document.getElementById('clearBtn')
+        };
+        
+        // 全局变量
+        let realSavedPwd = null;
+        const SECRET_KEY_HASH = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2";
+        const ENCRYPTION_KEY = "leeyuchen_cache_key_2026";
+        const PASSWORD_CACHE_KEY = "encrypted_password";
+    </script>
+
+    <!-- 模式切换功能 -->
+    <script id="mode-switch">
+        function toggleMode() {
+            requestAnimationFrame(() => {
+                const body = document.body;
+                const modeIcon = elements.modeIcon;
+                const isDark = body.classList.toggle('dark-mode');
+                
+                body.classList.toggle('hope-ui-light', !isDark);
+                body.classList.toggle('hope-ui-dark', isDark);
+                
+                if (isDark) {
+                    modeIcon.textContent = '🌙';
+                    localStorage.setItem('darkMode', 'true');
+                    setTimeout(() => showToast('已切换到夜间模式'), 0);
+                } else {
+                    modeIcon.textContent = '☀️';
+                    localStorage.setItem('darkMode', 'false');
+                    setTimeout(() => showToast('已切换到白天模式'), 0);
+                }
+            });
+        }
+    </script>
+
+    <!-- 密码加密功能 -->
+    <script id="password-encryption">
+        // 哈希密码
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await window.crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // 获取加密密钥
+        async function getKey() {
+            const encoder = new TextEncoder();
+            const keyMaterial = await window.crypto.subtle.importKey('raw', encoder.encode(ENCRYPTION_KEY), { name: 'PBKDF2' }, false, ['deriveKey']);
+            return window.crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt: encoder.encode('leeyuchen_salt'), iterations: 100000, hash: 'SHA-256' },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['encrypt', 'decrypt']
+            );
+        }
+
+        // 加密密码
+        async function encrypt(data) {
+            try {
+                const key = await getKey();
+                const iv = window.crypto.getRandomValues(new Uint8Array(12));
+                const encoder = new TextEncoder();
+                const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, encoder.encode(JSON.stringify(data)));
+                return {
+                    iv: Array.from(iv),
+                    data: Array.from(new Uint8Array(encrypted))
+                };
+            } catch (error) {
+                console.error('加密失败:', error);
+                throw error;
+            }
+        }
+
+        // 解密密码
+        async function decrypt(encryptedData) {
+            try {
+                const key = await getKey();
+                const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) }, key, new Uint8Array(encryptedData.data));
+                const decoder = new TextDecoder();
+                return JSON.parse(decoder.decode(decrypted));
+            } catch (error) {
+                console.error('解密失败:', error);
+                throw error;
+            }
+        }
+
+        // 保存密码
+        async function savePassword(password) {
+            try {
+                const encrypted = await encrypt(password);
+                localStorage.setItem(PASSWORD_CACHE_KEY, JSON.stringify(encrypted));
+                return true;
+            } catch (error) {
+                console.error('保存密码失败:', error);
+                return false;
+            }
+        }
+
+        // 加载密码
+        async function loadPassword() {
+            try {
+                const encrypted = localStorage.getItem(PASSWORD_CACHE_KEY);
+                return encrypted ? await decrypt(JSON.parse(encrypted)) : null;
+            } catch (error) {
+                console.error('加载密码失败:', error);
+                // 清除损坏的密码数据
+                localStorage.removeItem(PASSWORD_CACHE_KEY);
+                return null;
+            }
+        }
+
+        // 清除密码
+        function clearPassword() {
+            localStorage.removeItem(PASSWORD_CACHE_KEY);
+            realSavedPwd = null;
+        }
+    </script>
+
+    <!-- 设置管理功能 -->
+    <script id="settings-management">
+        // 保存设置
+        function saveSettings(settings) {
+            Object.keys(settings).forEach(key => {
+                if (key !== 'savedPwd') {
+                    localStorage.setItem(key, JSON.stringify(settings[key]));
+                }
+            });
+        }
+
+        // 加载设置
+        function loadSettings() {
+            const settings = {};
+            const keys = ['autoLogin', 'darkMode', 'lightBgUrl', 'darkBgUrl', 'lightBgHistory', 'darkBgHistory'];
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value) {
+                    try {
+                        settings[key] = JSON.parse(value);
+                    } catch {
+                        settings[key] = value;
+                    }
+                }
+            });
+            return settings;
+        }
+    </script>
+
+    <!-- 清除按钮功能 -->
+    <script id="clear-button">
+        // 清除输入
+        function clearInput() {
+            elements.passwordInput.value = '';
+            realSavedPwd = null;
+            // 聚焦到密码输入框
+            setTimeout(() => {
+                elements.passwordInput.focus();
+            }, 50);
+        }
+
+        // 清除缓存（保留背景配置和模式切换状态）
+        async function clearCache() {
+            try {
+                // 只清除密码和自动登录设置，保留背景配置和模式切换状态
+                clearPassword();
+                localStorage.removeItem('autoLogin');
+                clearInput();
+                showToast('登录缓存已清除，背景配置和模式设置已保留');
+                // 强制重新聚焦到密码输入框
+                setTimeout(() => {
+                    elements.passwordInput.focus();
+                }, 50);
+            } catch (error) {
+                console.error('清除缓存失败:', error);
+                showToast('清除缓存失败，请重试', true);
+            }
+        }
+
+        // 设置清除按钮的事件处理
+        function setupClearButton() {
+            try {
+                const clearBtn = elements.clearBtn;
+                if (!clearBtn) {
+                    console.error('清除按钮元素未找到');
+                    return;
+                }
+                
+                let clickCount = 0;
+                let clickTimer = null;
+                
+                // 使用更精确的事件处理，确保只影响清除按钮
+                clearBtn.addEventListener('click', function(e) {
+                    // 只阻止清除按钮的默认行为，不影响其他按钮
+                    e.stopPropagation();
+                    
+                    clickCount++;
+                    
+                    // 清除之前的定时器
+                    if (clickTimer) {
+                        clearTimeout(clickTimer);
+                    }
+                    
+                    // 设置新的定时器
+                    clickTimer = setTimeout(() => {
+                        if (clickCount === 1) {
+                            // 单击事件
+                            clearInput();
+                        } else if (clickCount === 2) {
+                            // 双击事件
+                            clearCache();
+                        }
+                        // 重置点击计数
+                        clickCount = 0;
+                    }, 300);
+                }, true); // 使用捕获阶段，确保事件被正确处理
+            } catch (error) {
+                console.error('设置清除按钮事件失败:', error);
+            }
+        }
+    </script>
+
+    <!-- 登录功能 -->
+    <script id="login-function">
+        async function login() {
+            let inputPwd = elements.passwordInput.value === '********' && realSavedPwd ? realSavedPwd : elements.passwordInput.value.trim();
+            
+            // 简单的密码验证
+            if (!inputPwd) {
+                showToast('请输入密码', true);
+                return;
+            }
+            
+            try {
+                // 密码验证
+                const hashedInput = await hashPassword(inputPwd);
+                if (hashedInput !== SECRET_KEY_HASH) {
+                    showToast('密码错误，请重试', true);
+                    return;
+                }
+                
+                // 保存密码（加密）
+                if (elements.rememberPwd.checked) {
+                    const saved = await savePassword(inputPwd);
+                    if (!saved) {
+                        showToast('保存密码失败，但登录成功', true);
+                    }
+                } else {
+                    clearPassword();
+                }
+                
+                // 保存其他设置（不加密）
+                const settings = {
+                    autoLogin: elements.autoLogin.checked,
+                    darkMode: document.body.classList.contains('dark-mode')
+                };
+                saveSettings(settings);
+                
+                showToast('登录成功，正在跳转...');
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1000);
+            } catch (error) {
+                console.error('登录失败:', error);
+                showToast('登录失败，请重试', true);
+            }
+        }
+    </script>
+
+    <!-- 背景图设置功能 -->
+    <script id="background-setting">
+        // 打开背景图设置弹窗
+        function openBgModal() {
+            const modal = elements.bgModal;
+            const lightInput = elements.lightBgUrl;
+            const darkInput = elements.darkBgUrl;
+            
+            // 加载已保存的背景图设置
+            const savedLightBg = localStorage.getItem('lightBgImage');
+            const savedDarkBg = localStorage.getItem('darkBgImage');
+            
+            if (savedLightBg) {
+                lightInput.value = savedLightBg;
+            }
+            if (savedDarkBg) {
+                darkInput.value = savedDarkBg;
+            }
+            
+            modal.style.display = 'flex';
+            
+            // 记录鼠标状态，用于区分点击和拖拽
+            let isDragging = false;
+            let startX, startY;
+            
+            // 鼠标按下事件
+            modal.onmousedown = function(e) {
+                startX = e.clientX;
+                startY = e.clientY;
+                isDragging = false;
+            };
+            
+            // 鼠标移动事件
+            modal.onmousemove = function(e) {
+                if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+                    isDragging = true;
+                }
+            };
+            
+            // 鼠标松开事件
+            modal.onmouseup = function(e) {
+                if (!isDragging && e.target === modal) {
+                    saveBgSetting();
+                }
+            };
+        }
+
+        // 关闭背景图设置弹窗
+        function closeBgModal() {
+            elements.bgModal.style.display = 'none';
+        }
+
+        // 保存背景图设置
+        function saveBgSetting() {
+            const lightUrl = elements.lightBgUrl.value;
+            const darkUrl = elements.darkBgUrl.value;
+            
+            // 更新CSS变量
+            if (lightUrl) {
+                document.documentElement.style.setProperty('--light-bg-image', `url("${lightUrl}")`);
+                localStorage.setItem('lightBgImage', lightUrl);
+                
+                // 更新白天模式历史记录
+                let lightHistory = JSON.parse(localStorage.getItem('lightBgHistory') || '[]');
+                // 移除重复项
+                lightHistory = lightHistory.filter(url => url !== lightUrl);
+                // 添加到历史记录开头
+                lightHistory.unshift(lightUrl);
+                // 限制历史记录数量为5条
+                lightHistory = lightHistory.slice(0, 5);
+                localStorage.setItem('lightBgHistory', JSON.stringify(lightHistory));
+            }
+            if (darkUrl) {
+                document.documentElement.style.setProperty('--dark-bg-image', `url("${darkUrl}")`);
+                localStorage.setItem('darkBgImage', darkUrl);
+                
+                // 更新夜间模式历史记录
+                let darkHistory = JSON.parse(localStorage.getItem('darkBgHistory') || '[]');
+                // 移除重复项
+                darkHistory = darkHistory.filter(url => url !== darkUrl);
+                // 添加到历史记录开头
+                darkHistory.unshift(darkUrl);
+                // 限制历史记录数量为5条
+                darkHistory = darkHistory.slice(0, 5);
+                localStorage.setItem('darkBgHistory', JSON.stringify(darkHistory));
+            }
+            
+            closeBgModal();
+            showToast('背景图设置已保存');
+        }
+
+        // 加载背景图设置到输入框
+        function loadBgSettingsToInputs() {
+            const lightInput = elements.lightBgUrl;
+            const darkInput = elements.darkBgUrl;
+            const lightHistoryList = elements.lightHistoryList;
+            const darkHistoryList = elements.darkHistoryList;
+            
+            // 存储原始值
+            let originalLightValue = '';
+            let originalDarkValue = '';
+            
+            // 可见性标志
+            let lightListVisible = true;
+            let darkListVisible = true;
+            
+            // 加载历史记录
+            function loadHistory() {
+                // 清空现有历史记录
+                while (lightHistoryList.firstChild) {
+                    lightHistoryList.removeChild(lightHistoryList.firstChild);
+                }
+                while (darkHistoryList.firstChild) {
+                    darkHistoryList.removeChild(darkHistoryList.firstChild);
+                }
+                
+                // 默认链接
+                const lightDefaultUrl = 'https://wp.upx8.com/api.php';
+                const darkDefaultUrl = 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
+                
+                // 添加默认历史记录项
+                const lightDefaultItem = document.createElement('div');
+                lightDefaultItem.className = 'history-item';
+                lightDefaultItem.dataset.url = lightDefaultUrl;
+                lightDefaultItem.textContent = '白天默认';
+                lightHistoryList.appendChild(lightDefaultItem);
+                
+                const darkDefaultItem = document.createElement('div');
+                darkDefaultItem.className = 'history-item';
+                darkDefaultItem.dataset.url = darkDefaultUrl;
+                darkDefaultItem.textContent = '夜间默认';
+                darkHistoryList.appendChild(darkDefaultItem);
+                
+                // 加载白天模式历史记录
+                let lightHistory = JSON.parse(localStorage.getItem('lightBgHistory') || '[]');
+                lightHistory.forEach(url => {
+                    // 跳过与默认链接相同的项，避免重复
+                    if (url !== lightDefaultUrl) {
+                        const item = document.createElement('div');
+                        item.className = 'history-item';
+                        item.dataset.url = url;
+                        item.textContent = url.length > 50 ? url.substring(0, 50) + '...' : url;
+                        lightHistoryList.appendChild(item);
+                    }
+                });
+                
+                // 加载夜间模式历史记录
+                let darkHistory = JSON.parse(localStorage.getItem('darkBgHistory') || '[]');
+                darkHistory.forEach(url => {
+                    // 跳过与默认链接相同的项，避免重复
+                    if (url !== darkDefaultUrl) {
+                        const item = document.createElement('div');
+                        item.className = 'history-item';
+                        item.dataset.url = url;
+                        item.textContent = url.length > 50 ? url.substring(0, 50) + '...' : url;
+                        darkHistoryList.appendChild(item);
+                    }
+                });
+                
+                // 为新添加的历史记录项添加事件监听器
+                addHistoryItemListeners();
+            }
+            
+            // 为历史记录项添加事件监听器
+            function addHistoryItemListeners() {
+                // 鼠标悬停在历史记录项上自动填入（总是显示，移开恢复到实时内容）
+                const lightHistoryItems = lightHistoryList.querySelectorAll('.history-item');
+                lightHistoryItems.forEach(item => {
+                    let currentLightValue = '';
+                    let clickTimer = null;
+                    
+                    item.addEventListener('mouseenter', function() {
+                        // 保存当前实时值
+                        currentLightValue = lightInput.value;
+                        // 显示历史记录项的链接
+                        lightInput.value = this.dataset.url;
+                    });
+                    
+                    item.addEventListener('mouseleave', function() {
+                        // 只有当历史记录列表仍然可见时才恢复值
+                        if (lightListVisible) {
+                            lightInput.value = currentLightValue;
+                        }
+                    });
+                    
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        
+                        // 清除之前的定时器
+                        if (clickTimer) {
+                            clearTimeout(clickTimer);
+                        }
+                        
+                        // 设置新的定时器，延迟200毫秒执行单击逻辑
+                        clickTimer = setTimeout(() => {
+                            lightInput.value = this.dataset.url;
+                            originalLightValue = this.dataset.url; // 更新原始值，避免恢复
+                            lightListVisible = false;
+                            lightHistoryList.style.display = 'none';
+                        }, 200);
+                    });
+                    
+                    // 双击删除历史记录项（默认值不支持删除）
+                    item.addEventListener('dblclick', function(e) {
+                        e.stopPropagation();
+                        
+                        // 清除单击定时器，阻止单击逻辑执行
+                        if (clickTimer) {
+                            clearTimeout(clickTimer);
+                            clickTimer = null;
+                        }
+                        
+                        // 检查是否为默认值
+                        const isDefault = this.textContent === '白天默认' || this.textContent === '夜间默认';
+                        if (!isDefault) {
+                            // 获取历史记录URL
+                            const url = this.dataset.url;
+                            // 从本地存储中删除历史记录
+                            let lightHistory = JSON.parse(localStorage.getItem('lightBgHistory') || '[]');
+                            lightHistory = lightHistory.filter(itemUrl => itemUrl !== url);
+                            localStorage.setItem('lightBgHistory', JSON.stringify(lightHistory));
+                            // 重新加载历史记录
+                            loadHistory();
+                        }
+                    });
+                });
+                
+                // 为夜间模式历史记录项添加事件监听器
+                const darkHistoryItems = darkHistoryList.querySelectorAll('.history-item');
+                darkHistoryItems.forEach(item => {
+                    let currentDarkValue = '';
+                    let clickTimer = null;
+                    
+                    item.addEventListener('mouseenter', function() {
+                        // 保存当前实时值
+                        currentDarkValue = darkInput.value;
+                        // 显示历史记录项的链接
+                        darkInput.value = this.dataset.url;
+                    });
+                    
+                    item.addEventListener('mouseleave', function() {
+                        // 只有当历史记录列表仍然可见时才恢复值
+                        if (darkListVisible) {
+                            darkInput.value = currentDarkValue;
+                        }
+                    });
+                    
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        
+                        // 清除之前的定时器
+                        if (clickTimer) {
+                            clearTimeout(clickTimer);
+                        }
+                        
+                        // 设置新的定时器，延迟200毫秒执行单击逻辑
+                        clickTimer = setTimeout(() => {
+                            darkInput.value = this.dataset.url;
+                            originalDarkValue = this.dataset.url; // 更新原始值，避免恢复
+                            darkListVisible = false;
+                            darkHistoryList.style.display = 'none';
+                        }, 200);
+                    });
+                    
+                    // 双击删除历史记录项（默认值不支持删除）
+                    item.addEventListener('dblclick', function(e) {
+                        e.stopPropagation();
+                        
+                        // 清除单击定时器，阻止单击逻辑执行
+                        if (clickTimer) {
+                            clearTimeout(clickTimer);
+                            clickTimer = null;
+                        }
+                        
+                        // 检查是否为默认值
+                        const isDefault = this.textContent === '白天默认' || this.textContent === '夜间默认';
+                        if (!isDefault) {
+                            // 获取历史记录URL
+                            const url = this.dataset.url;
+                            // 从本地存储中删除历史记录
+                            let darkHistory = JSON.parse(localStorage.getItem('darkBgHistory') || '[]');
+                            darkHistory = darkHistory.filter(itemUrl => itemUrl !== url);
+                            localStorage.setItem('darkBgHistory', JSON.stringify(darkHistory));
+                            // 重新加载历史记录
+                            loadHistory();
+                        }
+                    });
+                });
+            }
+            
+            // 添加输入框事件监听器
+            lightInput.addEventListener('focus', function() {
+                lightListVisible = true;
+                lightHistoryList.style.display = 'block';
+            });
+            
+            darkInput.addEventListener('focus', function() {
+                darkListVisible = true;
+                darkHistoryList.style.display = 'block';
+            });
+            
+            // 点击页面其他地方关闭历史记录列表
+            document.addEventListener('click', function(e) {
+                if (!lightInput.contains(e.target) && !lightHistoryList.contains(e.target)) {
+                    lightListVisible = false;
+                    lightHistoryList.style.display = 'none';
+                }
+                if (!darkInput.contains(e.target) && !darkHistoryList.contains(e.target)) {
+                    darkListVisible = false;
+                    darkHistoryList.style.display = 'none';
+                }
+            });
+            
+            // 加载历史记录
+            loadHistory();
+        }
+    </script>
+
+    <!-- Toast消息功能 -->
+    <script id="toast-message">
+        function showToast(message, isError = false) {
+            const fragment = document.createDocumentFragment();
+            const toast = document.createElement('div');
+            toast.className = `toast-notice ${isError ? 'toast-error' : ''}`;
+            toast.textContent = message;
+            fragment.appendChild(toast);
+            document.body.appendChild(fragment);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3000);
+        }
+    </script>
+
+    <!-- 页面初始化 -->
+    <script id="page-init">
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // 加载设置
+                const settings = loadSettings();
+                
+                // 加载密码
+                const savedPwd = await loadPassword();
+                if (savedPwd) {
+                    realSavedPwd = savedPwd;
+                    elements.passwordInput.value = '********';
+                }
+                
+                // 设置自动登录状态
+                if (settings.autoLogin) {
+                    elements.autoLogin.checked = true;
+                    elements.rememberPwd.checked = true;
+                }
+                
+                // 设置记住密码状态
+                if (localStorage.getItem(PASSWORD_CACHE_KEY)) {
+                    elements.rememberPwd.checked = true;
+                }
+                
+                // 初始化清除按钮事件
+                setupClearButton();
+                
+                // 初始化背景图设置
+                loadBgSettingsToInputs();
+                
+                // 聚焦到密码输入框
+                setTimeout(() => {
+                    elements.passwordInput.focus();
+                }, 100);
+            } catch (error) {
+                console.error('初始化失败:', error);
+            }
+        });
+    </script>
+    
+    <!-- 底部信息功能脚本 -->
+    <script id="footer-info">
+        // 加载访客信息
+        function loadVisitorInfo() {
+          const welcomeEl = document.getElementById('welcome');
+          
+          // 主API：使用返回中国地址的API
+          fetch('https://v2.xxapi.cn/api/ip')
+            .then(response => response.json())
+            .then(data => {
+              if (data.code === 200 && data.data) {
+                const ip = data.data.ip;
+                const address = data.data.address || '';
+                const isp = data.data.isp || '';
+                const welcomeMessage = `欢迎 ${address} ${isp}IP： <span class="ip-address">${ip}</span> 的小伙伴访问本站`;
+                
                 if (welcomeEl) {
-                  welcomeEl.textContent = welcomeMessage;
+                  welcomeEl.innerHTML = welcomeMessage;
+                  welcomeEl.classList.add('loaded');
                 }
               }
             })
-            .catch(backupError => {
-              console.error("备用API获取失败：", backupError);
-              // 再次失败时使用ipify API获取仅IP信息
-              fetch('https://api.ipify.org?format=json')
+            .catch(error => {
+              console.error("主API获取IP信息失败：", error);
+              // 失败时使用备用API (ip-api.com)
+              fetch('http://demo.ip-api.com/json/?lang=zh-CN')
                 .then(response => response.json())
                 .then(data => {
-                  const ip = data.ip;
-                  const welcomeMessage = `欢迎 (IP: ${ip}) 的小伙伴访问本站`;
-                  const welcomeEl = document.getElementById('welcome');
-                  if (welcomeEl) {
-                    welcomeEl.textContent = welcomeMessage;
+                  if (data.status === 'success') {
+                    const ip = data.query;
+                    const city = data.city || '';
+                    const region = data.regionName || '';
+                    const country = data.country || '';
+                    const isp = data.isp || '';
+                    let welcomeMessage;
+                    
+                    if (country === '中国') {
+                      welcomeMessage = `欢迎 ${region}${city} ${isp}IP： <span class="ip-address">${ip}</span> 的小伙伴访问本站`;
+                    } else {
+                      welcomeMessage = `欢迎 ${country}${isp} <span class="ip-address">${ip}</span> 的小伙伴访问本站`;
+                    }
+                    
+                    if (welcomeEl) {
+                      welcomeEl.innerHTML = welcomeMessage;
+                      welcomeEl.classList.add('loaded');
+                    }
                   }
                 })
-                .catch(finalError => {
-                  console.error("所有API获取失败：", finalError);
-                  const welcomeEl = document.getElementById('welcome');
-                  if (welcomeEl) {
-                    welcomeEl.textContent = "欢迎访问本站";
-                  }
+                .catch(backupError => {
+                  console.error("备用API获取失败：", backupError);
+                  // 再次失败时使用ipify API获取仅IP信息
+                  fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                      const ip = data.ip;
+                      const welcomeMessage = `欢迎 <span class="ip-address">${ip}</span> 的小伙伴访问本站`;
+                      if (welcomeEl) {
+                        welcomeEl.innerHTML = welcomeMessage;
+                        welcomeEl.classList.add('loaded');
+                      }
+                    })
+                    .catch(finalError => {
+                      console.error("所有API获取失败：", finalError);
+                      if (welcomeEl) {
+                        welcomeEl.textContent = "欢迎访问本站";
+                        welcomeEl.classList.add('loaded');
+                      }
+                    });
                 });
             });
-        });
-    }
-    
-    // 更新运行时间
-    function updateRuntime() {
-      const startDate = new Date('2026-02-20T00:00:00');
-      const now = new Date();
-      const elapsed = now - startDate;
+        }
+        
+        // 更新运行时间
+        function updateRuntime() {
+          const startDate = new Date('2026-02-20T00:00:00');
+          const now = new Date();
+          const elapsed = now - startDate;
 
-      const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+          const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
 
-      const runtimeEl = document.getElementById('runtime');
-      if (runtimeEl) {
-        runtimeEl.innerHTML = `${days}天 ${hours}小时 ${minutes}分 ${seconds}秒`;
-      }
-    }
-    
-    // 加载一言
-    function loadHitokoto() {
-      const script = document.createElement('script');
-      script.src = 'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto';
-      script.defer = true;
-      document.head.appendChild(script);
-    }
-  </script>
+          const runtimeEl = document.getElementById('runtime');
+          if (runtimeEl) {
+            runtimeEl.innerHTML = `<span style="color: rgba(25, 215, 135, 0.9);font-weight: bold;">${days}天 ${hours}小时 ${minutes}分 ${seconds}秒</span>`;
+            runtimeEl.parentElement.classList.add('loaded');
+          }
+        }
+        
+        // 加载一言
+        function loadHitokoto() {
+          const hitokotoEl = document.getElementById('hitokoto');
+          const hitokotoParent = hitokotoEl?.parentElement;
+          let currentScript = null;
+          let currentTimeout = null;
+          
+          // 默认句子
+          const defaultSentence = '人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.';
+          
+          // 接口列表
+          const apis = [
+            'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto',
+            'https://international.v1.hitokoto.cn/?encode=js&select=%23hitokoto'
+          ];
+          
+          // 添加签名后缀
+          function addSignature() {
+            if (hitokotoEl && !hitokotoEl.innerHTML.includes('Ani Cloud')) {
+              // 设置签名的style格式
+              hitokotoEl.innerHTML += '<p style="margin-left: 16rem;font-size: 8pt;margin-top: 5px;color: rgba(25, 215, 135, 0.9);"><small>—— Ani Cloud</small></p>';
+            }
+          }
+          
+          // 监听hitokoto元素内容变化
+          if (hitokotoEl) {
+            const observer = new MutationObserver((mutations) => {
+              mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                  // 内容变化时添加签名
+                  setTimeout(addSignature, 100);
+                }
+              });
+            });
+            
+            observer.observe(hitokotoEl, {
+              childList: true,
+              characterData: true,
+              subtree: true
+            });
+          }
+          
+          let apiIndex = 0;
+          
+          // 尝试加载API
+          function tryLoadApi() {
+            if (apiIndex >= apis.length) {
+              // 所有接口都失败，显示默认句子
+              if (hitokotoEl) {
+                hitokotoEl.innerHTML = `<a href="#" id="hitokoto_text">"${defaultSentence}"</a>`;
+                addSignature();
+              }
+              if (hitokotoParent) {
+                hitokotoParent.classList.add('loaded');
+              }
+              return;
+            }
+            
+            // 清除之前的脚本和超时
+            if (currentScript) {
+              document.head.removeChild(currentScript);
+            }
+            if (currentTimeout) {
+              clearTimeout(currentTimeout);
+            }
+            
+            // 超时处理
+            currentTimeout = setTimeout(() => {
+              apiIndex++;
+              tryLoadApi();
+            }, 3000);
+            
+            // 创建新脚本
+            currentScript = document.createElement('script');
+            currentScript.src = apis[apiIndex];
+            currentScript.defer = true;
+            
+            currentScript.onload = function() {
+              clearTimeout(currentTimeout);
+              if (hitokotoParent) {
+                hitokotoParent.classList.add('loaded');
+              }
+              // 加载完成后添加签名
+              setTimeout(addSignature, 200);
+            };
+            
+            currentScript.onerror = function() {
+              clearTimeout(currentTimeout);
+              apiIndex++;
+              tryLoadApi();
+            };
+            
+            document.head.appendChild(currentScript);
+          }
+          
+          // 开始加载
+          tryLoadApi();
+        }
+
+        // 初始化底部信息
+        function initFooterInfo() {
+          // 立即更新运行时间，不需要等待API
+          updateRuntime();
+          setInterval(updateRuntime, 1000); // 每秒更新一次时间
+          
+          // 并行加载其他信息，加快显示速度
+          Promise.all([
+            // 加载访客信息
+            new Promise((resolve) => {
+              loadVisitorInfo();
+              resolve();
+            }),
+            // 加载一言
+            new Promise((resolve) => {
+              loadHitokoto();
+              resolve();
+            })
+          ]);
+        }
+
+        // DOM加载完成后立即初始化，不需要等待所有资源加载
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFooterInfo);
+        } else {
+          initFooterInfo();
+        }
+    </script>
 </body>
 </html>
