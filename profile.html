@@ -604,6 +604,163 @@
             cursor: pointer;
         }
 
+        /* 日记博客样式 */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .blog-item {
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .hope-ui-light .blog-item {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .hope-ui-dark .blog-item {
+            background: rgba(0, 0, 0, 0.6);
+            color: #ddd;
+        }
+
+        .blog-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .blog-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #6474db;
+        }
+
+        .hope-ui-dark .blog-title {
+            color: #a5b4fc;
+        }
+
+        .blog-content {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .blog-meta {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .hope-ui-dark .blog-meta {
+            color: #aaa;
+        }
+
+        /* 分享功能样式 */
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .share-item {
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .hope-ui-light .share-item {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .hope-ui-dark .share-item {
+            background: rgba(0, 0, 0, 0.6);
+            color: #ddd;
+        }
+
+        .share-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .share-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #6474db;
+        }
+
+        .hope-ui-dark .share-title {
+            color: #a5b4fc;
+        }
+
+        .share-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .share-links a {
+            color: #6474db;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .hope-ui-dark .share-links a {
+            color: #a5b4fc;
+        }
+
+        .share-links a:hover {
+            text-decoration: underline;
+            transform: translateX(5px);
+        }
+
+        .share-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .share-form input {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .hope-ui-dark .share-form input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ddd;
+        }
+
+        .share-form button {
+            padding: 8px;
+            border-radius: 6px;
+            border: none;
+            background: #6474db;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .share-form button:hover {
+            background: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
         /* 设置弹窗样式 */
         .setting-modal {
             display: none;
@@ -1254,8 +1411,10 @@
             <div class="nav-links">
                 <a class="nav-link" href="index.html">首页</a>
                 <a class="nav-link" href="#profile">个人资料</a>
-                <a class="nav-link" href="#config">内容配置</a>
+                <a class="nav-link" href="#blog">日记博客</a>
+                <a class="nav-link" href="#share">分享中心</a>
                 <a class="nav-link" href="#tools">工具箱</a>
+                <a class="nav-link" href="#config">内容配置</a>
                 <a class="nav-link" onclick="logout()">退出</a>
                 <a class="nav-link" href="https://github.com/leeyuchen4073/leeyuchen.github.io" target="_blank">GitHub</a>
             </div>
@@ -1311,6 +1470,68 @@
             </div>
         </div>
 
+        <!-- 日记博客 -->
+        <div class="content-section" id="blog">
+            <h3 class="section-title">日记博客</h3>
+            <div class="blog-grid">
+                <div class="blog-item">
+                    <h4 class="blog-title">2026年2月23日</h4>
+                    <p class="blog-content">今天是我重构个人网站的日子，添加了日记博客功能，希望能够记录更多的技术心得和生活感悟。</p>
+                    <div class="blog-meta">
+                        <span>标签：网站重构</span>
+                        <span>阅读：123</span>
+                    </div>
+                </div>
+                <div class="blog-item">
+                    <h4 class="blog-title">2026年2月22日</h4>
+                    <p class="blog-content">学习了新的前端技术，感觉收获满满。技术的发展真是日新月异，需要不断学习才能跟上时代的步伐。</p>
+                    <div class="blog-meta">
+                        <span>标签：技术学习</span>
+                        <span>阅读：98</span>
+                    </div>
+                </div>
+                <div class="blog-item">
+                    <h4 class="blog-title">2026年2月21日</h4>
+                    <p class="blog-content">今天天气很好，出去散步的时候突然想到了一个网站优化的好点子，回来就立刻实现了。</p>
+                    <div class="blog-meta">
+                        <span>标签：生活感悟</span>
+                        <span>阅读：76</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分享功能 -->
+        <div class="content-section" id="share">
+            <h3 class="section-title">分享中心</h3>
+            <div class="share-grid">
+                <div class="share-item">
+                    <h4 class="share-title">软件分享</h4>
+                    <div class="share-links">
+                        <a href="#" onclick="shareSoftware('VSCode')">Visual Studio Code</a>
+                        <a href="#" onclick="shareSoftware('Chrome')">Google Chrome</a>
+                        <a href="#" onclick="shareSoftware('GitHub Desktop')">GitHub Desktop</a>
+                    </div>
+                </div>
+                <div class="share-item">
+                    <h4 class="share-title">链接分享</h4>
+                    <div class="share-links">
+                        <a href="https://github.com" target="_blank">GitHub</a>
+                        <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+                        <a href="https://developer.mozilla.org" target="_blank">MDN Web Docs</a>
+                    </div>
+                </div>
+                <div class="share-item">
+                    <h4 class="share-title">添加分享</h4>
+                    <div class="share-form">
+                        <input type="text" id="shareName" placeholder="名称">
+                        <input type="text" id="shareUrl" placeholder="链接">
+                        <button onclick="addShareItem()">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 便捷工具 -->
         <div class="content-section" id="tools">
             <h3 class="section-title">便捷工具</h3>
@@ -1338,6 +1559,10 @@
                 <div class="tool-item">
                     <div class="tool-icon"><i class="fas fa-globe" style="color:#1890FF;"></i></div>
                     <div class="tool-name">网络工具</div>
+                </div>
+                <div class="tool-item" onclick="window.open('https://leeyuchen99.github.io/tool/加密工具.html', '_blank')">
+                    <div class="tool-icon"><i class="fas fa-lock" style="color:#52C41A;"></i></div>
+                    <div class="tool-name">加密工具</div>
                 </div>
             </div>
         </div>
@@ -1369,7 +1594,7 @@
         <!-- 底部信息 -->
         <div class="footer-info">
             <div style="text-align: center; padding: 10px;">
-                <a href="http://www.yujn.cn/" target="_blank"><i class="fab fa-qq" style="color:#4488D1"></i> 工具</a> |
+                <a href="https://mprogram.boomegg.cn/box/game/wx77200645d1c7f35f/h5?&game_platform=wechat" target="_blank"><i class="fab fa-qq" style="color:#4488D1"></i> 工具</a> |
                 <a href="https://api.uomg.com/api/rand.music?sort=%E7%83%AD%E6%AD%8C%E6%A6%9C&format=mp3" target="_blank"><i class="fa-duotone fa-envelope-open" style="color:#409EFF"></i> 邮箱</a> |
                 <a href="https://video.taotutu.cn/" target="_blank"><i class="fas fa-edit" style="color:#409EFF"></i> 影视</a> |
                 <a onclick="handleLoginLink()"><i class="fa fa-cloud-download" style="color:#00AC6A;"></i> 登录</a> |
@@ -1730,13 +1955,12 @@
             
             // 添加默认工具
             const defaultTools = [
-                { id: 1, name: '代码工具', icon: 'fas fa-code', url: 'https://realfavicongenerator.net/', color: '#409EFF' },
+                { id: 1, name: '代码工具', icon: 'fas fa-code', url: '', color: '#409EFF' },
                 { id: 2, name: '图片工具', icon: 'fas fa-image', url: 'https://realfavicongenerator.net/', color: '#00AC6A' },
-                { id: 3, name: 'PDF工具', icon: 'fas fa-file-pdf', url: '', color: '#FF4D4F' },
-                { id: 4, name: '计算器', icon: 'fas fa-calculator', url: 'https://mprogram.boomegg.cn/box/game/wx77200645d1c7f35f/h5?&game_platform=h5/', color: '#FAAD14' },
-                { id: 5, name: '时间工具', icon: 'fas fa-clock', url: 'https://mprogram.boomegg.cn/box/game/wx77200645d1c7f35f/h5?&game_platform=h5/', color: '#722ED1' },
-                { id: 6, name: '网络工具', icon: 'fas fa-globe', url: 'https://mprogram.boomegg.cn/', color: '#1890FF' }，
-                { id: 7, name: '百炼英雄', icon: 'fas fa-image', url: 'https://mprogram.boomegg.cn/', color: '#722ED1' }
+                { id: 3, name: 'PDF工具', icon: 'fas fa-file-pdf', url: "https://mprogram.boomegg.cn/box/game/wx77200645d1c7f35f/h5?&game_platform=wechat", color: '#FF4D4F' },
+                { id: 4, name: '计算器', icon: 'fas fa-calculator', url: 'https://mprogram.boomegg.cn', color: '#FAAD14' },
+                { id: 5, name: '时间工具', icon: 'fas fa-clock', url: '', color: '#722ED1' },
+                { id: 6, name: '网络工具', icon: 'fas fa-globe', url: '', color: '#1890FF' }
             ];
             
             // 合并默认工具和自定义工具
@@ -2060,6 +2284,11 @@
                 };
                 // 保存更新后的缓存
                 await saveCache(updatedCache);
+                
+                // 同时清除localStorage中的登录相关设置
+                localStorage.removeItem('autoLogin');
+                localStorage.removeItem('isLogin');
+                localStorage.removeItem('encrypted_password');
             } catch (error) {
                 console.error('退出登录时更新缓存失败:', error);
             }
@@ -2082,6 +2311,53 @@
                 // 未登录，重定向到登录页面
                 window.location.href = 'index.html';
             }
+        }
+
+        /**
+         * 分享软件功能
+         * @description 处理软件分享的逻辑
+         */
+        function shareSoftware(softwareName) {
+            alert(`分享 ${softwareName} 功能正在开发中，敬请期待！`);
+        }
+
+        /**
+         * 添加分享项功能
+         * @description 添加新的分享项到分享中心
+         */
+        function addShareItem() {
+            const shareName = document.getElementById('shareName').value;
+            const shareUrl = document.getElementById('shareUrl').value;
+            
+            if (!shareName || !shareUrl) {
+                alert('请填写名称和链接');
+                return;
+            }
+            
+            // 这里可以添加保存分享项的逻辑
+            alert(`分享项 "${shareName}" 已添加！`);
+            
+            // 清空输入框
+            document.getElementById('shareName').value = '';
+            document.getElementById('shareUrl').value = '';
+        }
+
+        /**
+         * 加载日记博客
+         * @description 加载日记博客数据
+         */
+        function loadBlogPosts() {
+            // 这里可以添加从本地存储或API加载日记博客数据的逻辑
+            console.log('加载日记博客数据');
+        }
+
+        /**
+         * 添加日记博客
+         * @description 添加新的日记博客
+         */
+        function addBlogPost() {
+            // 这里可以添加添加新日记博客的逻辑
+            alert('添加日记博客功能正在开发中，敬请期待！');
         }
 
         /**
@@ -2188,9 +2464,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
