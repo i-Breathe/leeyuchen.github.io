@@ -2288,7 +2288,7 @@
                 // 同时清除localStorage中的登录相关设置
                 localStorage.removeItem('autoLogin');
                 localStorage.removeItem('isLogin');
-                localStorage.removeItem('encrypted_password');
+                // 不移除encrypted_password，这样记住密码状态会保持
             } catch (error) {
                 console.error('退出登录时更新缓存失败:', error);
             }
