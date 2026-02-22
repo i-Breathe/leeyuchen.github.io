@@ -4,67 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 - leeyuchen</title>
-    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/assets/icons/favicon.svg">
-    <link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen99.github.io/site.webmanifest">
-
-    <!-- 引入字体，全局字体使用 -->
-    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" />
-
-    <!-- Font6，自定义底部使用和看板娘使用的图标和字体文件-->    
-    <link type='text/css' rel="stylesheet" href="https://npm.elemecdn.com/font6pro@6.0.1/css/fontawesome.min.css" media='all'>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.svg">
+    <link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/site.webmanifest">
+    
+    <!-- 引入字体 -->
+    <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css">
+    
+    <!-- Font Awesome -->
     <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
-
-    <!--音乐播放器所用的文件-->    
-    <!-- require APlayer -->
-    <link rel="stylesheet" href="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.css">
-    <script src="https://npm.elemecdn.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
-    <!-- require MetingJS -->
-    <script src="https://npm.elemecdn.com/meting2@0.0.1/js/Meting.min.js"></script>
-
-    <!-- 网页鼠标点击特效 -->
-    <script id="click-effect">
-        (function () {
-            var a_idx = 0;
-            window.onclick = function (event) {
-                var a = new Array("❤富强❤", "❤民主❤", "❤文明❤", "❤和谐❤", "❤自由❤", "❤平等❤", "❤公正❤", "❤法治❤", "❤爱国❤", "❤敬业❤", "❤诚信❤", "❤友善❤");
-
-                var heart = document.createElement("b"); //创建b元素
-                heart.onselectstart = new Function('event.returnValue=false'); //防止拖动
-
-                document.body.appendChild(heart).innerHTML = a[a_idx]; //将b元素添加到页面上
-                a_idx = (a_idx + 1) % a.length;
-                heart.style.cssText = "position: fixed;left:-100%;"; //给p元素设置样式
-
-                var f = 13, // 字体大小
-                    x = event.clientX - f / 2 - 30, // 横坐标
-                    y = event.clientY - f, // 纵坐标
-                    c = randomColor(), // 随机颜色
-                    a = 1, // 透明度
-                    s = 0.8; // 放大缩小
-
-                var timer = setInterval(function () { //添加定时器
-                    if (a <= 0) {
-                        document.body.removeChild(heart);
-                        clearInterval(timer);
-                    } else {
-                        heart.style.cssText = "font-size:16px;cursor: default;position: fixed;color:" +
-                            c + ";left:" + x + "px;top:" + y + "px;opacity:" + a + ";transform:scale(" +
-                            s + ");";
-
-                        y--;
-                        a -= 0.016;
-                        s += 0.002;
-                    }
-                }, 15)
-            }
-            // 随机颜色
-            function randomColor() {
-                return "rgb(" + (Math.random() * 255) + "," + (Math.random() * 255) + "," + (Math.random() * 255) + ")";
-            }
-        }());
-    </script>
-
+    
+    <!-- 模式初始化 -->
     <script id="mode-init">
         (function() {
             try {
@@ -80,14 +30,12 @@
                             document.body.classList.add('dark-mode');
                             document.body.classList.add('hope-ui-dark');
                             document.body.classList.remove('hope-ui-light');
-                            // 设置模式图标
                             const modeIcon = document.getElementById('modeIcon');
                             if (modeIcon) {
                                 modeIcon.textContent = '🌙';
                             }
                         });
                     }
-                    // 尝试立即设置模式图标
                     const modeIcon = document.getElementById('modeIcon');
                     if (modeIcon) {
                         modeIcon.textContent = '🌙';
@@ -102,27 +50,23 @@
                             document.body.classList.remove('dark-mode');
                             document.body.classList.add('hope-ui-light');
                             document.body.classList.remove('hope-ui-dark');
-                            // 设置模式图标
                             const modeIcon = document.getElementById('modeIcon');
                             if (modeIcon) {
                                 modeIcon.textContent = '☀️';
                             }
                         });
                     }
-                    // 尝试立即设置模式图标
                     const modeIcon = document.getElementById('modeIcon');
                     if (modeIcon) {
                         modeIcon.textContent = '☀️';
                     }
                 }
                 
-                // 提前加载背景图设置，避免默认背景图闪烁
+                // 提前加载背景图设置
                 try {
                     const lightBgImage = localStorage.getItem('lightBgImage');
                     const darkBgImage = localStorage.getItem('darkBgImage');
                     
-                    // 无论是否有保存的设置，都创建style标签更新CSS变量
-                    // 这样可以确保即使只修改了一个背景图，也能正确加载
                     const style = document.createElement('style');
                     style.textContent = `
                         :root {
@@ -139,17 +83,15 @@
             }
         })();
     </script>
-
+    
     <style>
-        /* 通用样式重置 */
+        /* 全局样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-
-
+        
         /* 白天模式背景 */
         .hope-ui-light {
             background-image: var(--light-bg-image) !important;
@@ -157,8 +99,9 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
+            color: #2d3748;
         }
-
+        
         /* 夜间模式背景 */
         .hope-ui-dark {
             background-image: var(--dark-bg-image) !important;
@@ -166,8 +109,9 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
+            color: #ffffff;
         }
-
+        
         /* 基础body样式 */
         body {
             min-height: 100vh;
@@ -179,124 +123,156 @@
         /* 全局字体 */
         * {
             font-family: LXGW WenKai;
-        }
-        * {
             font-weight: bold;
         }
-
+        
         /* 登录容器 */
         .login-container {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
         }
-
+        
         /* 登录框 */
         .login-box {
             width: 100%;
             max-width: 400px;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border-radius: 20px;
             padding: 90px 30px 30px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 999;
+            position: relative;
         }
-
+        
         /* 夜间模式登录框 */
         body.dark-mode .login-box {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
         }
-
-        /* 登录标题 */
-        .login-title {
-            text-align: center;
-            margin-bottom: 30px;
+        
+        /* 登录头部 */
+        .login-header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
             font-size: 24px;
             font-weight: 700;
+            z-index: 999;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0px);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+        }
+        
+        @keyframes breathe {
+            0% { box-shadow: 0 0 3.5px 3.5px rgba(255, 0, 255, 0.59); }
+            25% { box-shadow: 0 0 3.5px 3.5px rgba(0, 250, 255, 0.59); }
+            50% { box-shadow: 0 0 3.5px 3.5px rgba(255, 255, 0, 0.59); }
+            75% { box-shadow: 0 0 3.5px 3.5px rgba(0, 255, 255, 0.59); }
+            100% { box-shadow: 0 0 3.5px 3.5px rgba(255, 0, 255, 0.59); }
+        }
+        
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: breathe 45s infinite;
+        }
+        
+        .header-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-text {
             background: linear-gradient(135deg, #6c5ce7, #a29bfe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-
+        
+        .header-text:hover {
+            transform: scale(1.05);
+        }
+        
         /* 输入框容器 */
         .input-container {
             margin-bottom: 15px;
         }
-
+        
         /* 输入框 */
         .input-container input {
             width: 100%;
-            padding: 10px 10px;
+            padding: 12px;
             border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 18px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.9);
             font-size: 14px;
             text-align: center;
             outline: none;
             transition: all 0.3s ease;
+            color: #2d3748;
         }
-
+        
         .input-container input::placeholder {
             text-align: center;
             font-size: 14px;
+            color: #aaa;
         }
-
+        
         body.dark-mode .input-container input {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
         }
-
+        
         .input-container input:focus {
             transform: translateY(-2px);
             border-color: #6c5ce7;
             box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
         }
-
+        
         body.dark-mode .input-container input:focus {
             border-color: #a29bfe;
-            box-shadow: 0 0 0 2px rgba(162, 155, 254, 0.2);
+            box-shadow: 0 0 0 2px rgba(162, 155, 254, 0.3);
         }
-
-        /* 按钮 */
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3);
-        }
-
+        
         /* 复选框容器 */
         .checkbox-wrapper {
             display: flex;
             justify-content: space-between;
-            margin: 20px 0px;
+            margin: 20px 0;
             font-size: 13px;
             padding: 0 5px;
         }
-
+        
         /* 单个复选框 */
         .checkbox-item {
             display: flex;
@@ -304,9 +280,8 @@
             gap: 8px;
             cursor: pointer;
             user-select: none;
-            font-weight: 400;
         }
-
+        
         /* 复选框样式 */
         .checkbox-item input {
             appearance: none;
@@ -320,7 +295,7 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
-
+        
         .checkbox-item input:checked {
             background: linear-gradient(135deg, #6c5ce7, #a29bfe);
             border-color: #6c5ce7;
@@ -328,7 +303,12 @@
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
         }
-
+        
+        body.dark-mode .checkbox-item input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
         .checkbox-item input:checked::after {
             content: "✓";
             position: absolute;
@@ -338,79 +318,151 @@
             color: #fff;
             font-size: 12px;
             font-weight: bold;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
         }
-
-        body.dark-mode .checkbox-item input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-
-
+        
         /* 按钮组 */
         .btn-group {
             display: flex;
             gap: 10px;
         }
-
+        
         .btn {
             flex: 1;
-            padding: 8px 10px;
-            border: none;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 400;
+            padding: 10px 12px;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
             color: #fff;
             cursor: pointer;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
             backface-visibility: hidden;
             transform: translateZ(0);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
-            min-height: 36px;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
         }
-
+        
         .btn-clear {
             background: rgba(180, 188, 208, 0.9);
             color: #2d3748;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
         }
-
+        
         .btn-clear:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
-            background: rgba(138, 160, 249, 0.9);
+            border-color: rgba(25, 215, 135, 0.8);
+            background: rgba(180, 188, 208, 0.9);
         }
-
+        
         body.dark-mode .btn-clear {
             background: rgba(180, 188, 208, 0.9);
             color: #2d3748;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
         }
-
+        
         body.dark-mode .btn-clear:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
-            background: rgba(138, 160, 249, 0.9);
+            border-color: rgba(25, 215, 135, 0.8);
+            background: rgba(180, 188, 208, 0.9);
         }
-
+        
         .btn-login {
             background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9));
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-            margin-bottom: 0;
         }
-
+        
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            border-color: rgba(25, 215, 135, 0.8);
         }
-
+        
+        /* 底部信息区域 */
+        .footer-info {
+            position: absolute;
+            bottom: 48px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+            z-index: 888;
+            color: rgba(0, 0, 0, 0.9);
+        }
+        
+        body.dark-mode .footer-info {
+            color: white;
+            opacity: 0.99;
+        }
+        
+        body.dark-mode .footer-info .ip-address {
+            opacity: 1;
+        }
+        
+        .footer-info #welcome {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .footer-info #hitokoto {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .footer-info .runtime {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .footer-info .ip-address {
+            font-weight: bold;
+            color: #a29bfe;
+        }
+        
+        body.dark-mode .footer-info .ip-address {
+            color: rgba(25, 215, 135, 0.9);
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 90px 20px 20px;
+                margin: 20px;
+            }
+            
+            .login-header {
+                font-size: 20px;
+                gap: 10px;
+            }
+            
+            .header-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .setting-btn,
+            .mode-switch {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .footer-info {
+                bottom: 48px;
+                left: 10px;
+                right: 10px;
+                padding: 0;
+            }
+            
+            .footer-info #hitokoto,
+            .footer-info #welcome {
+                font-size: 12px;
+            }
+            
+            .footer-info .runtime {
+                font-size: 11px;
+            }
+        }
+        
         /* 设置按钮 */
         .setting-btn {
             position: absolute;
@@ -427,17 +479,18 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 999;
         }
-
+        
         body.dark-mode .setting-btn {
             background: rgba(0, 0, 0, 0.5);
             color: white;
         }
-
+        
         .setting-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(360deg);
         }
-
+        
         /* 模式切换按钮 */
         .mode-switch {
             position: absolute;
@@ -454,17 +507,18 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
+            z-index: 999;
         }
-
+        
         body.dark-mode .mode-switch {
             background: rgba(0, 0, 0, 0.5);
             color: white;
         }
-
+        
         .mode-switch:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(360deg);
         }
-
+        
         /* 禁用登录框内所有元素的文本选择功能 */
         .login-box {
             user-select: none;
@@ -472,7 +526,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
         }
-
+        
         /* 确保输入框可以正常选中和输入 */
         .login-box input {
             user-select: auto;
@@ -480,9 +534,7 @@
             -moz-user-select: auto;
             -ms-user-select: auto;
         }
-
-
-
+        
         /* 通用提示效果 */
         .toast-notice {
             position: fixed;
@@ -503,21 +555,21 @@
             z-index: 9999;
             animation: fadeInOut 3s ease-in-out;
         }
-
+        
         body.dark-mode .toast-notice {
             background: rgba(0, 0, 0, 0.5);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-
+        
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
             20% { opacity: 1; transform: translateX(-50%) translateY(0); }
             80% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
-
+        
         /* 错误提示样式 */
         .toast-notice.toast-error {
             background: linear-gradient(135deg, #ff4444, #ff6666);
@@ -525,14 +577,14 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+        
         body.dark-mode .toast-notice.toast-error {
             background: linear-gradient(135deg, #ff6b6b, #ff8787);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+        
         /* 设置弹窗 */
         .setting-modal {
             display: none;
@@ -542,17 +594,17 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            z-index: 1000;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            z-index: 999;
             align-items: center;
             justify-content: center;
         }
-
+        
         .modal-content {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border-radius: 15px;
             padding: 20px;
             width: 90%;
@@ -560,14 +612,20 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
+            z-index: 1000;
+            position: relative;
         }
-
+        
         body.dark-mode .modal-content {
             background: rgba(255, 255, 255, 0.9);
             color: #2d3748;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1000;
+            position: relative;
         }
-
+        
         /* 弹窗标题 */
         .modal-title {
             font-size: 18px;
@@ -580,16 +638,16 @@
             -ms-user-select: none;
             color: #a29bfe;
         }
-
+        
         body.dark-mode .modal-title {
             color: #6c5ce7;
         }
-
+        
         /* 弹窗输入项 */
         .modal-input {
             margin-bottom: 12px;
         }
-
+        
         /* 弹窗标签 */
         .modal-input label {
             display: block;
@@ -601,13 +659,13 @@
             -moz-user-select: none;
             -ms-user-select: none;
         }
-
+        
         /* 输入框容器 */
         .input-with-history {
             position: relative;
             width: 100%;
         }
-
+        
         /* 历史记录列表 */
         .history-list {
             display: none;
@@ -626,13 +684,13 @@
             margin-top: 2px;
             color: rgba(0, 0, 0, 0.9);
         }
-
+        
         body.dark-mode .history-list {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: rgba(255, 255, 255, 0.9);
         }
-
+        
         /* 历史记录项 */
         .history-item {
             padding: 8px 12px;
@@ -640,42 +698,59 @@
             font-size: 13px;
             transition: background-color 0.2s ease;
         }
-
+        
         .history-item:hover {
             background: rgba(108, 92, 231, 0.2);
         }
-
+        
         body.dark-mode .history-item:hover {
             background: rgba(162, 155, 254, 0.2);
         }
-
+        
         /* 弹窗输入框 */
         .modal-content .modal-input input {
             width: 100%;
             padding: 4px 6px;
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid transparent;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 13px;
             font-weight: 500;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            text-align: center;
+            transition: all 0.3s ease;
         }
-
+        
+        .modal-content .modal-input input:focus {
+            outline: none;
+            border: 1px solid white;
+        }
+        
+        .modal-content .modal-input input::placeholder {
+            text-align: center;
+            font-size: 13px;
+        }
+        
         body.dark-mode .modal-content .modal-input input {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(0, 0, 0, 0.1);
             color: #2d3748;
         }
-
+        
+        body.dark-mode .modal-content .modal-input input:focus {
+            outline: none;
+            border: 1px solid #6c5ce7;
+        }
+        
         /* 弹窗按钮组 */
         .modal-btns {
             display: flex;
             gap: 10px;
-            margin-top: 16px;
+            margin-top: 30px;
         }
-
+        
         /* 弹窗按钮 */
         .modal-btn {
             flex: 1;
@@ -696,180 +771,35 @@
             justify-content: center;
             gap: 5px;
         }
-
+        
         .btn-save {
             background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9));
             color: white;
         }
-
+        
         .btn-save:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
         }
-
+        
         .btn-close {
             background: rgba(180, 188, 208, 0.9);
             color: #2d3748;
         }
-
+        
         .btn-close:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
-            background: rgba(138, 160, 249, 0.9);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            background: rgba(180, 188, 208, 0.9);
         }
-
+        
         body.dark-mode .btn-close {
             background: rgba(255, 255, 255, 0.9);
             color: #2d3748;
         }
-
-        /* 登录头部 */
-        .login-header {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-size: 24px;
-            font-weight: 700;
-            z-index: 1;
-        }
-
-        .header-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            backface-visibility: hidden;
-            transform: translateZ(0);
-        }
-
-        body.dark-mode .header-icon {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .header-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .header-text {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            cursor: pointer;
-            text-shadow: none;
-            backface-visibility: hidden;
-            transform: translateZ(0);
-        }
-
-        .header-text:hover {
-            transform: scale(1.05);
-            background: linear-gradient(135deg, #8070f0, #b8b0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-
-
-        /* 底部信息区域样式 */
-        .footer-info {
-            position: fixed;
-            bottom: 48px;
-            left: 20px;
-            right: 20px;
-            text-align: center;
-            z-index: 999;
-            color: rgba(0, 0, 0, 0.9);
-        }
-
-        body.dark-mode .footer-info {
-            color: white;
-        }
-
-        .footer-info #welcome {
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .footer-info #hitokoto {
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .footer-info .runtime {
-            font-size: 12px;
-            opacity: 0.8;
-            /* color: rgba(255, 255, 255, 0.9);*/
-        }
-
-        .footer-info .ip-address {
-            font-weight: bold;
-            color: #a29bfe;
-        }
-
-        body.dark-mode .footer-info .ip-address {
-            color: rgba(25, 215, 135, 0.9);
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .login-box {
-                padding: 90px 20px 20px;
-                margin: 20px;
-            }
-
-            .login-header {
-                font-size: 20px;
-                gap: 10px;
-            }
-
-            .header-icon {
-                width: 35px;
-                height: 35px;
-            }
-
-            .setting-btn,
-            .mode-switch {
-                width: 35px;
-                height: 35px;
-            }
-
-            .footer-info {
-                position: fixed;
-                bottom: 48px;
-                left: 10px;
-                right: 10px;
-                padding: 0px 0px;
-            }
-
-            .footer-info #hitokoto,
-            .footer-info #welcome {
-                font-size: 12px;
-            }
-
-            .footer-info .runtime {
-                font-size: 11px;
-            }
-
-            body {
-                background-attachment: scroll;
-            }
-        }
     </style>
 </head>
 <body class="hope-ui-light">
-    <!--音乐播放器-->
-    <meting-js fixed="true" autoplay="true" order="random" theme="#409EFF" list-folded="false" server="netease" type="playlist" id="825858380"></meting-js>
-    
     <div class="login-container">
         <div class="login-box">
             <div class="setting-btn" onclick="openBgModal()">⚙️</div>
@@ -909,7 +839,7 @@
         </div>
     </div>
 
-    <!-- 底部信息区域 style="position: fixed; bottom: 48px;" -->
+    <!-- 底部信息区域 -->
     <div class="footer-info">
         <div id="hitokoto">正在加载...</div>
         <div id="welcome">正在获取您的访问信息...</div>
@@ -921,7 +851,7 @@
     <!-- 背景图设置弹窗 -->
     <div class="setting-modal" id="bgModal">
         <div class="modal-content">
-            <div class="modal-title">背景图片设置</div>
+            <div class="modal-title">设置 - 背景图</div>
             <div class="modal-input">
                 <label>白天模式背景图</label>
                 <div class="input-with-history">
@@ -1045,7 +975,9 @@
                 return JSON.parse(decoder.decode(decrypted));
             } catch (error) {
                 console.error('解密失败:', error);
-                throw error;
+                // 清除损坏的密码数据
+                localStorage.removeItem(PASSWORD_CACHE_KEY);
+                return null;
             }
         }
 
@@ -1567,47 +1499,6 @@
         }
     </script>
 
-    <!-- 页面初始化 -->
-    <script id="page-init">
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                // 加载设置
-                const settings = loadSettings();
-                
-                // 加载密码
-                const savedPwd = await loadPassword();
-                if (savedPwd) {
-                    realSavedPwd = savedPwd;
-                    elements.passwordInput.value = '********';
-                }
-                
-                // 设置自动登录状态
-                if (settings.autoLogin) {
-                    elements.autoLogin.checked = true;
-                    elements.rememberPwd.checked = true;
-                }
-                
-                // 设置记住密码状态
-                if (localStorage.getItem(PASSWORD_CACHE_KEY)) {
-                    elements.rememberPwd.checked = true;
-                }
-                
-                // 初始化清除按钮事件
-                setupClearButton();
-                
-                // 初始化背景图设置
-                loadBgSettingsToInputs();
-                
-                // 聚焦到密码输入框
-                setTimeout(() => {
-                    elements.passwordInput.focus();
-                }, 100);
-            } catch (error) {
-                console.error('初始化失败:', error);
-            }
-        });
-    </script>
-    
     <!-- 底部信息功能脚本 -->
     <script id="footer-info">
         // 加载访客信息
@@ -1622,7 +1513,7 @@
                 const ip = data.data.ip;
                 const address = data.data.address || '';
                 const isp = data.data.isp || '';
-                const welcomeMessage = `欢迎 ${address} ${isp}IP： <span class="ip-address">${ip}</span> 的小伙伴访问本站`;
+                const welcomeMessage = `欢迎 ${address} ${isp}IP： <span class="ip-address" style="color: #25D366;">${ip}</span> 的小伙伴访问本站`;
                 
                 if (welcomeEl) {
                   welcomeEl.innerHTML = welcomeMessage;
@@ -1651,7 +1542,7 @@
                     }
                     
                     if (welcomeEl) {
-                      welcomeEl.innerHTML = welcomeMessage;
+                      welcomeEl.innerHTML = welcomeMessage.replace(/<span class="ip-address">([^<]+)<\/span>/g, '<span class="ip-address" style="color: #25D366;">$1</span>');
                       welcomeEl.classList.add('loaded');
                     }
                   }
@@ -1663,7 +1554,7 @@
                     .then(response => response.json())
                     .then(data => {
                       const ip = data.ip;
-                      const welcomeMessage = `欢迎 <span class="ip-address">${ip}</span> 的小伙伴访问本站`;
+                      const welcomeMessage = `欢迎 <span class="ip-address" style="color: #25D366;">${ip}</span> 的小伙伴访问本站`;
                       if (welcomeEl) {
                         welcomeEl.innerHTML = welcomeMessage;
                         welcomeEl.classList.add('loaded');
@@ -1693,12 +1584,12 @@
 
           const runtimeEl = document.getElementById('runtime');
           if (runtimeEl) {
-            runtimeEl.innerHTML = `<span style="color: rgba(25, 215, 135, 0.9);font-weight: bold;">${days}天 ${hours}小时 ${minutes}分 ${seconds}秒</span>`;
+            runtimeEl.innerHTML = `<span style="color: #25D366;font-weight: bold;opacity: 0.99;">${days}天 ${hours}小时 ${minutes}分 ${seconds}秒</span>`;
             runtimeEl.parentElement.classList.add('loaded');
           }
         }
         
-        // 加载一言
+        // 加载一言（文心一言排第一，带双引号）
         function loadHitokoto() {
           const hitokotoEl = document.getElementById('hitokoto');
           const hitokotoParent = hitokotoEl?.parentElement;
@@ -1708,7 +1599,7 @@
           // 默认句子
           const defaultSentence = '人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.';
           
-          // 接口列表
+          // 接口列表（文心一言排第一）
           const apis = [
             'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto',
             'https://international.v1.hitokoto.cn/?encode=js&select=%23hitokoto'
@@ -1717,8 +1608,11 @@
           // 添加签名后缀
           function addSignature() {
             if (hitokotoEl && !hitokotoEl.innerHTML.includes('Ani Cloud')) {
+              // 根据当前模式设置签名颜色
+              const isDarkMode = document.body.classList.contains('dark-mode');
+              const signatureColor = isDarkMode ? 'white' : 'red';
               // 设置签名的style格式
-              hitokotoEl.innerHTML += '<p style="margin-left: 16rem;font-size: 8pt;margin-top: 5px;color: rgba(25, 215, 135, 0.9);"><small>—— Ani Cloud</small></p>';
+              hitokotoEl.innerHTML += `<p style="margin-left: 16rem;font-size: 8pt;margin-top: 5px;color: ${signatureColor};"><small>—— Ani Cloud</small></p>`;
             }
           }
           
@@ -1747,7 +1641,7 @@
             if (apiIndex >= apis.length) {
               // 所有接口都失败，显示默认句子
               if (hitokotoEl) {
-                hitokotoEl.innerHTML = `<a href="#" id="hitokoto_text">"${defaultSentence}"</a>`;
+                hitokotoEl.innerHTML = `<a href="#" id="hitokoto_text" style="color: #25D366;">“ ${defaultSentence}”</a>`;
                 addSignature();
               }
               if (hitokotoParent) {
@@ -1777,6 +1671,13 @@
             
             currentScript.onload = function() {
               clearTimeout(currentTimeout);
+              // 为内容添加中文双引号
+              if (hitokotoEl) {
+                const currentContent = hitokotoEl.textContent;
+                if (currentContent && !currentContent.startsWith('“')) {
+                  hitokotoEl.innerHTML = `<a href="#" id="hitokoto_text" style="color: #25D366;">“ ${currentContent}”</a>`;
+                }
+              }
               if (hitokotoParent) {
                 hitokotoParent.classList.add('loaded');
               }
@@ -1817,13 +1718,56 @@
             })
           ]);
         }
+    </script>
 
-        // DOM加载完成后立即初始化，不需要等待所有资源加载
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initFooterInfo);
-        } else {
-          initFooterInfo();
-        }
+    <!-- 页面初始化 -->
+    <script id="page-init">
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // 加载设置
+                const settings = loadSettings();
+                
+                // 加载密码
+                const savedPwd = await loadPassword();
+                if (savedPwd) {
+                    realSavedPwd = savedPwd;
+                    elements.passwordInput.value = '********';
+                }
+                
+                // 设置自动登录状态
+                if (settings.autoLogin) {
+                    elements.autoLogin.checked = true;
+                    elements.rememberPwd.checked = true;
+                    // 如果有保存的密码且启用了自动登录，自动执行登录
+                    if (savedPwd) {
+                        setTimeout(() => {
+                            login();
+                        }, 500);
+                    }
+                }
+                
+                // 设置记住密码状态
+                if (localStorage.getItem(PASSWORD_CACHE_KEY)) {
+                    elements.rememberPwd.checked = true;
+                }
+                
+                // 初始化清除按钮事件
+                setupClearButton();
+                
+                // 初始化背景图设置
+                loadBgSettingsToInputs();
+                
+                // 初始化底部信息
+                initFooterInfo();
+                
+                // 聚焦到密码输入框
+                setTimeout(() => {
+                    elements.passwordInput.focus();
+                }, 100);
+            } catch (error) {
+                console.error('初始化失败:', error);
+            }
+        });
     </script>
 </body>
 </html>
