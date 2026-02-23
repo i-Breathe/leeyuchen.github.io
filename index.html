@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <!-- 强制HTTPS重定向 -->
-    <script>
-        if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
-            window.location.href = window.location.href.replace('http:', 'https:');
-        }
-    </script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 - leeyuchen</title>
@@ -95,38 +88,43 @@
     
     <!-- 样式定义 -->
     <style>
-        /* 
-        CSS属性说明：
+        /* CSS属性说明（修改后会影响的部分）：
         
-        背景相关属性：
-        - background-repeat: 控制背景图片是否重复显示，可选值：repeat(重复)、no-repeat(不重复)、repeat-x(水平重复)、repeat-y(垂直重复)
-        - background-size: 控制背景图片大小，可选值：cover(覆盖整个容器)、contain(完全包含在容器内)、具体尺寸(如100px 100px)
-        - background-attachment: 控制背景图片是否随页面滚动，可选值：scroll(随内容滚动)、fixed(固定不动)、local(随元素内容滚动)
-        - background-position: 控制背景图片位置，可选值：center(居中)、top(顶部)、bottom(底部)、left(左侧)、right(右侧)、具体坐标(如50% 50%)
+        背景相关：
+        - background-color: 背景颜色，影响整个页面或元素背景
+        - background-image: 背景图片，可通过设置弹窗修改
+        - background-size: 背景图片大小，如cover(覆盖)或contain(包含)
+        - background-position: 背景图片位置，如center(居中)
         
-        字体相关属性：
-        - font-family: 设置字体类型，如'LXGW WenKai'、'Microsoft YaHei'等
-        - font-weight: 设置字体粗细，可选值：normal(正常)、bold(粗体)、100-900(数值表示)
-        - font-size: 设置字体大小，可选值：px(像素)、em(相对父元素)、rem(相对根元素)、%等
+        字体相关：
+        - font-family: 字体类型，全局使用LXGW WenKai
+        - font-size: 字体大小，影响文字显示大小
+        - font-weight: 字体粗细，如normal(正常)或bold(加粗)
+        - color: 文字颜色，不同模式下有不同默认值
         
-        布局相关属性：
-        - display: 控制元素显示方式，可选值：block(块级元素)、inline(行内元素)、inline-block(行内块元素)、flex(弹性布局)、grid(网格布局)等
-        - position: 控制元素定位方式，可选值：static(默认)、relative(相对定位)、absolute(绝对定位)、fixed(固定定位)、sticky(粘性定位)
-        - top/right/bottom/left: 控制定位元素的位置偏移
-        - transform: 控制元素变换，可选值：translate(平移)、rotate(旋转)、scale(缩放)、skew(倾斜)等
-        - justify-content: 控制flex/grid容器中主轴方向的对齐方式
-        - align-items: 控制flex/grid容器中交叉轴方向的对齐方式
-        - gap: 控制flex/grid容器中元素之间的间距
-        - z-index: 控制元素堆叠顺序，数值越大越靠上
+        布局相关：
+        - width/height: 宽度/高度，影响元素大小
+        - margin/padding: 外边距/内边距，影响元素间距
+        - display: 显示方式，如flex(弹性布局)
+        - position: 定位方式，如relative(相对)或absolute(绝对)
         
-        其他常用属性：
-        - opacity: 控制元素透明度，0-1之间的数值
-        - border-radius: 控制元素圆角大小
-        - box-shadow: 控制元素阴影效果
-        - backdrop-filter: 控制元素背景模糊效果
-        - transition: 控制元素过渡动画效果
-        - animation: 控制元素关键帧动画效果
-        -->
+        边框和圆角：
+        - border: 边框样式，如宽度、颜色、样式
+        - border-radius: 圆角大小，影响元素边角圆润度
+        
+        阴影和效果：
+        - box-shadow: 盒子阴影，增加立体感
+        - text-shadow: 文字阴影，增强文字效果
+        - backdrop-filter: 背景模糊效果，影响半透明元素
+        
+        动画和过渡：
+        - animation: 动画效果，如浮动、呼吸动画
+        - transition: 过渡效果，如悬停时的变化
+        
+        模式相关：
+        - body.dark-mode: 夜间模式样式，修改时注意对应白天模式
+        - 颜色变量: 可通过CSS变量统一管理颜色
+        */
         
         /* 全局样式重置 */
         * {
@@ -658,18 +656,20 @@
         
         /* 错误提示样式 */
         .toast-notice.toast-error {
-            background: linear-gradient(135deg, #ff4444, #ff6666); /* 渐变颜色：红色到浅红色 */
+            background: linear-gradient(135deg, #000000, #ff4444); /* 渐变颜色：统一红色 */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: bolder; /* 字体加粗 */
         }
         
         /* 夜间模式错误提示 */
         body.dark-mode .toast-notice.toast-error {
-            background: linear-gradient(135deg, #ff6b6b, #ff8787); /* 渐变颜色：红色到浅红色 */
+            background: linear-gradient(135deg, #ff4444, #000000); /* 渐变颜色：统一红色 */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: bolder; /* 字体加粗 */
         }
         
         /* 设置弹窗 */
@@ -979,7 +979,7 @@
     
     <!-- 1. 全局变量定义 -->
     <script id="global-variables">
-        // 缓存DOM元素，提高访问速度
+        // DOM元素缓存
         const elements = {
             passwordInput: document.getElementById('password'),         // 密码输入框
             rememberPwd: document.getElementById('rememberPwd'),         // 记住密码复选框
@@ -995,6 +995,10 @@
         
         // 全局变量
         let realSavedPassword = null; // 真实保存的密码
+        // 密码失败次数和禁止登录相关变量
+        const MAX_FAILED_ATTEMPTS = 5; // 最大失败次数
+        const LOCKOUT_DURATION = 30 * 60 * 1000; // 禁止登录时长（30分钟）
+        const CLEAR_BUTTON_SEQUENCE = 5; // 清除按钮连击次数
         const SECRET_KEY_HASH = "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2"; // 密码哈希值
         const ENCRYPTION_KEY = "leeyuchen_cache_key_2026"; // 加密密钥
         const PASSWORD_CACHE_KEY = "encrypted_password"; // 密码缓存键名
@@ -1003,23 +1007,24 @@
         const ToastMessages = {
             success: {
                 login: '登录成功，正在跳转到主页...',
-                clearCache: '登录缓存和数据缓存已清除，背景配置和模式设置已保留',
-                clearAllData: '所有数据已清除，网站已还原为初始化状态',
+                clearCache: '登录和数据缓存已清除，配置设置已保留',
                 saveSetting: '设置已保存',
                 bgSettingSaved: '背景设置已保存',
                 darkMode: '已切换到夜间模式',
-                lightMode: '已切换到白天模式'
+                lightMode: '已切换到白天模式',
+                lockoutReset: '登录限制已重置，数据已清除，网站已还原为初始化状态'
             },
             error: {
                 loginFailed: '登录失败，请检查密码',
                 networkError: '网络错误，请检查网络连接',
                 emptyPassword: '请输入密码',
                 clearCacheFailed: '清除缓存失败，请重试',
-                clearAllDataFailed: '清除所有数据失败，请重试',
                 loadCacheFailed: '加载缓存失败',
                 decryptFailed: '解密失败，请重新登录',
                 saveCacheFailed: '保存缓存失败',
-                savePasswordFailed: '保存密码失败，但登录成功'
+                savePasswordFailed: '保存密码失败，但登录成功',
+                tooManyAttempts: '密码错误次数过多，请30分钟后再试',
+                lockedOut: '账户已被暂时锁定，请30分钟后再试'
             }
         };
         
@@ -1103,21 +1108,20 @@
         
         // 缓存管理类
         const CacheManager = {
-            // 缓存静态资源
+            // 缓存静态资源（如图片）
             async cacheStaticResource(url) {
                 return new Promise((resolve, reject) => {
                     const now = Date.now();
                     
-                    // 检查缓存
+                    // 检查缓存是否有效
                     if (staticResourceCache[url] && (now - staticResourceCache[url].timestamp < STATIC_CACHE_EXPIRY)) {
                         resolve(staticResourceCache[url].data);
                         return;
                     }
                     
-                    // 缓存不存在或已过期，重新获取
+                    // 重新获取资源
                     const img = new Image();
                     img.onload = function() {
-                        // 缓存资源
                         staticResourceCache[url] = {
                             data: url,
                             timestamp: Date.now()
@@ -1125,13 +1129,13 @@
                         resolve(url);
                     };
                     img.onerror = function() {
-                        reject(new Error('Failed to load static resource'));
+                        reject(new Error('加载资源失败'));
                     };
                     img.src = url;
                 });
             },
             
-            // 缓存IP地址
+            // 缓存IP地址信息
             cacheIP(data) {
                 ipCache = {
                     data: data,
@@ -1139,7 +1143,7 @@
                 };
             },
             
-            // 获取IP缓存
+            // 获取IP缓存（1小时过期）
             getIPCache() {
                 const now = Date.now();
                 if (ipCache && (now - ipCache.timestamp < IP_CACHE_EXPIRY)) {
@@ -1340,25 +1344,7 @@
             }
         }
         
-        // 清除所有数据，彻底还原初始化
-        async function clearAllData() {
-            try {
-                // 清除所有localStorage数据
-                localStorage.clear();
-                // 清除所有缓存
-                CacheManager.clearAll();
-                // 清除输入框
-                clearInput();
-                // 强制重新聚焦到密码输入框
-                setTimeout(() => {
-                    elements.passwordInput.focus();
-                }, 50);
-                showToast(ToastMessages.success.clearAllData);
-            } catch (error) {
-                console.error('清除所有数据失败:', error);
-                showToast(ToastMessages.error.clearAllDataFailed, true);
-            }
-        }
+
 
         // 设置清除按钮的事件处理
         function setupClearButton() {
@@ -1391,9 +1377,10 @@
                         } else if (clickCount === 2) {
                             // 双击事件
                             clearCache();
-                        } else if (clickCount === 3) {
-                            // 三击事件
-                            clearAllData();
+                        } else if (clickCount === 5) {
+                            // 五击事件 - 重置登录限制
+                            resetLoginAttempts();
+                            showToast(ToastMessages.success.lockoutReset);
                         }
                         // 重置点击计数
                         clickCount = 0;
@@ -1407,7 +1394,49 @@
 
     <!-- 9. 登录功能 -->
     <script id="login-function">
+        // 获取登录失败次数
+        function getFailedAttempts() {
+            const attempts = localStorage.getItem('failedAttempts');
+            return attempts ? parseInt(attempts, 10) : 0;
+        }
+        
+        // 设置登录失败次数
+        function setFailedAttempts(attempts) {
+            localStorage.setItem('failedAttempts', attempts.toString());
+        }
+        
+        // 获取锁定时间
+        function getLockoutTime() {
+            const lockoutTime = localStorage.getItem('lockoutTime');
+            return lockoutTime ? parseInt(lockoutTime, 10) : 0;
+        }
+        
+        // 设置锁定时间
+        function setLockoutTime(time) {
+            localStorage.setItem('lockoutTime', time.toString());
+        }
+        
+        // 检查是否被锁定
+        function isLockedOut() {
+            const lockoutTime = getLockoutTime();
+            if (!lockoutTime) return false;
+            
+            return Date.now() < lockoutTime + LOCKOUT_DURATION;
+        }
+        
+        // 重置登录限制（用于五击清除按钮功能）
+        function resetLoginAttempts() {
+            setFailedAttempts(0);
+            setLockoutTime(0);
+        }
+        
         async function login() {
+            // 检查是否被锁定
+            if (isLockedOut()) {
+                showToast(ToastMessages.error.lockedOut, true);
+                return;
+            }
+            
             let inputPassword = elements.passwordInput.value === '********' && realSavedPassword ? realSavedPassword : elements.passwordInput.value.trim();
             
             // 简单的密码验证
@@ -1420,9 +1449,23 @@
                 // 密码验证
                 const hashedInput = await hashPassword(inputPassword);
                 if (hashedInput !== SECRET_KEY_HASH) {
-                    showToast(ToastMessages.error.loginFailed, true);
+                    // 密码错误，增加失败次数
+                    let failedAttempts = getFailedAttempts() + 1;
+                    setFailedAttempts(failedAttempts);
+                    
+                    // 检查是否达到最大失败次数
+                    if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+                        // 设置锁定时间
+                        setLockoutTime(Date.now());
+                        showToast(ToastMessages.error.tooManyAttempts, true);
+                    } else {
+                        showToast(`${ToastMessages.error.loginFailed} (${failedAttempts}/${MAX_FAILED_ATTEMPTS})`, true);
+                    }
                     return;
                 }
+                
+                // 密码正确，重置失败次数
+                resetLoginAttempts();
                 
                 // 保存密码（加密）
                 if (elements.rememberPwd.checked) {
