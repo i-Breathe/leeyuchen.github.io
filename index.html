@@ -14,7 +14,7 @@
     <!-- Font Awesome -->
     <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
     
-    <!-- 模式初始化 -->
+    <!-- 模式初始化脚本（必须保留在头部，用于页面加载时立即设置模式和背景） -->
     <script id="mode-init">
         (function() {
             try {
@@ -149,15 +149,13 @@
         /* 基础body样式 */
         body {
             min-height: 100vh;
-            font-family: LXGW WenKai; /* 全局字体：LXGW WenKai */
-            font-weight: bold;
             overflow-x: hidden;
         }
         
         /* 全局字体设置 */
         * {
-            font-family: LXGW WenKai;
-            font-weight: bold;
+            font-family: LXGW WenKai; /* 全局字体：LXGW WenKai */
+            font-weight: bold; /* 字体粗细：加粗 */
         }
         
         /* 登录容器 */
@@ -432,113 +430,6 @@
             border-color: rgba(25, 215, 135, 0.8);
         }
         
-        /* 底部信息区域 */
-        .footer-info {
-            position: fixed;
-            bottom: 48px;
-            left: 20px;
-            right: 20px;
-            text-align: center;
-            z-index: 888; /* 层级：888 */
-            color: rgba(0, 0, 0, 0.9); /* 文本颜色：深灰色，透明度：0.9 */
-        }
-        
-        /* 夜间模式底部信息 */
-        body.dark-mode .footer-info {
-            color: white; /* 文本颜色：白色 */
-            opacity: 0.99; /* 透明度：0.99 */
-        }
-        
-        /* 夜间模式IP地址 */
-        body.dark-mode .footer-info .ip-address {
-            opacity: 1; /* 透明度：1 */
-        }
-        
-        /* 欢迎信息样式 */
-        .footer-info #welcome {
-            margin-bottom: 10px;
-            font-size: 14px; /* 字体大小：14px */
-        }
-        
-        /* 一言信息样式 */
-        .footer-info #hitokoto {
-            margin-bottom: 10px;
-            font-size: 14px; /* 字体大小：14px */
-        }
-        
-        /* 运行时间样式 */
-        .footer-info .runtime {
-            font-size: 12px; /* 字体大小：12px */
-            opacity: 0.9; /* 透明度：0.9 */
-        }
-        
-        /* IP地址样式 */
-        .footer-info .ip-address {
-            font-weight: bold;
-            color: #25D366; /* 文本颜色：绿色 */
-        }
-
-        /* 链接样式 */
-        .footer-info a {
-            text-decoration: none;
-            font-weight: bold;
-            color: inherit;
-        }
-
-        .footer-info a:hover {
-            text-decoration: underline;
-        }
-
-        /* 夜间模式链接样式 */
-        body.dark-mode .footer-info a {
-            color: white;
-        }
-        
-        /* 夜间模式IP地址 */
-        body.dark-mode .footer-info .ip-address {
-            color: rgba(25, 215, 135, 0.9); /* 文本颜色：青绿色，透明度：0.9 */
-        }
-        
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .login-box {
-                padding: 90px 20px 20px;
-                margin: 20px;
-            }
-            
-            .login-header {
-                font-size: 20px; /* 字体大小：20px */
-                gap: 10px;
-            }
-            
-            .header-icon {
-                width: 35px;
-                height: 35px;
-            }
-            
-            .setting-btn,
-            .mode-switch {
-                width: 35px;
-                height: 35px;
-            }
-            
-            .footer-info {
-                bottom: 48px;
-                left: 10px;
-                right: 10px;
-                padding: 0;
-            }
-            
-            .footer-info #hitokoto,
-            .footer-info #welcome {
-                font-size: 12px; /* 字体大小：12px */
-            }
-            
-            .footer-info .runtime {
-                font-size: 11px; /* 字体大小：11px */
-            }
-        }
-        
         /* 设置按钮 */
         .setting-btn {
             position: absolute;
@@ -597,6 +488,109 @@
         /* 模式切换按钮悬停效果 */
         .mode-switch:hover {
             transform: scale(1.1) rotate(360deg); /* 缩放1.1倍，旋转360度 */
+        }
+        
+        /* 底部信息区域 */
+        .footer-info {
+            position: fixed;
+            bottom: 48px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+            z-index: 888; /* 层级：888 */
+            color: rgba(0, 0, 0, 0.9); /* 文本颜色：深灰色，透明度：0.9 */
+        }
+        
+        /* 夜间模式底部信息 */
+        body.dark-mode .footer-info {
+            color: white; /* 文本颜色：白色 */
+            opacity: 0.99; /* 透明度：0.99 */
+        }
+        
+        /* 一言信息样式 */
+        .footer-info #hitokoto {
+            margin-bottom: 10px;
+            font-size: 14px; /* 字体大小：14px */
+        }
+        
+        /* 欢迎信息样式 */
+        .footer-info #welcome {
+            margin-bottom: 10px;
+            font-size: 14px; /* 字体大小：14px */
+        }
+        
+        /* IP地址样式 */
+        .footer-info .ip-address {
+            font-weight: bold;
+            color: #25D366; /* 文本颜色：绿色 */
+        }
+        
+        /* 运行时间样式 */
+        .footer-info .runtime {
+            font-size: 12px; /* 字体大小：12px */
+            opacity: 0.9; /* 透明度：0.9 */
+        }
+        
+        /* 链接样式 */
+        .footer-info a {
+            text-decoration: none;
+            font-weight: bold;
+            color: inherit;
+        }
+
+        .footer-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* 夜间模式链接样式 */
+        body.dark-mode .footer-info a {
+            color: white;
+        }
+        
+        /* 夜间模式IP地址 */
+        body.dark-mode .footer-info .ip-address {
+            color: rgba(25, 215, 135, 0.9); /* 文本颜色：青绿色，透明度：0.9 */
+            opacity: 1; /* 透明度：1 */
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 90px 20px 20px;
+                margin: 20px;
+            }
+            
+            .login-header {
+                font-size: 20px; /* 字体大小：20px */
+                gap: 10px;
+            }
+            
+            .header-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .setting-btn,
+            .mode-switch {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .footer-info {
+                bottom: 48px;
+                left: 10px;
+                right: 10px;
+                padding: 0;
+            }
+            
+            .footer-info #hitokoto,
+            .footer-info #welcome {
+                font-size: 12px; /* 字体大小：12px */
+            }
+            
+            .footer-info .runtime {
+                font-size: 11px; /* 字体大小：11px */
+            }
         }
         
         /* 禁用登录框内所有元素的文本选择功能 */
@@ -971,7 +965,9 @@
         </div>
     </div>
 
-    <!-- 全局变量 -->
+    <!-- 脚本区域（所有脚本集中在底部，按照依赖顺序排列） -->
+    
+    <!-- 1. 全局变量定义 -->
     <script id="global-variables">
         // 缓存DOM元素，提高访问速度
         const elements = {
@@ -994,33 +990,26 @@
         const PASSWORD_CACHE_KEY = "encrypted_password"; // 密码缓存键名
     </script>
 
-    <!-- 模式切换功能 -->
-    <script id="mode-switch">
-        // 切换白天/夜间模式
-        function toggleMode() {
-            requestAnimationFrame(() => {
-                const body = document.body;
-                const modeIcon = elements.modeIcon;
-                const isDark = body.classList.toggle('dark-mode');
-                
-                // 切换对应的CSS类
-                body.classList.toggle('hope-ui-light', !isDark);
-                body.classList.toggle('hope-ui-dark', isDark);
-                
-                if (isDark) {
-                    modeIcon.textContent = '🌙'; // 夜间模式图标
-                    localStorage.setItem('darkMode', 'true'); // 保存模式设置
-                    setTimeout(() => showToast('已切换到夜间模式'), 0);
-                } else {
-                    modeIcon.textContent = '☀️'; // 白天模式图标
-                    localStorage.setItem('darkMode', 'false'); // 保存模式设置
-                    setTimeout(() => showToast('已切换到白天模式'), 0);
+    <!-- 2. Toast消息功能（基础UI组件，被其他模块使用） -->
+    <script id="toast-message">
+        function showToast(message, isError = false) {
+            const fragment = document.createDocumentFragment();
+            const toast = document.createElement('div');
+            toast.className = `toast-notice ${isError ? 'toast-error' : ''}`;
+            toast.textContent = message;
+            fragment.appendChild(toast);
+            document.body.appendChild(fragment);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
                 }
-            });
+            }, 3000);
         }
     </script>
 
-    <!-- 密码加密功能 -->
+    <!-- 3. 密码加密功能 -->
     <script id="password-encryption">
         // 哈希密码
         async function hashPassword(password) {
@@ -1107,7 +1096,7 @@
         }
     </script>
 
-    <!-- 设置管理功能 -->
+    <!-- 4. 设置管理功能 -->
     <script id="settings-management">
         // 保存设置
         function saveSettings(settings) {
@@ -1136,7 +1125,33 @@
         }
     </script>
 
-    <!-- 清除按钮功能 -->
+    <!-- 5. 模式切换功能 -->
+    <script id="mode-switch">
+        // 切换白天/夜间模式
+        function toggleMode() {
+            requestAnimationFrame(() => {
+                const body = document.body;
+                const modeIcon = elements.modeIcon;
+                const isDark = body.classList.toggle('dark-mode');
+                
+                // 切换对应的CSS类
+                body.classList.toggle('hope-ui-light', !isDark);
+                body.classList.toggle('hope-ui-dark', isDark);
+                
+                if (isDark) {
+                    modeIcon.textContent = '🌙'; // 夜间模式图标
+                    localStorage.setItem('darkMode', 'true'); // 保存模式设置
+                    setTimeout(() => showToast('已切换到夜间模式'), 0);
+                } else {
+                    modeIcon.textContent = '☀️'; // 白天模式图标
+                    localStorage.setItem('darkMode', 'false'); // 保存模式设置
+                    setTimeout(() => showToast('已切换到白天模式'), 0);
+                }
+            });
+        }
+    </script>
+
+    <!-- 6. 清除按钮功能 -->
     <script id="clear-button">
         // 清除输入
         function clearInput() {
@@ -1209,7 +1224,7 @@
         }
     </script>
 
-    <!-- 登录功能 -->
+    <!-- 7. 登录功能 -->
     <script id="login-function">
         async function login() {
             let inputPwd = elements.passwordInput.value === '********' && realSavedPwd ? realSavedPwd : elements.passwordInput.value.trim();
@@ -1259,7 +1274,7 @@
         }
     </script>
 
-    <!-- 背景图设置功能 -->
+    <!-- 8. 背景图设置功能 -->
     <script id="background-setting">
         // 打开背景图设置弹窗
         function openBgModal() {
@@ -1577,39 +1592,32 @@
         }
     </script>
 
-    <!-- Toast消息功能 -->
-    <script id="toast-message">
-        function showToast(message, isError = false) {
-            const fragment = document.createDocumentFragment();
-            const toast = document.createElement('div');
-            toast.className = `toast-notice ${isError ? 'toast-error' : ''}`;
-            toast.textContent = message;
-            fragment.appendChild(toast);
-            document.body.appendChild(fragment);
-            
-            // 3秒后自动移除
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 3000);
-        }
-    </script>
-
-    <!-- 底部信息功能脚本 -->
+    <!-- 9. 底部信息功能脚本 -->
     <script id="footer-info">
         // 加载访客信息
         function loadVisitorInfo() {
           const welcomeEl = document.getElementById('welcome');
           
-          // 主API：使用返回中国地址的API
-          fetch('https://v2.xxapi.cn/api/ip')
+          // 主API：使用api.nange.cn
+          fetch('http://api.nange.cn/json')
             .then(response => response.json())
             .then(data => {
-              if (data.code === 200 && data.data) {
-                const ip = data.data.ip;
-                const address = data.data.address || '';
-                const isp = data.data.isp || '';
+              // 验证返回数据是否完整
+              if (data && data.ip) {
+                const ip = data.ip;
+                const country = data.country || '';
+                const region = data.region || '';
+                const city = data.city || '';
+                const district = data.district || '';
+                const isp = data.isp || data.isp_org || '';
+                
+                // 构建完整地址
+                let address = '';
+                if (country) address += country;
+                if (region) address += region;
+                if (city) address += city;
+                if (district) address += district;
+                
                 const welcomeMessage = `欢迎 <a href="http://api.nange.cn/" target="_blank">${address}</a> <a href="http://test.ustc.edu.cn/" target="_blank">${isp} IP：</a> <a href="https://ipw.cn/ip/" target="_blank" class="ip-address">${ip}</a> 的小伙伴访问本站`;
                 
                 if (welcomeEl) {
@@ -1620,50 +1628,29 @@
             })
             .catch(error => {
               console.error("主API获取IP信息失败：", error);
-              // 失败时使用备用API (ip-api.com)
-              fetch('http://demo.ip-api.com/json/?lang=zh-CN')
+              // 备用API：使用返回中国地址的API
+              fetch('https://v2.xxapi.cn/api/ip')
                 .then(response => response.json())
                 .then(data => {
-                  if (data.status === 'success') {
-                    const ip = data.query;
-                    const city = data.city || '';
-                    const region = data.regionName || '';
-                    const country = data.country || '';
-                    const isp = data.isp || '';
-                    let welcomeMessage;
+                  if (data.code === 200 && data.data) {
+                    const ip = data.data.ip;
+                    const address = data.data.address || '';
+                    const isp = data.data.isp || '';
+                    const welcomeMessage = `欢迎 <a href="http://api.nange.cn/" target="_blank">${address}</a> <a href="http://test.ustc.edu.cn/" target="_blank">${isp} IP：</a> <a href="https://ipw.cn/ip/" target="_blank" class="ip-address">${ip}</a> 的小伙伴访问本站`;
                     
-                    if (country === '中国') {
-                                        welcomeMessage = `欢迎 <a href="http://api.nange.cn/" target="_blank">${region}${city}</a> <a href="http://test.ustc.edu.cn/" target="_blank">${isp} IP：</a> <a href="https://ipw.cn/ip/" target="_blank" class="ip-address">${ip}</a> 的小伙伴访问本站`;
-                                    } else {
-                                        welcomeMessage = `欢迎 <a href="http://api.nange.cn/" target="_blank">${country}</a> <a href="http://test.ustc.edu.cn/" target="_blank">${isp} IP：</a> <a href="https://ipw.cn/ip/" target="_blank" class="ip-address">${ip}</a> 的小伙伴访问本站`;
-                                    }
-                                    
-                                    if (welcomeEl) {
-                                        welcomeEl.innerHTML = welcomeMessage;
+                    if (welcomeEl) {
+                      welcomeEl.innerHTML = welcomeMessage;
                       welcomeEl.classList.add('loaded');
                     }
                   }
                 })
                 .catch(backupError => {
                   console.error("备用API获取失败：", backupError);
-                  // 再次失败时使用ipify API获取仅IP信息
-                  fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
-                      const ip = data.ip;
-                      const welcomeMessage = `欢迎 <a href="https://ipw.cn/ip/" target="_blank" class="ip-address">${ip}</a> 的小伙伴访问本站`;
-                      if (welcomeEl) {
-                        welcomeEl.innerHTML = welcomeMessage;
-                        welcomeEl.classList.add('loaded');
-                      }
-                    })
-                    .catch(finalError => {
-                      console.error("所有API获取失败：", finalError);
-                      if (welcomeEl) {
-                        welcomeEl.textContent = "欢迎访问本站";
-                        welcomeEl.classList.add('loaded');
-                      }
-                    });
+                  // 最终备用：使用本地欢迎信息
+                  if (welcomeEl) {
+                    welcomeEl.textContent = "欢迎访问本站";
+                    welcomeEl.classList.add('loaded');
+                  }
                 });
             });
         }
@@ -1817,7 +1804,7 @@
         }
     </script>
 
-    <!-- 页面初始化 -->
+    <!-- 10. 页面初始化 -->
     <script id="page-init">
         document.addEventListener('DOMContentLoaded', async function() {
             try {
@@ -1905,5 +1892,6 @@
             }
         });
     </script>
+
 </body>
 </html>
