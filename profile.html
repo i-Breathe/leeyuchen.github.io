@@ -2221,7 +2221,7 @@ permalink: /profile/
             const isLogin = StorageManager.getItem('isLogin') === 'true';
             if (!isLogin) {
                 // 未登录，重定向到登录页面
-                window.location.href = 'index.html';
+                window.location.href = '/';
                 return;
             }
             
@@ -2467,5 +2467,6 @@ permalink: /profile/
     </script>
 </body>
 </html>
+
 
 
