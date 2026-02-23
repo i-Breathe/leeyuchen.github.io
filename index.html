@@ -1845,6 +1845,29 @@
                             this.focus();
                         }
                     });
+                    
+                    // 方法1：使用input事件监听器，实时检测输入变化
+                    elements.passwordInput.addEventListener('input', function() {
+                        if (realSavedPwd) {
+                            // 只有当输入值不是用户手动输入时才强制设置（避免影响正常输入）
+                            if (this.value !== realSavedPwd && this.value !== '') {
+                                this.value = '********';
+                            }
+                        }
+                    });
+                    
+                    // 方法2：使用短时间轮询，确保浏览器自动填充后立即修正
+                    let checkCount = 0;
+                    const checkInterval = setInterval(() => {
+                        if (realSavedPwd && elements.passwordInput.value !== '********') {
+                            elements.passwordInput.value = '********';
+                        }
+                        checkCount++;
+                        // 检查20次后停止（约1秒）
+                        if (checkCount >= 20) {
+                            clearInterval(checkInterval);
+                        }
+                    }, 50); // 每50毫秒检查一次
                 }
                 
                 // 设置自动登录状态
