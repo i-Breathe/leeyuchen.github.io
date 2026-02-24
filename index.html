@@ -7,13 +7,10 @@
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.svg">
     <link rel="manifest" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/site.webmanifest">
-    
     <!-- 引入字体 -->
     <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css">
-    
     <!-- Font Awesome -->
     <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
-    
     <!-- 模式初始化脚本（必须保留在头部，用于页面加载时立即设置模式和背景） -->
     <script id="mode-init">
         (function() {
@@ -88,58 +85,28 @@
     
     <!-- 样式定义 -->
     <style>
-        /* CSS属性说明（修改后会影响的部分）：
-        
-        背景相关：
-        - background-color: 背景颜色，影响整个页面或元素背景
-        - background-image: 背景图片，可通过设置弹窗修改
-        - background-size: 背景图片大小，如cover(覆盖)或contain(包含)
-        - background-position: 背景图片位置，如center(居中)
-        
-        字体相关：
-        - font-family: 字体类型，全局使用LXGW WenKai
-        - font-size: 字体大小，影响文字显示大小
-        - font-weight: 字体粗细，如normal(正常)或bold(加粗)
-        - color: 文字颜色，不同模式下有不同默认值
-        
-        布局相关：
-        - width/height: 宽度/高度，影响元素大小
-        - margin/padding: 外边距/内边距，影响元素间距
-        - display: 显示方式，如flex(弹性布局)
-        - position: 定位方式，如relative(相对)或absolute(绝对)
-        
-        边框和圆角：
-        - border: 边框样式，如宽度、颜色、样式
-        - border-radius: 圆角大小，影响元素边角圆润度
-        
-        阴影和效果：
-        - box-shadow: 盒子阴影，增加立体感
-        - text-shadow: 文字阴影，增强文字效果
-        - backdrop-filter: 背景模糊效果，影响半透明元素
-        
-        动画和过渡：
-        - animation: 动画效果，如浮动、呼吸动画
-        - transition: 过渡效果，如悬停时的变化
-        
-        模式相关：
-        - body.dark-mode: 夜间模式样式，修改时注意对应白天模式
-        - 颜色变量: 可通过CSS变量统一管理颜色
-        */
+        /* CSS变量默认值定义 */
+        :root {
+            --light-bg-image: url("https://wp.upx8.com/api.php");
+            --dark-bg-image: url("http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg");
+        }
         
         /* 全局样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: LXGW WenKai; /* 全局字体：LXGW WenKai */
+            font-weight: bold; /* 字体粗细：加粗 */
         }
         
         /* 背景样式 - 包含共同的背景属性 */
         .hope-ui-light,
         .hope-ui-dark {
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
+            background-repeat: no-repeat; /* 背景重复：不重复 */
+            background-size: cover; /* 背景大小：覆盖整个容器 */
+            background-attachment: fixed; /* 背景附件：固定，不随滚动移动 */
+            background-position: center; /* 背景位置：居中 */
         }
         
         /* 白天模式背景 - 使用自定义背景图片变量 */
@@ -156,74 +123,68 @@
         
         /* 基础body样式 */
         body {
-            min-height: 100vh;
-            overflow-x: hidden;
+            min-height: 100vh; /* 最小高度：100vh，占满整个视口高度 */
+            overflow-x: hidden; /* 水平溢出：隐藏，防止横向滚动 */
         }
         
-        /* 全局字体设置 */
-        * {
-            font-family: LXGW WenKai; /* 全局字体：LXGW WenKai */
-            font-weight: bold; /* 字体粗细：加粗 */
-        }
-        
-        /* 登录容器 */
+        /* 登录容器 - 用于居中显示登录框，占满整个视口高度 */
         .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
+            display: flex; /* 显示方式：弹性布局，用于居中登录框 */
+            align-items: center; /* 对齐方式：垂直居中 */
+            justify-content: center; /* 对齐方式：水平居中 */
+            min-height: 100vh; /* 最小高度：100vh，占满整个视口 */
+            padding: 20px; /* 内边距：20px，确保在小屏幕上有足够空间 */
         }
         
-        /* 登录框样式 */
+        /* 白天模式登录框样式 - 半透明背景、模糊效果、圆角边框，实际网页中显示为白色半透明卡片 */
         .login-box {
-            width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.8); /* 背景透明度：0.8 */
-            backdrop-filter: blur(5px); /* 背景模糊效果：5px */
-            -webkit-backdrop-filter: blur(5px);
-            border-radius: 20px; /* 圆角大小：20px */
-            padding: 90px 30px 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 999; /* 层级：999 */
-            position: relative;
+            width: 100%; /* 宽度：100%，自适应容器 */
+            max-width: 400px; /* 最大宽度：400px，限制最大宽度 */
+            background: rgba(255, 255, 255, 0.8); /* 背景颜色：白色，透明度：0.8，半透明效果 */
+            backdrop-filter: blur(6px); /* 背景模糊效果：6px，毛玻璃效果 */
+            -webkit-backdrop-filter: blur(6px); /* 背景模糊效果：6px (Safari兼容) */
+            border-radius: 20px; /* 圆角大小：20px，圆角边框 */
+            padding: 90px 30px 30px; /* 内边距：90px 30px 30px，顶部预留标题空间 */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* 盒子阴影：0 8px 32px rgba(0, 0, 0, 0.1)，立体效果 */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 边框：1px solid rgba(255, 255, 255, 0.2)，轻微边框 */
+            z-index: 999; /* 层级：999，确保在背景之上 */
+            position: relative; /* 定位方式：相对定位，用于内部元素绝对定位 */
         }
         
-        /* 夜间模式登录框 */
+        /* 夜间模式登录框 - 深色半透明背景，实际网页中显示为黑色半透明卡片 */
         body.dark-mode .login-box {
-            background: rgba(0, 0, 0, 0.8); /* 背景透明度：0.8 */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white; /* 文本颜色：白色 */
+            background: rgba(0, 0, 0, 0.7); /* 背景颜色：黑色，透明度：0.7，半透明效果 */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 边框：1px solid rgba(255, 255, 255, 0.1)，轻微白色边框 */
+            color: white; /* 文本颜色：白色，适配夜间模式 */
         }
         
-        /* 登录头部 */
+        /* 登录头部 - 包含头像和标题，带有浮动动画，实际网页中显示在登录框顶部中央 */
         .login-header {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-size: 24px; /* 字体大小：24px */
-            font-weight: 700;
-            z-index: 999;
-            animation: float 3s ease-in-out infinite; /* 浮动动画：3秒 */
+            position: absolute; /* 定位方式：绝对定位，相对于登录框 */
+            top: 20px; /* 顶部位置：20px，距离登录框顶部20px */
+            left: 50%; /* 左侧位置：50%，水平居中 */
+            transform: translateX(-50%); /* 变换：水平居中，修正位置 */
+            display: flex; /* 显示方式：弹性布局，用于排列头像和标题 */
+            align-items: center; /* 对齐方式：垂直居中 */
+            justify-content: center; /* 对齐方式：水平居中 */
+            gap: 12px; /* 间距：12px，头像和标题之间的间距 */
+            font-size: 24px; /* 字体大小：24px，标题大小 */
+            font-weight: 700; /* 字体粗细：加粗，标题加粗 */
+            z-index: 999; /* 层级：999，确保在登录框之上 */
+            animation: float 3s ease-in-out infinite; /* 浮动动画：3秒，上下浮动效果 */
         }
         
-        /* 浮动动画定义 */
+        /* 浮动动画定义 - 登录头部上下浮动效果 */
         @keyframes float {
             0%, 100% {
-                transform: translateX(-50%) translateY(0px);
+                transform: translateX(-50%) translateY(0px); /* 变换：水平居中，垂直位置0px */
             }
             50% {
-                transform: translateX(-50%) translateY(-8px);
+                transform: translateX(-50%) translateY(-8px); /* 变换：水平居中，垂直位置-8px */
             }
         }
         
-        /* 呼吸光圈动画定义 */
+        /* 呼吸光圈动画定义 - 头像呼吸效果 */
         @keyframes breathe {
             0% { box-shadow: 0 0 3.5px 3.5px rgba(255, 0, 255, 0.59); }
             25% { box-shadow: 0 0 3.5px 3.5px rgba(0, 250, 255, 0.59); }
@@ -232,363 +193,502 @@
             100% { box-shadow: 0 0 3.5px 3.5px rgba(255, 0, 255, 0.59); }
         }
         
-        /* 头像图标样式 */
+        /* 头像图标样式 - 圆形头像，带有呼吸动画 */
         .header-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            width: 40px; /* 宽度：40px */
+            height: 40px; /* 高度：40px */
+            border-radius: 50%; /* 圆角大小：50% */
+            object-fit: cover; /* 对象适配：覆盖 */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* 盒子阴影：0 2px 8px rgba(0,0,0,0.15) */
+            border: 2px solid rgba(255, 255, 255, 0.2); /* 边框：2px solid rgba(255, 255, 255, 0.2) */
+            cursor: pointer; /* 光标：指针 */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动 */
             animation: breathe 45s infinite; /* 呼吸动画：45秒 */
         }
         
-        /* 头像悬停效果 */
+        /* 头像悬停效果 - 缩放和旋转动画 */
         .header-icon:hover {
             transform: scale(1.1) rotate(10deg); /* 缩放1.1倍，旋转10度 */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* 盒子阴影：0 2px 8px rgba(0,0,0,0.15) */
         }
         
-        /* 标题文本样式 */
+        /* 标题文本样式 - 渐变文字，带有下划线跑动效果 */
         .header-text {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe); /* 渐变颜色：紫色到浅紫色 */
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff7675, #25D366, #ff4757, #6c5ce7, #4facfe, #ffbf75 ); /* 渐变颜色：粉-绿-红-紫-蓝-橙 */
+            -webkit-background-clip: text; /* 背景裁剪：文本 */
+            -webkit-text-fill-color: transparent; /* 文本填充颜色：透明 */
+            background-clip: text; /* 背景裁剪：文本 */
+            font-weight: 700; /* 字体粗细：加粗 */
+            cursor: pointer; /* 光标：指针 */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动 */
+            position: relative; /* 定位方式：相对定位 */
+            display: inline-block; /* 显示方式：内联块级元素 */
         }
         
-        /* 标题悬停效果 */
+        /* 标题悬停效果 - 缩放动画 */
         .header-text:hover {
             transform: scale(1.05); /* 缩放1.05倍 */
         }
         
-        /* 输入框容器 */
+        /* 标题下划线跑动效果 - 青绿粉红渐变 */
+        .header-text::after {
+            content: ''; /* 内容：空 */
+            position: absolute; /* 定位方式：绝对定位 */
+            bottom: -5px; /* 底部位置：-5px */
+            left: 0; /* 左侧位置：0 */
+            width: 0; /* 宽度：0 */
+            height: 2px; /* 高度：2px */
+            background: linear-gradient(90deg, rgba(25, 215, 135, 1), rgba(255, 105, 180, 1)); /* 渐变颜色：青绿到粉红 */
+            transition: width 0.8s ease; /* 过渡效果：宽度 0.8s 缓动 */
+        }
+        
+        /* 标题选中效果 - 显示下划线跑动动画 */
+        .header-text:hover::after,
+        .header-text:focus::after {
+            width: 100%; /* 宽度：100% */
+        }
+        
+        /* 输入框容器 - 带有下划线跑动效果，实际网页中显示为透明背景的输入框 */
         .input-container {
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* 底部外边距：20px，与下方元素保持间距 */
+            position: relative; /* 定位方式：相对定位，用于下划线绝对定位 */
         }
         
-        /* 输入框样式 */
+        /* 白天模式输入框样式 - 下划线样式，透明背景，实际网页中显示为仅有底部浅灰色下划线的透明输入框 */
         .input-container input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px; /* 圆角大小：20px */
-            background: rgba(255, 255, 255, 0.9); /* 背景透明度：0.9 */
-            font-size: 14px; /* 字体大小：14px */
-            text-align: center;
-            outline: none;
-            transition: all 0.3s ease;
-            color: #2d3748; /* 文本颜色：深灰色 */
+            width: 100%; /* 宽度：100%，自适应容器 */
+            padding: 12px 0; /* 内边距：12px 0，上下内边距 */
+            border: none; /* 边框：无，仅保留底部边框 */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 下边框：1px solid rgba(0, 0, 0, 0.2)，浅灰色下划线 */
+            background: transparent; /* 背景：透明，无背景色 */
+            font-size: 14px; /* 字体大小：14px，输入文字大小 */
+            text-align: center; /* 文本对齐：居中，输入文字居中显示 */
+            outline: none; /* 轮廓：无，去除默认聚焦轮廓 */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动，平滑过渡 */
+            color: rgba(0, 0, 0, 1); /* 文本颜色：黑色，透明度：1，输入文字颜色 */
+            position: relative; /* 定位方式：相对定位，用于z-index控制 */
         }
         
-        /* 输入框占位符样式 */
+        /* 白天模式输入框占位符样式 - 半透明文字 */
         .input-container input::placeholder {
-            text-align: center;
-            font-size: 14px;
-            color: #aaa; /* 占位符颜色：浅灰色 */
+            text-align: center; /* 文本对齐：居中 */
+            font-size: 14px; /* 字体大小：14px */
+            color: rgba(0, 0, 0, 0.35); /* 占位符颜色：黑色，透明度：0.35 */
+            text-shadow: none; /* 文本阴影：无 */
         }
         
-        /* 夜间模式输入框 */
+        /* 夜间模式输入框 - 白色边框和文字，实际网页中显示为仅有底部白色下划线的透明输入框 */
         body.dark-mode .input-container input {
-            background: rgba(255, 255, 255, 0.1); /* 背景透明度：0.1 */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white; /* 文本颜色：白色 */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* 下边框：1px solid rgba(255, 255, 255, 0.3)，白色下划线 */
+            color: rgba(255, 255, 255, 1); /* 文本颜色：白色，透明度：1，白色输入文字 */
         }
         
-        /* 输入框聚焦效果 */
+        /* 夜间模式占位符 - 半透明白色文字 */
+        body.dark-mode .input-container input::placeholder {
+            color: rgba(255, 255, 255, 0.35); /* 占位符颜色：白色，透明度：0.35 */
+        }
+        
+        /* 白天模式输入框下划线 - 紫红色渐变，实际网页中显示为鼠标悬停时从左到右的跑动效果 */
+        .input-container::after {
+            content: ''; /* 内容：空，伪元素 */
+            position: absolute; /* 定位方式：绝对定位，相对于输入框容器 */
+            bottom: 0; /* 底部位置：0，与输入框底部对齐 */
+            left: 0; /* 左侧位置：0，从左侧开始 */
+            width: 0; /* 宽度：0，初始隐藏 */
+            height: 1px; /* 高度：1px，与输入框边框同高 */
+            background: linear-gradient(90deg, rgba(128, 0, 128, 1), rgba(255, 0, 255, 1)); /* 渐变颜色：紫红色渐变 */
+            transition: width 0.8s ease; /* 过渡效果：宽度 0.8s 缓动，跑动动画效果 */
+        }
+        
+        /* 白天模式输入框悬停效果 - 下划线跑动动画 */
+        .input-container:hover::after {
+            width: 100%; /* 宽度：100% */
+        }
+        
+        /* 白天模式输入框聚焦效果 - 向上浮动 */
         .input-container input:focus {
-            transform: translateY(-2px);
-            border-color: #6c5ce7; /* 边框颜色：紫色 */
-            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+            transform: translateY(-2px); /* 变换：向上移动2px */
         }
         
-        /* 夜间模式输入框聚焦效果 */
-        body.dark-mode .input-container input:focus {
-            border-color: #a29bfe; /* 边框颜色：浅紫色 */
-            box-shadow: 0 0 0 2px rgba(162, 155, 254, 0.3);
+        /* 白天模式文本选择颜色 - 青绿色背景 */
+        .input-container input::selection {
+            background: rgba(25, 215, 135, 0.6); /* 文本选择颜色：青绿色，透明度：0.6 */
         }
         
-        /* 复选框容器 */
+        /* 复选框容器 - 用于布局记住密码和自动登录选项，实际网页中显示为左右两侧的复选框选项 */
         .checkbox-wrapper {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-            font-size: 13px; /* 字体大小：13px */
-            padding: 0 5px;
+            display: flex; /* 显示方式：弹性布局，用于排列复选框 */
+            justify-content: space-between; /* 对齐方式：两端对齐，左右分布 */
+            margin: 20px 0; /* 外边距：20px 0，与上下元素保持间距 */
+            font-size: 13px; /* 字体大小：13px，选项文字大小 */
+            padding: 0 5px; /* 内边距：0 5px，左右内边距 */
         }
         
-        /* 单个复选框 */
+        /* 单个复选框 - 包含复选框和标签，实际网页中显示为带有自定义样式的复选框 */
         .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            user-select: none;
+            display: flex; /* 显示方式：弹性布局，用于排列复选框和标签 */
+            align-items: center; /* 对齐方式：居中对齐，垂直居中 */
+            gap: 8px; /* 间距：8px，复选框和标签之间的间距 */
+            cursor: pointer; /* 光标：指针，悬停时显示指针 */
+            user-select: none; /* 用户选择：禁止，防止文本被选中 */
+            text-shadow: none; /* 文本阴影：无 */
         }
         
-        /* 复选框样式 */
+        /* 白天模式复选框样式 - 自定义样式，带有背景模糊 */
         .checkbox-item input {
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.9); /* 背景透明度：0.9 */
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            position: relative;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            appearance: none; /* 外观：无 */
+            width: 14px; /* 宽度：14px */
+            height: 14px; /* 高度：14px */
+            border-radius: 2px; /* 圆角大小：2px */
+            background: rgba(255, 255, 255, 0.9); /* 背景颜色：白色，透明度：0.9 */
+            border: 1px solid rgba(0, 0, 0, 0.1); /* 边框：1px solid rgba(0, 0, 0, 0.1) */
+            position: relative; /* 定位方式：相对定位 */
+            cursor: pointer; /* 光标：指针 */
+            backdrop-filter: blur(8px); /* 背景模糊效果：8px */
+            -webkit-backdrop-filter: blur(8px); /* 背景模糊效果：8px (Safari) */
         }
         
-        /* 复选框选中状态 */
+        /* 白天模式复选框选中状态 - 渐变背景和缩放效果 */
         .checkbox-item input:checked {
             background: linear-gradient(135deg, #6c5ce7, #a29bfe); /* 渐变颜色：紫色到浅紫色 */
-            border-color: #6c5ce7;
-            transform: scale(1.05);
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
+            border-color: #6c5ce7; /* 边框颜色：紫色 */
+            transform: scale(1.05); /* 缩放1.05倍 */
+            backdrop-filter: none; /* 背景模糊效果：无 */
+            -webkit-backdrop-filter: none; /* 背景模糊效果：无 (Safari) */
         }
         
-        /* 夜间模式复选框 */
+        /* 夜间模式复选框 - 深色背景和白色边框 */
         body.dark-mode .checkbox-item input {
-            background: rgba(255, 255, 255, 0.1); /* 背景透明度：0.1 */
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1); /* 背景颜色：白色，透明度：0.1 */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 边框：1px solid rgba(255, 255, 255, 0.2) */
         }
         
-        /* 复选框选中标记 */
+        /* 复选框选中标记 - 白色对勾 */
         .checkbox-item input:checked::after {
-            content: "✓";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            content: "✓"; /* 内容：✓ */
+            position: absolute; /* 定位方式：绝对定位 */
+            top: 50%; /* 顶部位置：50% */
+            left: 50%; /* 左侧位置：50% */
+            transform: translate(-50%, -50%); /* 变换：居中 */
             color: #fff; /* 标记颜色：白色 */
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 12px; /* 字体大小：12px */
+            font-weight: bold; /* 字体粗细：加粗 */
         }
         
-        /* 按钮组 */
+        /* 按钮组 - 包含清除和登录按钮，实际网页中显示为左右两个按钮 */
         .btn-group {
-            display: flex;
-            gap: 10px;
+            display: flex; /* 显示方式：弹性布局，用于排列按钮 */
+            gap: 10px; /* 间距：10px，按钮之间的间距 */
         }
         
-        /* 按钮基础样式 */
+        /* 按钮基础样式 - 圆角按钮，带有模糊效果，实际网页中显示为圆角模糊背景按钮 */
         .btn {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid transparent;
-            border-radius: 20px; /* 圆角大小：20px */
-            font-size: 14px; /* 字体大小：14px */
-            font-weight: 600;
-            color: #fff; /* 文本颜色：白色 */
-            cursor: pointer;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-            backface-visibility: hidden;
-            transform: translateZ(0);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            flex: 1; /* 弹性伸缩：1，平均分配宽度 */
+            padding: 6px 10px; /* 内边距：8px 10px，上下左右内边距 */
+            border: 1px solid transparent; /* 边框：1px solid transparent，透明边框 */
+            border-radius: 25px; /* 圆角大小：25px，圆角按钮 */
+            font-size: 15px; /* 字体大小：15px，按钮文字大小 */
+            font-weight: bolder; /* 字体粗细：加粗，按钮文字加粗 */
+            color: #fff; /* 文本颜色：白色，按钮文字颜色 */
+            cursor: pointer; /* 光标：指针，悬停时显示指针 */
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2); /* 文本阴影：0 1px 2px rgba(0,0,0,0.2)，文字立体效果 */
+            backface-visibility: hidden; /* 背面可见性：隐藏，3D变换优化 */
+            transform: translateZ(0); /* 变换：translateZ(0)，硬件加速 */
+            backdrop-filter: blur(8px); /* 背景模糊效果：8px，毛玻璃效果 */
+            -webkit-backdrop-filter: blur(8px); /* 背景模糊效果：8px (Safari兼容) */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动，平滑过渡 */
+            min-height: 30px; /* 最小高度：30px，确保按钮高度一致 */
+            display: flex; /* 显示方式：弹性布局，用于排列图标和文字 */
+            align-items: center; /* 对齐方式：居中对齐，垂直居中 */
+            justify-content: center; /* 对齐方式：居中对齐，水平居中 */
+            gap: 6px; /* 间距：6px，图标和文字之间的间距 */
         }
         
-        /* 清除按钮样式 */
+        /* 白天模式清除按钮样式 - 完全透明背景 */
         .btn-clear {
-            background: rgba(180, 188, 208, 0.9); /* 背景颜色：浅灰色，透明度：0.9 */
-            color: #2d3748; /* 文本颜色：深灰色 */
+            background: rgba(210, 210, 210, 0.5); /* 背景颜色：深灰色，透明度：0.6 */
+            color: rgba(1, 7, 15, 0.85); /* 文本颜色：蓝黑色 */
+            font-size: 15px; /* 字体大小：15px */
+            font-weight: bolder; /* 字体粗细：加粗 */
+            text-shadow: none; /* 文本阴影：无 */
         }
         
-        /* 清除按钮悬停效果 */
+        /* 白天模式清除按钮悬停效果 - 上浮和边框颜色变化 */
         .btn-clear:hover {
-            transform: translateY(-2px);
-            border-color: rgba(25, 215, 135, 0.8); /* 边框颜色：青绿色，透明度：0.8 */
-            background: rgba(180, 188, 208, 0.9);
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            background: rgba(226, 226, 226, 0.6); /* 背景颜色：深灰色，透明度：0.6 */
+            border-color: rgba(28, 108, 184, 0.8); /* 边框颜色：蓝色，透明度：0.8 */
+
         }
         
-        /* 夜间模式清除按钮 */
+        /* 夜间模式清除按钮 - 深灰色半透明背景 */
         body.dark-mode .btn-clear {
-            background: rgba(180, 188, 208, 0.9);
-            color: #2d3748;
+           /* background: rgba(95, 95, 95, 0.6);  背景颜色：深灰色，透明度：0.6 */
+            background: transparent;
+            color: rgba(200, 200, 200, 0.99); /* 文本颜色：白色，透明度：0.9 */
+            font-size: 15px; /* 字体大小：15px */
+            font-weight: bold; /* 字体粗细：粗体 */
+            padding: 6px 10px;
+            border: 1px solid transparent;
+            border-radius: 25px;
         }
         
-        /* 夜间模式清除按钮悬停效果 */
+        /* 夜间模式清除按钮 - 悬停效果上浮和边框颜色变化 */
         body.dark-mode .btn-clear:hover {
-            transform: translateY(-2px);
-            border-color: rgba(25, 215, 135, 0.8);
-            background: rgba(180, 188, 208, 0.9);
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            background: rgba(95, 95, 95, 0.6); /* 背景颜色：深灰色，透明度：0.6 */
+            border-color: rgba(25, 215, 135, 0.8); /* 边框颜色：青绿色，透明度：0.8 */
+
         }
         
-        /* 登录按钮样式 */
+        /* 白天模式登录按钮 - 浅绿到绿色到青色到浅蓝的渐变背景，透明度0.7*/
         .btn-login {
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9)); /* 渐变颜色：紫色到浅紫色 */
+            background: linear-gradient(135deg, rgba(162, 247, 141, 0.7), rgba(46, 213, 115, 0.7), rgba(24, 220, 255, 0.7), rgba(79, 172, 254, 0.7)); /* 渐变颜色：浅绿到绿色到青色到浅蓝，透明度0.7 */
+            color: rgba(1, 7, 15, 0.85); /* 文本颜色：蓝黑色 */
+            font-size: 15px; /* 字体大小：15px */
+            font-weight: bold; /* 字体粗细：粗体 */
+            text-shadow: none; /* 文本阴影：无 */
         }
         
-        /* 登录按钮悬停效果 */
+        /* 夜间模式登录按钮 - 浅蓝到青色到绿色到浅绿的渐变背景，透明度0.5 */
+        body.dark-mode .btn-login {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.5), rgba(24, 220, 255, 0.5), rgba(46, 213, 115, 0.5), rgba(162, 247, 141, 0.5)); /* 渐变颜色：浅蓝到青色到绿色到浅绿，透明度0.5 */
+            color: rgb(202, 202, 202); /* 文本颜色：白色 */
+            font-size: 15px; /* 字体大小：15px */
+            font-weight: bold; /* 字体粗细：粗体 */
+            text-shadow: none; /* 文本阴影：无 */
+        }
+
+        /* 白天模式登录按钮悬停效果 - 上浮和边框颜色变化 */
         .btn-login:hover {
-            transform: translateY(-2px);
-            border-color: rgba(25, 215, 135, 0.8);
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            border-color: rgba(184, 28, 158, 0.8); /* 边框颜色：紫色，透明度：0.8 */
         }
         
-        /* 设置按钮 */
+        /* 夜间模式登录按钮悬停效果 - 上浮和边框颜色变化 */
+        body.dark-mode .btn-login:hover {
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            border-color: rgba(25, 215, 135, 0.8); /* 边框颜色：青绿色，透明度：0.8 */
+        }
+        
+        /* 白天模式设置按钮 - 用于打开背景设置弹窗 */
         .setting-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+            position: absolute; /* 定位方式：绝对定位 */
+            top: 20px; /* 顶部位置：20px */
+            left: 20px; /* 左侧位置：20px */
+            width: 35px; /* 宽度：35px */
+            height: 35px; /* 高度：35px */
+            border-radius: 50%; /* 圆角大小：50% */
             background: rgba(255, 255, 255, 0.8); /* 背景颜色：白色，透明度：0.8 */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(8px); /* 背景模糊效果：8px */
+            -webkit-backdrop-filter: blur(8px); /* 背景模糊效果：8px (Safari) */
+            display: flex; /* 显示方式：弹性布局 */
+            align-items: center; /* 对齐方式：居中对齐 */
+            justify-content: center; /* 对齐方式：居中对齐 */
+            cursor: pointer; /* 光标：指针 */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动 */
             z-index: 999; /* 层级：999 */
         }
         
-        /* 夜间模式设置按钮 */
+        /* 夜间模式设置按钮 - 深色背景 */
         body.dark-mode .setting-btn {
             background: rgba(0, 0, 0, 0.5); /* 背景颜色：黑色，透明度：0.5 */
             color: white; /* 文本颜色：白色 */
         }
         
-        /* 设置按钮悬停效果 */
+        /* 设置按钮悬停效果 - 缩放和旋转动画 */
         .setting-btn:hover {
             transform: scale(1.1) rotate(360deg); /* 缩放1.1倍，旋转360度 */
         }
         
-        /* 模式切换按钮 */
+        /* 白天模式模式切换按钮 - 用于切换白天/夜间模式 */
         .mode-switch {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+            position: absolute; /* 定位方式：绝对定位 */
+            top: 20px; /* 顶部位置：20px */
+            right: 20px; /* 右侧位置：20px */
+            width: 35px; /* 宽度：35px */
+            height: 35px; /* 高度：35px */
+            border-radius: 50%; /* 圆角大小：50% */
             background: rgba(255, 255, 255, 0.8); /* 背景颜色：白色，透明度：0.8 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
+            display: flex; /* 显示方式：弹性布局 */
+            align-items: center; /* 对齐方式：居中对齐 */
+            justify-content: center; /* 对齐方式：居中对齐 */
+            cursor: pointer; /* 光标：指针 */
+            backdrop-filter: blur(8px); /* 背景模糊效果：8px */
+            -webkit-backdrop-filter: blur(8px); /* 背景模糊效果：8px (Safari) */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动 */
             z-index: 999; /* 层级：999 */
         }
         
-        /* 夜间模式模式切换按钮 */
+        /* 夜间模式模式切换按钮 - 深色背景 */
         body.dark-mode .mode-switch {
             background: rgba(0, 0, 0, 0.5); /* 背景颜色：黑色，透明度：0.5 */
             color: white; /* 文本颜色：白色 */
         }
         
-        /* 模式切换按钮悬停效果 */
+        /* 模式切换按钮悬停效果 - 缩放和旋转动画 */
         .mode-switch:hover {
             transform: scale(1.1) rotate(360deg); /* 缩放1.1倍，旋转360度 */
         }
         
-        /* 底部信息区域 */
+        /* 白天模式底部信息区域 - 显示一言、欢迎信息、IP地址和运行时间，实际网页中显示在页面底部中央 */
         .footer-info {
-            position: fixed;
-            bottom: 48px;
-            left: 20px;
-            right: 20px;
-            text-align: center;
-            z-index: 888; /* 层级：888 */
-            color: rgba(0, 0, 0, 0.9); /* 文本颜色：深灰色，透明度：0.9 */
+            position: fixed; /* 定位方式：固定定位，固定在页面底部 */
+            bottom: 48px; /* 底部位置：48px，距离底部48px */
+            left: 20px; /* 左侧位置：20px，左右边距 */
+            right: 20px; /* 右侧位置：20px，左右边距 */
+            text-align: center; /* 文本对齐：居中，文字居中显示 */
+            z-index: 888; /* 层级：888，确保在背景之上但在登录框之下 */
+            color: rgba(0, 0, 0, 0.9); /* 文本颜色：深灰色，透明度：0.9，文字颜色 */
         }
         
-        /* 夜间模式底部信息 */
+        /* 夜间模式底部信息 - 白色文字 */
         body.dark-mode .footer-info {
             color: white; /* 文本颜色：白色 */
             opacity: 0.99; /* 透明度：0.99 */
         }
         
-        /* 一言信息样式 */
+        /* 白天模式一言信息样式 - 引用文字 */
         .footer-info #hitokoto {
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* 底部外边距：10px */
             font-size: 14px; /* 字体大小：14px */
         }
         
-        /* 欢迎信息样式 */
+        /* 白天模式欢迎信息样式 - 显示IP地址和运营商 */
         .footer-info #welcome {
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* 底部外边距：10px */
             font-size: 14px; /* 字体大小：14px */
         }
         
-        /* IP地址样式 */
+        /* 白天模式IP地址样式 - 绿色文字 */
         .footer-info .ip-address {
-            font-weight: bold;
+            font-weight: bold; /* 字体粗细：加粗 */
             color: #25D366; /* 文本颜色：绿色 */
         }
         
-        /* 运行时间样式 */
+        /* 白天模式运行时间样式 - 小号文字 */
         .footer-info .runtime {
             font-size: 12px; /* 字体大小：12px */
             opacity: 0.9; /* 透明度：0.9 */
         }
         
-        /* 链接样式 */
+        /* 白天模式链接样式 - 无下划线，继承颜色 */
         .footer-info a {
-            text-decoration: none;
-            font-weight: bold;
-            color: inherit;
+            text-decoration: none; /* 文本装饰：无 */
+            font-weight: bold; /* 字体粗细：加粗 */
+            color: inherit; /* 颜色：继承 */
         }
 
-        .footer-info a:hover {
-            text-decoration: underline;
-        }
-
-        /* 夜间模式链接样式 */
-        body.dark-mode .footer-info a {
-            color: white;
+        /* 白天模式链接悬停效果 - 添加下划线跑动渐变色 */
+        .footer-info a {
+            position: relative; /* 定位方式：相对定位，用于下划线绝对定位 */
+            text-decoration: none; /* 文本装饰：无，去除默认下划线 */
         }
         
-        /* 夜间模式IP地址 */
+        /* 白天模式链接下划线基础样式 */
+        .footer-info a::after {
+            content: ''; /* 内容：空，伪元素 */
+            position: absolute; /* 定位方式：绝对定位，相对于链接 */
+            bottom: -2px; /* 底部位置：-2px，位于文本下方 */
+            left: 0; /* 左侧位置：0，从左侧开始 */
+            width: 0; /* 宽度：0，初始隐藏 */
+            height: 2px; /* 高度：2px，下划线高度 */
+            transition: width 0.8s ease; /* 过渡效果：宽度 0.8s 缓动，跑动动画效果 */
+        }
+        
+        /* 白天模式链接悬停效果 - 显示下划线跑动动画 */
+        .footer-info a:hover::after {
+            width: 100%; /* 宽度：100%，显示完整下划线 */
+        }
+        
+        /* 白天模式一言链接下划线渐变 - 蓝紫粉红绿 */
+        .footer-info #hitokoto a::after {
+            background: linear-gradient(90deg, #4facfe, #6c5ce7, #ff7675, #2ed573, #ff4757); /* 渐变颜色：蓝紫粉红绿 */
+        }
+        
+        /* 白天模式位置链接下划线渐变 - 绿蓝粉紫红 */
+        .footer-info #welcome a:nth-child(1)::after {
+            background: linear-gradient(90deg, #2ed573, #4facfe, #ff7675, #6c5ce7, #ff4757); /* 渐变颜色：绿蓝粉紫红 */
+        }
+        
+        /* 白天模式运营商链接下划线渐变 - 紫蓝绿粉红 */
+        .footer-info #welcome a:nth-child(2)::after {
+            background: linear-gradient(90deg, #6c5ce7, #4facfe, #2ed573, #ff7675, #ff4757); /* 渐变颜色：紫蓝绿粉红 */
+        }
+        
+        /* 白天模式IP地址链接下划线渐变 - 红粉绿蓝紫 */
+        .footer-info #welcome a:nth-child(3)::after {
+            background: linear-gradient(90deg, #ff4757, #ff7675, #2ed573, #4facfe, #6c5ce7); /* 渐变颜色：红粉绿蓝紫 */
+        }
+
+        /* 夜间模式链接样式 - 白色文字 */
+        body.dark-mode .footer-info a {
+            color: white; /* 颜色：白色 */
+        }
+        
+        /* 夜间模式IP地址 - 青绿色文字 */
         body.dark-mode .footer-info .ip-address {
-            color: rgba(25, 215, 135, 0.9); /* 文本颜色：青绿色，透明度：0.9 */
+            color: rgba(25, 215, 135, 0.99); /* 文本颜色：青绿色，透明度：0.99 */
             opacity: 1; /* 透明度：1 */
         }
         
-        /* 移动端适配 */
-        @media (max-width: 768px) {
+        /* 签名链接样式 - 五色渐变文本 */
+        .footer-info .signature-link {
+            background: linear-gradient(135deg, #ff7675, #25D366, #ff4757, #6c5ce7, #4facfe); /* 渐变颜色：粉-绿-红-紫-蓝 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* 签名链接下划线基础样式 */
+        .footer-info .signature-link::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; /* 底部位置：-1px，与小字体匹配 */
+            left: 0;
+            width: 0;
+            height: 1px; /* 高度：1px，与小字体匹配 */
+            background: linear-gradient(90deg, #ff7675, #25D366, #ff4757, #6c5ce7, #4facfe); /* 渐变颜色：粉-绿-红-紫-蓝 */
+            transition: width 0.8s ease;
+        }
+        
+        /* 签名链接悬停效果 - 显示下划线跑动动画 */
+        .footer-info .signature-link:hover::after {
+            width: 100%;
+        }
+        
+        /* 移动端适配（可自定义修改） */
+        @media (max-width: 768px) { /* 屏幕宽度小于等于768px时应用，可根据需要调整断点 */
             .login-box {
-                padding: 90px 20px 20px;
-                margin: 20px;
+                padding: 90px 20px 20px; /* 内边距：90px 20px 20px */
+                margin: 20px; /* 外边距：20px */
             }
             
             .login-header {
                 font-size: 20px; /* 字体大小：20px */
-                gap: 10px;
+                gap: 10px; /* 间距：10px */
             }
             
             .header-icon {
-                width: 35px;
-                height: 35px;
+                width: 35px; /* 宽度：35px */
+                height: 35px; /* 高度：35px */
             }
             
             .setting-btn,
             .mode-switch {
-                width: 35px;
-                height: 35px;
+                width: 35px; /* 宽度：35px */
+                height: 35px; /* 高度：35px */
             }
             
             .footer-info {
-                bottom: 48px;
-                left: 10px;
-                right: 10px;
-                padding: 0;
+                bottom: 48px; /* 底部位置：48px */
+                left: 10px; /* 左侧位置：10px */
+                right: 10px; /* 右侧位置：10px */
+                padding: 0; /* 内边距：0 */
             }
             
             .footer-info #hitokoto,
@@ -603,188 +703,186 @@
         
         /* 禁用登录框内所有元素的文本选择功能 */
         .login-box {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            user-select: none; /* 用户选择：禁止 */
+            -webkit-user-select: none; /* 用户选择：禁止 (Safari) */
+            -moz-user-select: none; /* 用户选择：禁止 (Firefox) */
+            -ms-user-select: none; /* 用户选择：禁止 (IE/Edge) */
         }
         
         /* 确保输入框可以正常选中和输入 */
         .login-box input {
-            user-select: auto;
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
+            user-select: auto; /* 用户选择：自动，允许选择 */
+            -webkit-user-select: auto; /* 用户选择：自动 (Safari) */
+            -moz-user-select: auto; /* 用户选择：自动 (Firefox) */
+            -ms-user-select: auto; /* 用户选择：自动 (IE/Edge) */
         }
         
         /* 通用提示效果 */
         .toast-notice {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: fixed; /* 定位方式：固定定位 */
+            top: 20px; /* 顶部位置：20px */
+            left: 50%; /* 左侧位置：50% */
+            transform: translateX(-50%); /* 变换：水平居中 */
             background: rgba(255, 255, 255, 0.8); /* 背景颜色：白色，透明度：0.8 */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px); /* 背景模糊效果：8px */
+            -webkit-backdrop-filter: blur(8px); /* 背景模糊效果：8px (Safari) */
             color: #2d3748; /* 文本颜色：深灰色 */
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 10px 20px; /* 内边距：10px 20px */
+            border-radius: 20px; /* 圆角大小：20px */
             font-size: 14px; /* 字体大小：14px */
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            opacity: 0;
-            z-index: 9999; /* 层级：9999 */
-            animation: fadeInOut 3s ease-in-out;
+            font-weight: 600; /* 字体粗细：中等 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 盒子阴影：0 4px 12px rgba(0, 0, 0, 0.15) */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 边框：1px solid rgba(255, 255, 255, 0.2) */
+            opacity: 0; /* 透明度：0，初始隐藏 */
+            z-index: 9999; /* 层级：9999，确保在所有元素之上 */
+            animation: fadeInOut 2s ease-in-out; /* 动画：fadeInOut 2秒 缓入缓出 */
         }
         
         /* 夜间模式提示效果 */
         body.dark-mode .toast-notice {
             background: rgba(0, 0, 0, 0.5); /* 背景颜色：黑色，透明度：0.5 */
             color: white; /* 文本颜色：白色 */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 边框：1px solid rgba(255, 255, 255, 0.1) */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 盒子阴影：0 4px 12px rgba(0, 0, 0, 0.2) */
         }
         
         /* 提示动画 */
         @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); } /* 开始：透明，向上偏移20px */
+            20% { opacity: 1; transform: translateX(-50%) translateY(0); } /* 20%：完全显示，回到原位 */
+            80% { opacity: 1; transform: translateX(-50%) translateY(0); } /* 80%：保持完全显示 */
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } /* 结束：透明，向上偏移20px */
         }
         
-        /* 错误提示样式 */
+        /* 白天模式字体错误提示样式 */
         .toast-notice.toast-error {
             background: linear-gradient(135deg, #000000, #ff4444); /* 渐变颜色：统一红色 */
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-text-fill-color: rgba(0, 0, 0, 0.5);
             background-clip: text;
-            font-weight: bolder; /* 字体加粗 */
+            font-weight: 600; /* 字体加粗 */
         }
         
-        /* 夜间模式错误提示 */
+        /* 夜间模式字体错误提示 */
         body.dark-mode .toast-notice.toast-error {
             background: linear-gradient(135deg, #ff4444, #000000); /* 渐变颜色：统一红色 */
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-text-fill-color: rgba(0, 0, 0, 0.5);
             background-clip: text;
-            font-weight: bolder; /* 字体加粗 */
+            font-weight: 600; /* 字体加粗 */
         }
         
-        /* 设置弹窗 */
+        /* 白天模式设置弹窗 - 用于显示背景设置界面，实际网页中显示为半透明遮罩层 */
         .setting-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* 背景颜色：黑色，透明度：0.5 */
-            backdrop-filter: blur(3px); /* 背景模糊效果：3px */
-            -webkit-backdrop-filter: blur(3px);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
+            display: none; /* 显示方式：隐藏，默认不显示 */
+            position: fixed; /* 定位方式：固定定位，覆盖整个页面 */
+            top: 0; /* 顶部位置：0，从顶部开始 */
+            left: 0; /* 左侧位置：0，从左侧开始 */
+            width: 100%; /* 宽度：100%，覆盖整个页面 */
+            height: 100%; /* 高度：100%，覆盖整个页面 */
+            background: rgba(0, 0, 0, 0.5); /* 背景颜色：黑色，透明度：0.5，半透明遮罩 */
+            z-index: 999; /* 层级：999，确保在所有元素之上 */
+            align-items: center; /* 对齐方式：居中对齐，垂直居中 */
+            justify-content: center; /* 对齐方式：居中对齐，水平居中 */
         }
         
-        /* 弹窗内容 */
+        /* 白天模式背景设置容器和框架 - 实际网页中显示为黑色半透明卡片 */
         .modal-content {
-            background: rgba(0, 0, 0, 0.8); /* 背景颜色：黑色，透明度：0.8 */
-            backdrop-filter: blur(5px); /* 背景模糊效果：5px */
-            -webkit-backdrop-filter: blur(5px);
-            border-radius: 15px;
-            padding: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white; /* 文本颜色：白色 */
-            z-index: 1000; /* 层级：1000 */
-            position: relative;
+            background: rgba(0, 0, 0, 0.9); /* 背景颜色：黑色，透明度：0.9，半透明效果 */
+            backdrop-filter: blur(2px); /* 背景模糊效果：2px，毛玻璃效果 */
+            -webkit-backdrop-filter: blur(2px); /* 背景模糊效果：2px (Safari兼容) */
+            border-radius: 15px; /* 圆角大小：15px，圆角边框 */
+            padding: 20px; /* 内边距：20px，上下左右内边距 */
+            width: 90%; /* 宽度：90%，自适应屏幕 */
+            max-width: 400px; /* 最大宽度：400px，限制最大宽度 */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* 盒子阴影：0 8px 32px rgba(0, 0, 0, 0.2)，立体效果 */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 边框：1px solid rgba(255, 255, 255, 0.1)，轻微白色边框 */
+            color: white; /* 文本颜色：白色，文字颜色 */
+            z-index: 1000; /* 层级：1000，确保在遮罩之上 */
+            position: relative; /* 定位方式：相对定位，用于内部元素定位 */
         }
         
-        /* 夜间模式弹窗内容 */
+        /* 夜间模式背景设置容器和框架 - 实际网页中显示为白色半透明卡片 */
         body.dark-mode .modal-content {
-            background: rgba(255, 255, 255, 0.9); /* 背景颜色：白色，透明度：0.9 */
-            color: #2d3748; /* 文本颜色：深灰色 */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            z-index: 1000;
-            position: relative;
+            background: rgba(255, 255, 255, 0.85); /* 背景颜色：白色，透明度：0.85，半透明效果 */
+            backdrop-filter: blur(2px); /* 背景模糊效果：2px，毛玻璃效果 */
+            -webkit-backdrop-filter: blur(2px); /* 背景模糊效果：2px (Safari兼容) */
+            color: #2d3748; /* 文本颜色：深灰色，文字颜色 */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 边框：1px solid rgba(255, 255, 255, 0.2)，轻微边框 */
+            z-index: 1000; /* 层级：1000，确保在遮罩之上 */
+            position: relative; /* 定位方式：相对定位，用于内部元素定位 */
         }
         
-        /* 弹窗标题 */
+        /* 白天模式背景设置标题 */
         .modal-title {
             font-size: 18px; /* 字体大小：18px */
-            font-weight: 700;
-            margin-bottom: 18px;
-            text-align: center;
-            user-select: none;
+            font-weight: 700; /* 字体粗细：加粗 */
+            margin-bottom: 18px; /* 底部外边距：18px */
+            text-align: center; /* 文本对齐：居中 */
+            user-select: none; /* 用户选择：禁止 */
             color: #a29bfe; /* 文本颜色：浅紫色 */
         }
         
-        /* 夜间模式弹窗标题 */
+        /* 夜间模式背景设置标题 */
         body.dark-mode .modal-title {
             color: #6c5ce7; /* 文本颜色：紫色 */
         }
         
-        /* 弹窗输入项 */
+        /* 白天模式背景设置输入项 */
         .modal-input {
-            margin-bottom: 12px;
+            margin-bottom: 12px; /* 底部外边距：12px */
         }
         
-        /* 弹窗标签 */
+        /* 白天模式背景设置标签 */
         .modal-input label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 700;
+            display: block; /* 显示方式：块级元素 */
+            margin-bottom: 6px; /* 底部外边距：6px */
+            font-weight: 700; /* 字体粗细：加粗 */
             font-size: 13px; /* 字体大小：13px */
-            user-select: none;
+            user-select: none; /* 用户选择：禁止 */
         }
         
-        /* 输入框容器 */
+        /* 白天模式输入框容器 */
         .input-with-history {
-            position: relative;
-            width: 100%;
+            position: relative; /* 定位方式：相对定位 */
+            width: 100%; /* 宽度：100% */
         }
         
-        /* 历史记录列表 */
+        /* 白天模式历史记录列表 */
         .history-list {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            max-height: 120px;
-            overflow-y: auto;
-            background: rgba(255, 255, 255, 0.9); /* 背景颜色：白色，透明度：0.9 */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none; /* 显示方式：隐藏 */
+            position: absolute; /* 定位方式：绝对定位 */
+            top: 100%; /* 顶部位置：100% */
+            left: 0; /* 左侧位置：0 */
+            width: 100%; /* 宽度：100% */
+            max-height: 120px; /* 最大高度：120px */
+            overflow-y: auto; /* 垂直溢出：自动 */
+            background: rgba(255, 255, 255, 0.95); /* 背景颜色：白色，透明度：0.9 */
+            backdrop-filter: blur(2px); /* 背景模糊效果：2px */
+            -webkit-backdrop-filter: blur(2px); /* 背景模糊效果：2px (Safari) */
+            border-radius: 4px; /* 圆角大小：4px */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 边框：1px solid rgba(255, 255, 255, 0.1) */
             z-index: 1001; /* 层级：1001 */
-            margin-top: 2px;
+            margin-top: 2px; /* 顶部外边距：2px */
             color: rgba(0, 0, 0, 0.9); /* 文本颜色：深灰色，透明度：0.9 */
         }
         
         /* 夜间模式历史记录列表 */
         body.dark-mode .history-list {
-            background: rgba(0, 0, 0, 0.9); /* 背景颜色：黑色，透明度：0.9 */
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.95); /* 背景颜色：黑色，透明度：0.9 */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 边框：1px solid rgba(255, 255, 255, 0.2) */
             color: rgba(255, 255, 255, 0.9); /* 文本颜色：白色，透明度：0.9 */
         }
         
-        /* 历史记录项 */
+        /* 白天模式历史记录项 */
         .history-item {
-            padding: 8px 12px;
-            cursor: pointer;
+            padding: 5px 7px; /* 内边距：8px 12px */
+            cursor: pointer; /* 光标：指针 */
             font-size: 13px; /* 字体大小：13px */
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease; /* 过渡效果：背景颜色 0.2s 缓动 */
         }
         
-        /* 历史记录项悬停效果 */
+        /* 白天模式历史记录项悬停效果 */
         .history-item:hover {
             background: rgba(108, 92, 231, 0.2); /* 背景颜色：紫色，透明度：0.2 */
         }
@@ -794,104 +892,157 @@
             background: rgba(162, 155, 254, 0.2); /* 背景颜色：浅紫色，透明度：0.2 */
         }
         
-        /* 弹窗输入框 */
+        /* 白天模式背景设置输入框容器 */
+        .modal-input {
+            margin-bottom: 12px; /* 底部外边距：12px */
+            position: relative; /* 定位方式：相对定位 */
+        }
+        
+        /* 白天模式背景设置输入框 */
         .modal-content .modal-input input {
-            width: 100%;
-            padding: 4px 6px;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            background: rgba(255, 255, 255, 0.1); /* 背景颜色：白色，透明度：0.1 */
+            width: 100%; /* 宽度：100% */
+            padding: 8px 0; /* 内边距：8px 0 */
+            border: none; /* 边框：无 */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* 下边框：1px solid rgba(255, 255, 255, 0.3) */
+            background: transparent; /* 背景：透明 */
             color: white; /* 文本颜色：白色 */
             font-size: 13px; /* 字体大小：13px */
-            font-weight: 500;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            text-align: center;
-            transition: all 0.3s ease;
+            font-weight: 500; /* 字体粗细：中等 */
+            text-align: center; /* 文本对齐：居中 */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动 */
         }
         
-        /* 弹窗输入框聚焦效果 */
-        .modal-content .modal-input input:focus {
-            outline: none;
-            border: 1px solid white; /* 边框颜色：白色 */
-        }
-        
-        /* 弹窗输入框占位符 */
+        /* 白天模式背景设置输入框占位符 */
         .modal-content .modal-input input::placeholder {
-            text-align: center;
-            font-size: 13px;
-        }
-        
-        /* 夜间模式弹窗输入框 */
-        body.dark-mode .modal-content .modal-input input {
-            background: rgba(255, 255, 255, 0.9); /* 背景颜色：白色，透明度：0.9 */
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            color: #2d3748; /* 文本颜色：深灰色 */
-        }
-        
-        /* 夜间模式弹窗输入框聚焦效果 */
-        body.dark-mode .modal-content .modal-input input:focus {
-            outline: none;
-            border: 1px solid #6c5ce7; /* 边框颜色：紫色 */
-        }
-        
-        /* 弹窗按钮组 */
-        .modal-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        
-        /* 弹窗按钮 */
-        .modal-btn {
-            flex: 1;
-            padding: 8px 10px;
-            border: none;
-            border-radius: 16px;
+            text-align: center; /* 文本对齐：居中 */
             font-size: 13px; /* 字体大小：13px */
-            font-weight: 400;
-            cursor: pointer;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-            min-height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
+            color: rgba(255, 255, 255, 0.8); /* 颜色：rgba(255, 255, 255, 0.8) */
         }
         
-        /* 保存按钮 */
-        .btn-save {
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9)); /* 渐变颜色：紫色到浅紫色 */
-            color: white; /* 文本颜色：白色 */
+        /* 白天模式背景设置输入框下划线 - 第一个编辑框（白天模式背景图） */
+        .modal-input::after {
+            content: ''; /* 内容：空 */
+            position: absolute; /* 定位方式：绝对定位 */
+            bottom: 0; /* 底部位置：0 */
+            left: 0; /* 左侧位置：0 */
+            width: 0; /* 宽度：0 */
+            height: 1px; /* 高度：1px */
+            background: linear-gradient(90deg, #2ed573, #4facfe, #ff4757, #6c5ce7, #ff7675); /* 渐变颜色：绿蓝红紫粉 */
+            transition: width 0.8s ease; /* 过渡效果：宽度 0.8s 缓动 */
         }
         
-        /* 保存按钮悬停效果 */
-        .btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        /* 白天模式背景设置输入框下划线 - 第二个编辑框（夜间模式背景图） */
+        .modal-input:nth-child(2)::after {
+            background: linear-gradient(90deg, #ff4757, #ff7675, #6c5ce7, #4facfe, #2ed573); /* 渐变颜色：紫红粉蓝绿 */
         }
         
-        /* 关闭按钮 */
-        .btn-close {
-            background: rgba(180, 188, 208, 0.9); /* 背景颜色：浅灰色，透明度：0.9 */
+        /* 白天模式背景设置输入框悬停效果 */
+        .modal-input:hover::after {
+            width: 100%; /* 宽度：100% */
+        }
+        
+        /* 白天模式背景设置输入框聚焦效果 */
+        .modal-content .modal-input input:focus {
+            outline: none; /* 轮廓：无 */
+            transform: translateY(-2px); /* 变换：向上移动2px */
+        }
+        
+        /* 夜间模式背景设置输入框 */
+        body.dark-mode .modal-content .modal-input input {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 下边框：1px solid rgba(0, 0, 0, 0.2) */
             color: #2d3748; /* 文本颜色：深灰色 */
         }
         
-        /* 关闭按钮悬停效果 */
-        .btn-close:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-            background: rgba(180, 188, 208, 0.9);
+        /* 夜间模式背景设置输入框占位符 */
+        body.dark-mode .modal-content .modal-input input::placeholder {
+            color: rgba(0, 0, 0, 0.8); /* 颜色：rgba(0, 0, 0, 0.8) */
         }
         
-        /* 夜间模式关闭按钮 */
+        /* 夜间模式背景设置输入框下划线 - 第一个编辑框（白天模式背景图） */
+        body.dark-mode .modal-input::after {
+            background: linear-gradient(90deg, #ff4757, #ff7675, #6c5ce7, #4facfe, #2ed573); /* 渐变颜色：紫红粉蓝绿 */
+        }
+        
+        /* 夜间模式背景设置输入框下划线 - 第二个编辑框（夜间模式背景图） */
+        body.dark-mode .modal-input:nth-child(2)::after {
+            background: linear-gradient(90deg, #2ed573, #4facfe, #ff4757, #6c5ce7, #ff7675); /* 渐变颜色：绿蓝红紫粉 */
+        }
+        
+        /* 白天模式背景设置按钮组 */
+        .modal-btns {
+            display: flex; /* 显示方式：弹性布局 */
+            gap: 10px; /* 间距：10px */
+            margin-top: 30px; /* 顶部外边距：30px */
+        }
+        
+        /* 白天模式背景设置按钮 */
+        .modal-btn {
+            flex: 1; /* 弹性伸缩：1 */
+            padding: 6px 10px; /* 内边距：6px 10px */
+            border: 1px solid transparent; /* 边框：1px solid transparent，透明边框 */
+            border-radius: 25px; /* 圆角大小：25px */
+            font-size: 14px; /* 字体大小：14px */
+            font-weight: bolder; /* 字体粗细：加粗 */
+            cursor: pointer; /* 光标：指针 */
+            text-shadow: none; /* 文本阴影：无 */
+            backdrop-filter: blur(8px); /* 背景模糊效果：8px */
+            -webkit-backdrop-filter: blur(8px); /* 背景模糊效果：8px (Safari) */
+            transition: all 0.3s ease; /* 过渡效果：所有属性 0.3s 缓动 */
+            min-height: 30px; /* 最小高度：30px */
+            display: flex; /* 显示方式：弹性布局 */
+            align-items: center; /* 对齐方式：居中对齐 */
+            justify-content: center; /* 对齐方式：居中对齐 */
+            gap: 6px; /* 间距：6px */
+        }
+        
+        /* 白天模式保存按钮 - 使用夜间模式登录按钮样式 */
+        .btn-save {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.5), rgba(24, 220, 255, 0.5), rgba(46, 213, 115, 0.5), rgba(162, 247, 141, 0.5)); /* 渐变颜色：浅蓝到青色到绿色到浅绿，透明度0.5 */
+            color: rgb(202, 202, 202); /* 文本颜色：白色 */
+        }
+        
+        /* 白天模式保存按钮悬停效果 */
+        .btn-save:hover {
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            border-color: rgba(25, 215, 135, 0.8); /* 边框颜色：青绿色，透明度：0.8 */
+        }
+        
+        /* 白天模式关闭按钮 - 使用夜间模式清除按钮样式 */
+        .btn-close {
+            background: transparent; /* 背景颜色：完全透明 */
+            color: rgba(200, 200, 200, 0.99); /* 文本颜色：白色，透明度：0.9 */
+        }
+        
+        /* 白天模式关闭按钮悬停效果 */
+        .btn-close:hover {
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            border-color: rgba(25, 215, 135, 0.8); /* 边框颜色：青绿色，透明度：0.8 */
+            background: rgba(95, 95, 95, 0.6); /* 背景颜色：深灰色，透明度：0.6 */
+        }
+        
+        /* 夜间模式保存按钮 - 使用白天模式登录按钮样式 */
+        body.dark-mode .btn-save {
+            background: linear-gradient(135deg, rgba(162, 247, 141, 0.7), rgba(46, 213, 115, 0.7), rgba(24, 220, 255, 0.7), rgba(79, 172, 254, 0.7)); /* 渐变颜色：浅绿到绿色到青色到浅蓝，透明度0.7 */
+            color: rgba(1, 7, 15, 0.85); /* 文本颜色：蓝黑色 */
+        }
+        
+        /* 夜间模式保存按钮悬停效果 */
+        body.dark-mode .btn-save:hover {
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            border-color: rgba(184, 28, 158, 0.8); /* 边框颜色：紫色，透明度：0.8 */
+        }
+        
+        /* 夜间模式关闭按钮 - 使用白天模式清除按钮样式 */
         body.dark-mode .btn-close {
-            background: rgba(255, 255, 255, 0.9); /* 背景颜色：白色，透明度：0.9 */
-            color: #2d3748;
+            background: transparent; /* 背景颜色：完全透明 */
+            color: rgba(1, 7, 15, 0.85); /* 文本颜色：蓝黑色 */
+        }
+        
+        /* 夜间模式关闭按钮悬停效果 */
+        body.dark-mode .btn-close:hover {
+            transform: translateY(-2px); /* 变换：向上移动2px */
+            border-color: rgba(28, 108, 184, 0.8); /* 边框颜色：蓝色，透明度：0.8 */
+            background: rgba(216, 216, 216, 0.6); /* 背景颜色：深灰色，透明度：0.6 */
         }
     </style>
 </head>
@@ -910,7 +1061,7 @@
                     class="header-icon"
                     onclick="window.open('https://github.com/leeyuchen4073', '_blank')"
                 >
-                <span class="header-text" onclick="location.reload()">leeyuchen</span>
+                <span class="header-text">leeyuchen</span>
             </div>
 
             <div class="input-container">
@@ -929,18 +1080,18 @@
             </div>
 
             <div class="btn-group">
-                <button class="btn btn-clear" id="clearBtn">🧹 清除</button>
-                <button class="btn btn-login" onclick="login()">🏠 进入主页</button>
+                <button class="btn btn-clear" id="clearBtn">清除</button>
+                <button class="btn btn-login" onclick="login()">进入主页</button>
             </div>
         </div>
     </div>
 
     <!-- 底部信息区域 -->
     <div class="footer-info">
-        <div id="hitokoto">正在加载...</div>
-        <div id="welcome">正在获取您的访问信息...</div>
+        <div id="hitokoto"></div>
+        <div id="welcome"></div>
         <div class="runtime">
-            站点运行时间：<span id="runtime">计算中...</span>
+             站点运行时间：<span id="runtime"></span>
         </div>
     </div>
 
@@ -949,7 +1100,7 @@
         <div class="modal-content">
             <div class="modal-title">设置 - 背景图</div>
             <div class="modal-input">
-                <label>白天模式背景图</label>
+                <label for="lightBgUrl">白天模式背景图</label>
                 <div class="input-with-history">
                     <input type="text" id="lightBgUrl" placeholder="输入图片URL" autocomplete="off">
                     <div class="history-list" id="lightHistoryList">
@@ -959,11 +1110,11 @@
                 </div>
             </div>
             <div class="modal-input">
-                <label>夜间模式背景图</label>
+                <label for="darkBgUrl">夜间模式背景图</label>
                 <div class="input-with-history">
                     <input type="text" id="darkBgUrl" placeholder="输入图片URL" autocomplete="off">
                     <div class="history-list" id="darkHistoryList">
-                        <div class="history-item" data-url="https://wp.upx8.com/api.php">白天默认</div>
+                       <div class="history-item" data-url="https://wp.upx8.com/api.php">白天默认</div>
                         <div class="history-item" data-url="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">夜间默认</div>
                     </div>
                 </div>
@@ -1059,11 +1210,12 @@
             const fragment = document.createDocumentFragment();
             const toast = document.createElement('div');
             toast.className = `toast-notice ${isError ? 'toast-error' : ''}`;
-            toast.textContent = message;
+            // 使用innerHTML替代textContent以支持background-clip:text效果
+            toast.innerHTML = message;
             fragment.appendChild(toast);
             document.body.appendChild(fragment);
             
-            // 3秒后自动移除
+            // 3秒后自动移除（比CSS动画时间长1秒，确保动画播放完毕）
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.parentNode.removeChild(toast);
@@ -1299,16 +1451,14 @@
     <script id="mode-switch">
         // 切换白天/夜间模式
         function toggleMode() {
-            requestAnimationFrame(() => {
-                const body = document.body;
-                const isDark = !body.classList.contains('dark-mode');
-                
-                // 使用统一的模式管理函数
-                setMode(isDark);
-                
+            const body = document.body;
+            const isDark = !body.classList.contains('dark-mode');
+            
+            // 使用统一的模式管理函数
+            setMode(isDark);
+            
                 // 显示切换提示
                 setTimeout(() => showToast(isDark ? ToastMessages.success.darkMode : ToastMessages.success.lightMode), 0);
-            });
         }
     </script>
 
@@ -1344,8 +1494,6 @@
             }
         }
         
-
-
         // 设置清除按钮的事件处理
         function setupClearButton() {
             try {
@@ -1489,7 +1637,7 @@
                 
                 showToast(ToastMessages.success.login);
                 setTimeout(() => {
-                    window.location.href = 'profile';
+                    window.location.href = 'lychome.html';
                 }, 1000);
             } catch (error) {
                 console.error('登录失败:', error);
@@ -1550,8 +1698,8 @@
             elements.bgModal.style.display = 'none';
         }
 
-        // 通用历史记录管理函数
-        function manageHistory(url, historyKey, maxItems = 5) {
+        // 通用历史记录管理函数（可自定义修改）
+        function manageHistory(url, historyKey, maxItems = 5) { // maxItems：历史记录最大数量，可根据需要调整
             if (!url) return;
             
             // 更新历史记录
@@ -1784,25 +1932,20 @@
           }
           
           // 缓存不存在或已过期，请求API
-          // 主API：使用api.nange.cn
-          fetch('http://api.nange.cn/json')
-            .then(response => response.json())
+          // 主API：使用v2.xxapi.cn/api/ip
+          fetch('https://v2.xxapi.cn/api/ip')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('API响应失败');
+              }
+              return response.json();
+            })
             .then(data => {
               // 验证返回数据是否完整
-              if (data && data.ip) {
-                const ip = data.ip;
-                const country = data.country || '';
-                const region = data.region || '';
-                const city = data.city || '';
-                const district = data.district || '';
-                const isp = data.isp || data.isp_org || '';
-                
-                // 构建完整地址
-                let address = '';
-                if (country) address += country;
-                if (region) address += region;
-                if (city) address += city;
-                if (district) address += district;
+              if (data.code === 200 && data.data && data.data.ip) {
+                const ip = data.data.ip;
+                const address = data.data.address || '';
+                const isp = data.data.isp || '';
                 
                 // 更新缓存
                 const ipData = { ip, address, isp };
@@ -1814,45 +1957,25 @@
                   welcomeEl.innerHTML = welcomeMessage;
                   welcomeEl.classList.add('loaded');
                 }
+              } else {
+                throw new Error('API返回数据格式不正确');
               }
             })
             .catch(error => {
-              console.error("主API获取IP信息失败：", error);
-              // 备用API：使用返回中国地址的API
-              fetch('https://v2.xxapi.cn/api/ip')
-                .then(response => response.json())
-                .then(data => {
-                  if (data.code === 200 && data.data) {
-                    const ip = data.data.ip;
-                    const address = data.data.address || '';
-                    const isp = data.data.isp || '';
-                    
-                    // 更新缓存
-                    const ipData = { ip, address, isp };
-                    CacheManager.cacheIP(ipData);
-                    
-                    const welcomeMessage = `欢迎 <a href="http://api.nange.cn/" target="_blank">${address}</a> <a href="http://test.ustc.edu.cn/" target="_blank">${isp} IP：</a> <a href="https://ipw.cn/ip/" target="_blank" class="ip-address">${ip}</a> 的小伙伴访问本站`;
-                    
-                    if (welcomeEl) {
-                      welcomeEl.innerHTML = welcomeMessage;
-                      welcomeEl.classList.add('loaded');
-                    }
-                  }
-                })
-                .catch(backupError => {
-                  console.error("备用API获取失败：", backupError);
-                  // 最终备用：使用本地欢迎信息
-                  if (welcomeEl) {
-                    welcomeEl.textContent = "欢迎访问本站";
-                    welcomeEl.classList.add('loaded');
-                  }
-                });
+              console.error("获取IP信息失败：", error);
+              // 最终备用：使用本地欢迎信息
+              if (welcomeEl) {
+                welcomeEl.textContent = "欢迎访问本站";
+                welcomeEl.classList.add('loaded');
+              }
+              // API失效提示
+              showToast('IP API失效，已使用本地欢迎信息', true);
             });
         }
         
-        // 更新运行时间
+        // 更新运行时间（可自定义修改）
         function updateRuntime() {
-          const startDate = new Date('2026-02-20T00:00:00');
+          const startDate = new Date('2026-02-20T00:00:00'); // 网站开始运行时间，可根据实际情况修改
           const now = new Date();
           const elapsed = now - startDate;
 
@@ -1875,11 +1998,11 @@
           let currentScript = null;
           let currentTimeout = null;
           
-          // 默认句子
-          const defaultSentence = '人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.';
+          // 默认句子（可自定义修改）
+          const defaultSentence = '人生最大的遗憾,就是在最无能为力的时候遇到一个想要保护一生的人.'; // 当API请求失败时显示的默认句子，可根据需要修改
           
-          // 接口列表（文心一言排第一）
-          const apis = [
+          // 接口列表（文心一言排第一）（可自定义修改）
+          const apis = [ // 一言API列表，可根据需要添加或修改
             'https://v1.hitokoto.cn/?encode=js&select=%23hitokoto',
             'https://international.v1.hitokoto.cn/?encode=js&select=%23hitokoto'
           ];
@@ -1887,11 +2010,8 @@
           // 添加签名后缀
           function addSignature() {
             if (hitokotoEl && !hitokotoEl.innerHTML.includes('Ani Cloud')) {
-              // 根据当前模式设置签名颜色
-              const isDarkMode = document.body.classList.contains('dark-mode');
-              const signatureColor = isDarkMode ? 'white' : 'red';
               // 设置签名的style格式
-              hitokotoEl.innerHTML += `<p style="margin-left: 16rem;font-size: 8pt;margin-top: 5px;color: ${signatureColor};"><small>—— Ani Cloud</small></p>`;
+              hitokotoEl.innerHTML += `<p style="margin-left: 16rem;font-size: 8pt;margin-top: 5px;"><small><a href="https://mprogram.boomegg.cn/box/game/wx77200645d1c7f35f/h5?&game_platform=wechat" target="_blank" class="signature-link">—— Ani Cloud</a></small></p>`;
             }
           }
           
@@ -1901,7 +2021,11 @@
               mutations.forEach((mutation) => {
                 if (mutation.type === 'childList' || mutation.type === 'characterData') {
                   // 内容变化时添加签名
-                  setTimeout(addSignature, 100);
+                  setTimeout(() => {
+                    addSignature();
+                    // 内容加载完成后断开观察，避免不必要的性能消耗
+                    observer.disconnect();
+                  }, 100);
                 }
               });
             });
@@ -1981,7 +2105,24 @@
         function initFooterInfo() {
           // 立即更新运行时间，不需要等待API
           updateRuntime();
-          setInterval(updateRuntime, 1000); // 每秒更新一次时间
+          
+          // 使用requestAnimationFrame替代setInterval进行运行时间更新
+          // 这样可以与浏览器渲染周期同步，避免丢帧，并在标签页不可见时自动暂停
+          let lastUpdateTime = Date.now();
+          
+          function updateRuntimeWithRAF() {
+            const now = Date.now();
+            // 每秒更新一次（与原setInterval行为一致）
+            if (now - lastUpdateTime >= 1000) {
+              updateRuntime();
+              lastUpdateTime = now;
+            }
+            // 继续下一帧
+            requestAnimationFrame(updateRuntimeWithRAF);
+          }
+          
+          // 开始运行时间更新循环
+          requestAnimationFrame(updateRuntimeWithRAF);
           
           // 并行加载其他信息，加快显示速度
           Promise.all([
@@ -2003,6 +2144,15 @@
     <script id="page-init">
         document.addEventListener('DOMContentLoaded', async function() {
             try {
+                // 优先加载和设置模式，避免闪烁
+                const isDark = localStorage.getItem('darkMode') === 'true';
+                const body = document.body;
+                
+                // 立即设置背景色
+                if (body) {
+                    body.style.backgroundColor = isDark ? '#1a1a1a' : '#ffffff';
+                }
+                
                 // 缓存静态资源
                 const staticResources = [
                     'https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.ico',
