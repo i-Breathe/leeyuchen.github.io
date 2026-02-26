@@ -7,7 +7,7 @@
     <link rel="preload" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" as="style" crossorigin="anonymous">
     <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css">
     <link rel="preload" href="https://wp.upx8.com/api.php" as="image">
-    <link rel="preload" href="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg" as="image">
+    <link rel="preload" href="https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg" as="image">
     <link href="https://npm.elemecdn.com/font6pro@6.0.1/css/all.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="https://cdn.jsdelivr.net/gh/leeyuchen4073/leeyuchen.github.io/assets/icons/favicon.svg">
@@ -22,7 +22,7 @@
                 style.textContent = `
                     :root {
                         --light-bg-image: url("${lightBgImage || 'https://wp.upx8.com/api.php'}");
-                        --dark-bg-image: url("${darkBgImage || 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg'}");
+                        --dark-bg-image: url("${darkBgImage || 'https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg'}");
                     }
                 `;
                 document.head.appendChild(style);
@@ -939,7 +939,7 @@
                     <input type="text" id="lightBgUrl" placeholder="输入图片URL或API链接" autocomplete="off">
                     <div class="history-list" id="bgHistoryList">
                         <div class="history-item" data-url="https://wp.upx8.com/api.php">白天默认背景</div>
-                        <div class="history-item" data-url="http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">夜间默认背景</div>
+                        <div class="history-item" data-url="https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg">夜间默认背景</div>
                     </div>
                 </div>
             </div>
@@ -1097,7 +1097,7 @@
         (function() {
             try {
                 const lightBgImage = localStorage.getItem('lightBgImage') || 'https://wp.upx8.com/api.php';
-                const darkBgImage = localStorage.getItem('darkBgImage') || 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
+                const darkBgImage = localStorage.getItem('darkBgImage') || 'https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
                 
                 ImageCache.cleanup();
                 
@@ -1375,7 +1375,7 @@
                 }
                 
                 const lightDefaultUrl = 'https://wp.upx8.com/api.php';
-                const darkDefaultUrl = 'http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
+                const darkDefaultUrl = 'https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg';
                 
                 const lightDefaultItem = document.createElement('div');
                 lightDefaultItem.className = 'history-item';
@@ -1722,7 +1722,7 @@
                                 localStorage.removeItem('lightBgImage');
                                 localStorage.removeItem('darkBgImage');
                                 document.documentElement.style.setProperty('--light-bg-image', `url("https://wp.upx8.com/api.php")`);
-                                document.documentElement.style.setProperty('--dark-bg-image', `url("http://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg")`);
+                                document.documentElement.style.setProperty('--dark-bg-image', `url("https://cdn-hsyq-static.shanhutech.cn/bizhi/staticwp/202408/aa5f5cb60290872203fcd14dfa10e9d5--2308701055.jpg")`);
                                 showToast('已恢复默认背景');
                                 break;
                             case 4:
