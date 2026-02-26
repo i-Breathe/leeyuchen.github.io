@@ -28,11 +28,11 @@
 
 | 工具 | 功能 | 状态 |
 | :--- | :--- | :--- |
-| 🔒 <a href="https://www.leeyuchen.top/加密工具Encryption tools.html">AES 加密工具</a> | 文本/HTML 加密、哈希生成、一键复制 | ✅ 已上线 |
-| 🌐 <a href="https://www.leeyuchen.top/快速翻译.html">快速翻译</a> | 中英日韩互译、代码块展示 | ✅ 已上线 |
-| 🧬 <a href="https://www.leeyuchen.top/base64.html">Base64 编解码</a> | 字符串编码/解码 | 🔄 即将上线 |
-| 📝 <a href="https://www.leeyuchen.top/json.html">JSON 格式化</a> | 高亮、格式化、压缩 | 🔄 即将上线 |
-| ⏱️ <a href="https://www.leeyuchen.top/timestamp.html">时间戳转换</a> | 时间 ↔ 时间戳 | 🔄 即将上线 |
+| 🔒 <a href="https://wwa.leeyuchen.top/加密工具Encryption tools.html">AES 加密工具</a> | 文本/HTML 加密、哈希生成、一键复制 | ✅ 已上线 |
+| 🌐 <a href="https://wwa.leeyuchen.top/快速翻译.html">快速翻译</a> | 中英日韩互译、代码块展示 | ✅ 已上线 |
+| 🧬 <a href="https://wwa.leeyuchen.top/base64.html">Base64 编解码</a> | 字符串编码/解码 | 🔄 即将上线 |
+| 📝 <a href="https://wwa.leeyuchen.top/json.html">JSON 格式化</a> | 高亮、格式化、压缩 | 🔄 即将上线 |
+| ⏱️ <a href="https://wwa.leeyuchen.top/timestamp.html">时间戳转换</a> | 时间 ↔ 时间戳 | 🔄 即将上线 |
 
 ---
 
