@@ -1360,7 +1360,7 @@ permalink: /
             } catch (error) {
                 // 如果发生任何错误，也重定向到登录页面
                 console.error('登录验证失败:', error);
-                window.location.href = 'index.html';
+                window.location.href = 'login';
             }
         })();
     </script>
@@ -2320,7 +2320,7 @@ permalink: /
                 console.error('退出登录时更新缓存失败:', error);
             }
             // 重定向到登录页面
-            window.location.href = '/';
+            window.location.href = 'login';
         }
         
         /**
@@ -2336,7 +2336,7 @@ permalink: /
                 }
             } else {
                 // 未登录，重定向到登录页面
-                window.location.href = '/';
+                window.location.href = 'login';
             }
         }
 
@@ -2491,6 +2491,7 @@ permalink: /
     </script>
 </body>
 </html>
+
 
 
 
