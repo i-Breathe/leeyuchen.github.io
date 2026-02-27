@@ -1333,7 +1333,39 @@ permalink: /profile/
     </style>
 
     <!-- ====================== 头部交互脚本区 ====================== -->
-    <!-- 模式切换优先加载 -->
+    <!-- 登录验证优先执行 -->
+    <script>
+        (function() {
+            try {
+                // 简单的本地存储操作函数
+                function getLocalStorageItem(key, defaultValue) {
+                    try {
+                        const value = localStorage.getItem(key);
+                        return value !== null ? value : defaultValue;
+                    } catch (error) {
+                        console.error('读取本地存储失败:', error);
+                        return defaultValue;
+                    }
+                }
+                
+                // 验证登录状态
+                const isLogin = getLocalStorageItem('isLogin') === 'true';
+                
+                if (!isLogin) {
+                    // 未登录，立即重定向到登录页面
+                    window.location.href = '/';
+                    // 阻止页面继续加载
+                    throw new Error('未登录，重定向到登录页面');
+                }
+            } catch (error) {
+                // 如果发生任何错误，也重定向到登录页面
+                console.error('登录验证失败:', error);
+                window.location.href = 'index.html';
+            }
+        })();
+    </script>
+    
+    <!-- 模式切换 -->
     <script>
         (function() {
           try {
@@ -1563,7 +1595,7 @@ permalink: /profile/
                     <div class="tool-icon"><i class="fas fa-globe" style="color:#1890FF;"></i></div>
                     <div class="tool-name">网络工具</div>
                 </div>
-                <div class="tool-item" onclick="window.open('https://leeyuchen99.github.io/tool/加密工具Encryption tools.html', '_blank')">
+                <div class="tool-item" onclick="window.location.href = '加密工具Encryption tools'">
                     <div class="tool-icon"><i class="fas fa-lock" style="color:#52C41A;"></i></div>
                     <div class="tool-name">加密工具</div>
                 </div>
@@ -2217,14 +2249,6 @@ permalink: /profile/
          * @description 页面加载完成后执行的初始化逻辑
          */
         window.onload = function() {
-            // 验证登录状态
-            const isLogin = StorageManager.getItem('isLogin') === 'true';
-            if (!isLogin) {
-                // 未登录，重定向到登录页面
-                window.location.href = '/';
-                return;
-            }
-            
             // 已登录，加载页面内容
             // 加载头像设置
             loadAvatar();
@@ -2467,7 +2491,6 @@ permalink: /profile/
     </script>
 </body>
 </html>
-
 
 
 
